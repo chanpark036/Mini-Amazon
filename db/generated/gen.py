@@ -82,8 +82,24 @@ def gen_reviews(num_reviews, available_pids):
         print(f'{num_reviews} generated')
     return
 
+def gen_carts(num_users, available_pids):
+    with open('Carts.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Carts...', end=' ', flush=True)
+        for id in range(num_users):
+            if id % 100 == 0:
+                print(f'{id}', end=' ', flush=True)
+            sid = fake.random_int(min=0, max=num_users-1)
+            pid = fake.random_element(elements=available_pids)
+            quantity = fake.random_int(min=1)
+            unit_price = fake.random_float(min=0.01)
+            writer.writerow([id, sid, pid, quantity, unit_price])
+        print(f'{num_users} generated')
+    return
+
 
 gen_users(num_users)
 available_pids = gen_products(num_products)
 gen_purchases(num_purchases, available_pids)
 gen_reviews(num_reviews, available_pids)
+gen_carts(num_users, available_pids)
