@@ -41,4 +41,4 @@ CREATE TABLE Cart (
     sid INT NOT NULL REFERENCES Users(id),
     quantity INT NOT NULL,
     u_price FLOAT NOT NULL,
-)
+);
