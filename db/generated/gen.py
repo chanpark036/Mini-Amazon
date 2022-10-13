@@ -29,7 +29,8 @@ def gen_users(num_users):
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
-            writer.writerow([uid, email, password, firstname, lastname])
+            is_seller = fake.random_int(min = 0, max = 1)
+            writer.writerow([uid, email, password, firstname, lastname, is_seller])
         print(f'{num_users} generated')
     return
 
@@ -62,7 +63,8 @@ def gen_purchases(num_purchases, available_pids):
             uid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids)
             time_purchased = fake.date_time()
-            writer.writerow([id, uid, pid, time_purchased])
+            fulfillment_status = fake.random_int(min = 0, max=1)
+            writer.writerow([id, uid, pid, time_purchased, fulfillment_status])
         print(f'{num_purchases} generated')
     return
 
