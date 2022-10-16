@@ -29,7 +29,7 @@ def gen_users(num_users):
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
-            is_seller = fake.random_int(min = 0, max = 1)
+            is_seller = fake.pybool()
             writer.writerow([uid, email, password, firstname, lastname, is_seller])
         print(f'{num_users} generated')
     return
@@ -45,10 +45,11 @@ def gen_products(num_products):
                 print(f'{pid}', end=' ', flush=True)
             name = fake.sentence(nb_words=4)[:-1]
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            available = fake.random_element(elements=('true', 'false'))
-            if available == 'true':
+            description = "yada yada"
+            available = fake.pybool()
+            if available:
                 available_pids.append(pid)
-            writer.writerow([pid, name, price, available])
+            writer.writerow([pid, name, description, price, available])
         print(f'{num_products} generated; {len(available_pids)} available')
     return available_pids
 
@@ -63,7 +64,7 @@ def gen_purchases(num_purchases, available_pids):
             uid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids)
             time_purchased = fake.date_time()
-            fulfillment_status = fake.random_int(min = 0, max=1)
+            fulfillment_status = fake.pybool()
             writer.writerow([id, uid, pid, time_purchased, fulfillment_status])
         print(f'{num_purchases} generated')
     return
@@ -94,7 +95,7 @@ def gen_carts(num_users, available_pids):
             sid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids)
             quantity = fake.random_int(min=1)
-            unit_price = fake.pyfloat(min_value=0.01)
+            unit_price = fake.pyfloat(positive=True)
             writer.writerow([id, sid, pid, quantity, unit_price])
         print(f'{num_users} generated')
     return
