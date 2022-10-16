@@ -6,6 +6,8 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
+from .models.cart import Cart
+
 
 
 from flask import Blueprint
@@ -72,3 +74,14 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+@bp.route('/carts')
+def carts():
+    # get all available products for sale:
+    #uid=keyboard input field
+    products = Cart.get(1)
+    # find the products current user has bought:
+    # render the page by adding information to the index.html file
+    return render_template('cart.html',
+                           printprods = products)
+

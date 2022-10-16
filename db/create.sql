@@ -35,10 +35,9 @@ CREATE TABLE Feedback (
    rating INT NOT NULL
 );
 
-CREATE TABLE Cart (
+CREATE TABLE Carts (
     uid INT NOT NULL REFERENCES Users(id),
     pid INT NOT NULL REFERENCES Products(id),
-    sid INT NOT NULL REFERENCES Users(id),
     quantity INT NOT NULL,
     u_price FLOAT NOT NULL
 );
