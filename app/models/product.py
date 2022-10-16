@@ -34,8 +34,13 @@ WHERE available = :available
     def get_top_K_frequent(available=True, k):
         rows = app.db.execute('''
 SELECT id, name, description, price, available
-FROM Products
-WHERE available = :available
+FROM
+	SELECT id, name, description, price, available, Count(A) count1
+	FROM Products 
+	GROUP BY id
+    WHERE available = :available
+ORDER BY count1 DESC
+LIMIT :k
 ''',
                               available=available)
         return [Product(*row) for row in rows]
