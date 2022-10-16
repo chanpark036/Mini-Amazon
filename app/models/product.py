@@ -1,12 +1,13 @@
 from flask import current_app as app
-#hi
+
 
 class Product:
-    def __init__(self, id, name, price, available):
+    def __init__(self, id, name, description, price, available):
         self.id = id
         self.name = name
         self.price = price
         self.available = available
+        self.description = description
 
     @staticmethod
     def get(id):
@@ -21,7 +22,18 @@ WHERE id = :id
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-SELECT id, name, price, available
+SELECT id, name, description, price, available
+FROM Products
+WHERE available = :available
+''',
+                              available=available)
+        return [Product(*row) for row in rows]
+
+
+    @staticmethod
+    def get_top_K_frequent(available=True, k):
+        rows = app.db.execute('''
+SELECT id, name, description, price, available
 FROM Products
 WHERE available = :available
 ''',
