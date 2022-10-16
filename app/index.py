@@ -23,3 +23,4 @@ def index():
     return render_template('index.html',
                            avail_products=products,
                            purchase_history=purchases)
+

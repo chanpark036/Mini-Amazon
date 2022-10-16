@@ -15,7 +15,7 @@ CREATE TABLE Products (
    name VARCHAR(255) UNIQUE NOT NULL,
    description VARCHAR(1024),
    price DECIMAL(12,2) NOT NULL,
-   available VARCHAR(5)
+   available BOOLEAN DEFAULT FALSE
 );
  
 CREATE TABLE Purchases (
@@ -40,5 +40,5 @@ CREATE TABLE Cart (
     pid INT NOT NULL REFERENCES Products(id),
     sid INT NOT NULL REFERENCES Users(id),
     quantity INT NOT NULL,
-    u_price FLOAT NOT NULL,
+    u_price FLOAT NOT NULL
 );
