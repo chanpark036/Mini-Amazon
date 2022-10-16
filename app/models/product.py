@@ -23,7 +23,7 @@ WHERE id = :id
         rows = app.db.execute('''
 SELECT id, name, price, available
 FROM Products
-WHERE available = :available
+WHERE available = CAST(:available AS text)
 ''',
                               available=available)
         return [Product(*row) for row in rows]
