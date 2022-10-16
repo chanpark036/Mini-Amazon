@@ -6,7 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
-
+from .models.purchase import Purchase
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -72,3 +72,9 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+@bp.route('/searchpurchases', methods=['GET', 'POST'])
+def user_purchases():
+    purchases = Purchase.get_all_pids(1)
+    return render_template('user_purchases.html', 
+                            purchase_history=purchases)

@@ -7,7 +7,7 @@ CREATE TABLE Users (
    password VARCHAR(255) NOT NULL,
    firstname VARCHAR(255) NOT NULL,
    lastname VARCHAR(255) NOT NULL,
-   isSeller BOOLEAN DEFAULT FALSE
+   seller BOOLEAN DEFAULT FALSE
 );
  
 CREATE TABLE Products (
