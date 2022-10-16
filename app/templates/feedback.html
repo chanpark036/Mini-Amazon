@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+
+<h2>Reviews:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Review ID</th>
+      <th scope="col">User ID</th>
+      <th scope="col">Review</th>
+      <th scope="col">Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for feedback in user_feedback%}
+      <tr>
+        <th scope="row">{{feedback.id}}</th>
+        <td>{{feedback.uid}}</td>
+        <td>{{feedback.review}}</td>
+        <td>{{feedback.rating}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

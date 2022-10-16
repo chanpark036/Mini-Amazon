@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
+from .models.feedback import Feedback
 
 
 from flask import Blueprint
@@ -72,3 +73,18 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+
+@bp.route('/feedback')
+def feedback():
+    # get all available feedback for a user:
+    feedback = Feedback.get_all()
+    # # find the products current user has bought:
+    # if current_user.is_authenticated:
+    #     purchases = Purchase.get_all_by_uid_since(
+    #         current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+    # else:
+    #     purchases = None
+    # # render the page by adding information to the index.html file
+    return render_template('feedback.html',
+                           user_feedback=feedback)

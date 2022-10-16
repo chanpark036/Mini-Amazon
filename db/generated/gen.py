@@ -70,7 +70,7 @@ def gen_purchases(num_purchases, available_pids):
     return
 
 def gen_reviews(num_reviews, available_pids):
-    with open('Reviews.csv', 'w') as f:
+    with open('Feedback.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Reviews...', end=' ', flush=True)
         for id in range(num_reviews):

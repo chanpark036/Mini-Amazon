@@ -1,0 +1,24 @@
+from flask import render_template
+from flask_login import current_user
+import datetime
+
+from .models.product import Product
+from .models.feedback import Feedback
+
+from flask import Blueprint
+bp = Blueprint('feedback', __name__)
+
+
+# @bp.route('/feedback')
+# def feedback():
+#     # get all available feedback for a user:
+#     feedback = Feedback.get(3)
+#     # # find the products current user has bought:
+#     # if current_user.is_authenticated:
+#     #     purchases = Purchase.get_all_by_uid_since(
+#     #         current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
+#     # else:
+#     #     purchases = None
+#     # # render the page by adding information to the index.html file
+#     return render_template('feedback.html',
+#                            user_feedback=feedback)
