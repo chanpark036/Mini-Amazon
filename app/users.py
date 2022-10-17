@@ -72,3 +72,15 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
+
+
+from .models.inventory import Inventory
+@bp.route('/inventory/<seller_id>', methods=['GET', 'POST'])
+def inventory(seller_id=0):
+    #seller_id = 0
+    inv = Inventory.get(seller_id)
+    return render_template('inventory.html',
+                            sid = seller_id,
+                           inventory_products=inv)
+
+

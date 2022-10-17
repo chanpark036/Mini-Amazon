@@ -100,9 +100,32 @@ def gen_carts(num_users, available_pids):
         print(f'{num_users} generated')
     return
 
+def gen_sellers( available_pids):
+    sellers = []
+    with open('Users.csv','r') as f:
+        reader = csv.reader(f,delimiter = ',')
+        for row in reader:
+            if row[-1] == 'True':
+                sellers.append(row[0])
+
+    with open('Sellers.csv', 'w') as f:
+        writer = get_csv_writer(f)
+        print('Inventories...', end=' ', flush=True)
+        for sid in sellers:
+            sid = int(sid)
+            if sid % 10 == 0:
+                print(f'{sid}', end=' ', flush=True)
+            pid = fake.random_element(elements=available_pids)
+            quantity = fake.random_int(min=1)
+            unit_price = fake.pyfloat(positive=True)
+            writer.writerow([sid, pid, quantity, unit_price])
+        print(f'{len(sellers)} generated')
+    return
+
 
 gen_users(num_users)
 available_pids = gen_products(num_products)
 gen_purchases(num_purchases, available_pids)
 gen_reviews(num_reviews, available_pids)
 gen_carts(num_users, available_pids)
+gen_sellers(available_pids)
