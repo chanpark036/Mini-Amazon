@@ -7,7 +7,7 @@ CREATE TABLE Users (
    password VARCHAR(255) NOT NULL,
    firstname VARCHAR(255) NOT NULL,
    lastname VARCHAR(255) NOT NULL,
-   isSeller BOOLEAN DEFAULT FALSE
+   seller BOOLEAN DEFAULT FALSE
 );
  
 CREATE TABLE Products (
@@ -35,10 +35,16 @@ CREATE TABLE Feedback (
    rating INT NOT NULL
 );
 
-CREATE TABLE Cart (
+CREATE TABLE Carts (
     uid INT NOT NULL REFERENCES Users(id),
     pid INT NOT NULL REFERENCES Products(id),
-    sid INT NOT NULL REFERENCES Users(id),
     quantity INT NOT NULL,
     u_price FLOAT NOT NULL
+);
+
+CREATE TABLE Inventory(
+   sid INT NOT NULL REFERENCES Users(id),
+   pid INT NOT NULL REFERENCES Products(id),
+   quantity INT NOT NULL,
+   u_price FLOAT NOT NULL  
 );
