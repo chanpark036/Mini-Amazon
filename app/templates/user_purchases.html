@@ -20,14 +20,16 @@
       <th scope="col">Purchase ID</th>
       <th scope="col">Product Name</th>
       <th scope="col">Time Purchased</th>
+      <th scope="col">Fulfillment Status</th>
     </tr>
   </thead>
   <tbody>
     {% for purchase in purchase_history%}
       <tr>
         <th scope="row">{{purchase.id}}</th>
-        <td>{{purchase.pid}}</td>
+        <td>{{purchase.name}}</td>
         <td>{{purchase.time_purchased}}</td>
+        <td>{{purchase.fulfillment_status}}</td>
       </tr>
     {% endfor %}
   </tbody>
