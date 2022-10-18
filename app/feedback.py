@@ -1,6 +1,10 @@
-from flask import render_template
-from flask_login import current_user
 import datetime
+from flask import render_template, redirect, url_for, flash, request
+from werkzeug.urls import url_parse
+from flask_login import login_user, logout_user, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.product import Product
 from .models.feedback import Feedback
@@ -9,16 +13,16 @@ from flask import Blueprint
 bp = Blueprint('feedback', __name__)
 
 
-# @bp.route('/feedback')
-# def feedback():
-#     # get all available feedback for a user:
-#     feedback = Feedback.get(3)
-#     # # find the products current user has bought:
-#     # if current_user.is_authenticated:
-#     #     purchases = Purchase.get_all_by_uid_since(
-#     #         current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
-#     # else:
-#     #     purchases = None
-#     # # render the page by adding information to the index.html file
-#     return render_template('feedback.html',
-#                            user_feedback=feedback)
+class FeedbackSearch(FlaskForm):
+    user_id = IntegerField('User id')
+    search = SubmitField('Search')
+
+
+@bp.route('/feedback', methods=['GET', 'POST'])
+def feedback():
+    form = FeedbackSearch()
+    user_id = form.user_id.data
+    feedback = Feedback.get_recent_k(user_id, 5)
+
+    return render_template('feedback.html',
+                           user_feedback=feedback, form = form, uid = user_id)

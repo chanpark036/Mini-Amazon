@@ -6,7 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Integ
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
-from .models.feedback import Feedback
+
 
 
 from flask import Blueprint
@@ -75,16 +75,3 @@ def logout():
     return redirect(url_for('index.index'))
 
 
-class FeedbackSearch(FlaskForm):
-    user_id = IntegerField('User id')
-    search = SubmitField('Search')
-
-
-@bp.route('/feedback', methods=['GET', 'POST'])
-def feedback():
-    form = FeedbackSearch()
-    user_id = form.user_id.data
-    feedback = Feedback.get_recent_k(user_id, 5)
-
-    return render_template('feedback.html',
-                           user_feedback=feedback, form = form, uid = user_id)
