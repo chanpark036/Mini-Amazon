@@ -52,4 +52,8 @@ ORDER BY submitted_timestamp DESC
 ''',
                               uid=uid,
                               k=k)
-        return [Feedback(*row) for row in rows in range(k)]
+        if (len(rows) >= 5):
+            return [Feedback(rows[row]) for row in range(k)]
+        else :
+            return [Feedback(*row) for row in rows]
+        

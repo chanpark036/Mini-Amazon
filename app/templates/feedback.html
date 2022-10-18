@@ -3,9 +3,16 @@
 {% block content %}
 
 <br><br>
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.user_id.label }}<br/>
+    {{ form.user_id(size=32) }}<br/>
+  </p>
+  {{ form.search(class_="btn btn-black") }}
+</form>
 
-
-<h2>Reviews:</h2>
+<h2>Reviews of User {{uid}}:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
