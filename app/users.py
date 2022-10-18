@@ -7,7 +7,6 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
 
-
 from flask import Blueprint
 bp = Blueprint('users', __name__)
 
@@ -72,7 +71,3 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
-
-
-
-
