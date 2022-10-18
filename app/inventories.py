@@ -18,13 +18,17 @@ class InventorySearch(FlaskForm):
 
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():
-    #seller_id = 0
+    available = True
     form = InventorySearch()
     seller_id = form.inventory_id.data
+    if not seller_id:
+        seller_id = 0
     inv = Inventory.get(seller_id)
+    if len(inv) == 0:
+        available = False
     return render_template('inventory.html',
                             sid = seller_id,
-                           inventory_products=inv, form = form)
+                           inventory_products=inv, form = form, available = available)
     
 
 

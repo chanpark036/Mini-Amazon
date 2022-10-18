@@ -115,10 +115,11 @@ def gen_sellers( available_pids):
             sid = int(sid)
             if sid % 10 == 0:
                 print(f'{sid}', end=' ', flush=True)
-            pid = fake.random_element(elements=available_pids)
-            quantity = fake.random_int(min=1)
-            unit_price = fake.pyfloat(positive=True)
-            writer.writerow([sid, pid, quantity, unit_price])
+            for i in range(fake.random_int(min=1,max=10)):
+                pid = fake.random_element(elements=available_pids)
+                quantity = fake.random_int(min=1)
+                unit_price = fake.pyfloat(positive=True)
+                writer.writerow([sid, pid, quantity, unit_price])
         print(f'{len(sellers)} generated')
     return
 
