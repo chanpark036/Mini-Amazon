@@ -73,8 +73,23 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
 
-@bp.route('/searchpurchases', methods=['GET', 'POST'])
+
+# class SearchPurchases(FlaskForm):
+#     product_id = IntegerField('Product id')
+#     search = SubmitField('Search')
+
+@bp.route('/searchpurchases')
 def user_purchases():
-    purchases = Purchase.get_all_pids(1)
+    purchases = Purchase.get_all_pids(0)
     return render_template('user_purchases.html', 
                             purchase_history=purchases)
+    
+# @bp.route('/inventory', methods=['GET', 'POST'])
+# def inventory():
+#     #seller_id = 0
+#     form = InventorySearch()
+#     seller_id = form.inventory_id.data
+#     inv = Inventory.get(seller_id)
+#     return render_template('inventory.html',
+#                             sid = seller_id,
+#                            inventory_products=inv, form = form)

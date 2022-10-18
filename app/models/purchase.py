@@ -39,4 +39,4 @@ ORDER BY time_purchased DESC
                               WHERE uid = :uid
                               """,
                               uid = uid)
-        return [Purchase(*row) for row in rows] if rows else None
+        return [Purchase(*row) for row in rows]
