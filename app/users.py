@@ -75,20 +75,4 @@ def logout():
 
 
 
-from .models.inventory import Inventory
-
-class InventorySearch(FlaskForm):
-    inventory_id = IntegerField('Inventory id')
-    search = SubmitField('Search')
-
-@bp.route('/inventory', methods=['GET', 'POST'])
-def inventory():
-    #seller_id = 0
-    form = InventorySearch()
-    seller_id = form.inventory_id.data
-    inv = Inventory.get(seller_id)
-    return render_template('inventory.html',
-                            sid = seller_id,
-                           inventory_products=inv, form = form)
-
 
