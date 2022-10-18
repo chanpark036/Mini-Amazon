@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
@@ -74,22 +74,15 @@ def logout():
     return redirect(url_for('index.index'))
 
 
-# class SearchPurchases(FlaskForm):
-#     product_id = IntegerField('Product id')
-#     search = SubmitField('Search')
+class UserPurchasesSearch(FlaskForm):
+    user_id = IntegerField('User id')
+    search = SubmitField('Search')
 
-@bp.route('/searchpurchases')
+@bp.route('/searchuserpurchases', methods=['GET', 'POST'])
 def user_purchases():
-    purchases = Purchase.get_all_pids(0)
+    form = UserPurchasesSearch()
+    uid = form.user_id.data
+    purchases = Purchase.get_all_user_purchases(uid)
     return render_template('user_purchases.html', 
-                            purchase_history=purchases)
-    
-# @bp.route('/inventory', methods=['GET', 'POST'])
-# def inventory():
-#     #seller_id = 0
-#     form = InventorySearch()
-#     seller_id = form.inventory_id.data
-#     inv = Inventory.get(seller_id)
-#     return render_template('inventory.html',
-#                             sid = seller_id,
-#                            inventory_products=inv, form = form)
+                            purchase_history=purchases,
+                            form=form)

@@ -32,7 +32,7 @@ ORDER BY time_purchased DESC
         return [Purchase(*row) for row in rows]
 
 # API: Given a user id, find all purchases of that user.
-    def get_all_pids(uid):
+    def get_all_user_purchases(uid):
         rows = app.db.execute("""
                               SELECT id, uid, pid, time_purchased
                               FROM Purchases
