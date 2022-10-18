@@ -1,6 +1,5 @@
 from flask import current_app as app
 
-
 class Product:
     def __init__(self, id, name, description, price, available):
         self.id = id
@@ -28,3 +27,14 @@ WHERE available = :available
 ''',
                               available=available)
         return [Product(*row) for row in rows]
+
+
+    @staticmethod
+    def get_top_K_expensive(available=True, k = 1):
+        rows = app.db.execute('''
+SELECT id, name, description, price, available
+FROM Products
+ORDER BY price DESC
+''',
+                              available=available)
+        return [Product(*row) for row in rows[:k]]
