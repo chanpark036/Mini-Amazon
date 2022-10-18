@@ -92,11 +92,10 @@ def gen_carts(num_users, available_pids):
         for id in range(num_users):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
-            sid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids)
             quantity = fake.random_int(min=1)
             unit_price = fake.pyfloat(positive=True)
-            writer.writerow([id, sid, pid, quantity, unit_price])
+            writer.writerow([id, pid, quantity, unit_price])
         print(f'{num_users} generated')
     return
 

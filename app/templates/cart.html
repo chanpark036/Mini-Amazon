@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.uid.label }}<br/>
+    {{ form.uid(size=32) }}<br/>
+  </p>
+  {{ form.search(class_="btn btn-black") }}
+</form>
+
+
+<h2>Items in cart:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope = "col">User ID</th>
+      <th scope="col">Product Name</th>
+      <th scope = "col">Purchase Quantity</th>
+      <th scope = "col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in printprods%}
+      <tr>
+        <td>{{purchase.uid}}</td>
+        <td>{{purchase.name}}</td>
+        <td>{{purchase.quantity}}</td>
+        <td>{{purchase.u_price}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br><br>
+
+{% endblock %}
