@@ -6,16 +6,17 @@ from .. import login
 
 
 class User(UserMixin):
-    def __init__(self, id, email, firstname, lastname):
+    def __init__(self, id, email, firstname, lastname, seller):
         self.id = id
         self.email = email
         self.firstname = firstname
         self.lastname = lastname
+        self.seller = seller
 
     @staticmethod
     def get_by_auth(email, password):
         rows = app.db.execute("""
-SELECT password, id, email, firstname, lastname
+SELECT password, id, email, firstname, lastname, seller
 FROM Users
 WHERE email = :email
 """,
@@ -39,16 +40,17 @@ WHERE email = :email
         return len(rows) > 0
 
     @staticmethod
-    def register(email, password, firstname, lastname):
+    def register(email, password, firstname, lastname, seller):
         try:
             rows = app.db.execute("""
-INSERT INTO Users(email, password, firstname, lastname)
-VALUES(:email, :password, :firstname, :lastname)
+INSERT INTO Users(email, password, firstname, lastname, seller)
+VALUES(:email, :password, :firstname, :lastname. :seller)
 RETURNING id
 """,
                                   email=email,
                                   password=generate_password_hash(password),
-                                  firstname=firstname, lastname=lastname)
+                                  firstname=firstname, lastname=lastname,
+                                  seller=seller)
             id = rows[0][0]
             return User.get(id)
         except Exception as e:
@@ -61,7 +63,7 @@ RETURNING id
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-SELECT id, email, firstname, lastname
+SELECT id, email, firstname, lastname, is_seller
 FROM Users
 WHERE id = :id
 """,
