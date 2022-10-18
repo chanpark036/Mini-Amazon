@@ -19,3 +19,5 @@ SELECT pg_catalog.setval('public.purchases_id_seq',
 SELECT pg_catalog.setval('public.feedback_id_seq',
                          (SELECT MAX(id)+1 FROM Feedback),
                          false);
+                         
+\COPY Inventory FROM 'Sellers.csv' WITH DELIMITER ',' NULL '' CSV
