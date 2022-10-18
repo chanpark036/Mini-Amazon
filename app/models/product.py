@@ -1,6 +1,5 @@
 from flask import current_app as app
 
-
 class Product:
     def __init__(self, id, name, description, price, available):
         self.id = id
@@ -34,13 +33,8 @@ WHERE available = :available
     def get_top_K_frequent(available=True, k = 1):
         rows = app.db.execute('''
 SELECT id, name, description, price, available
-FROM
-	SELECT id, name, description, price, available, Count(A) count1
-	FROM Products 
-	GROUP BY id
-    WHERE available = :available
-ORDER BY count1 DESC
-LIMIT :k
+FROM Products
+ORDER BY price DESC
 ''',
                               available=available)
-        return [Product(*row) for row in rows]
+        return [Product(*row) for row in rows[:k]]
