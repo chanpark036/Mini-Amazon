@@ -10,6 +10,7 @@ from .models.inventory import Inventory
 
 from flask import Blueprint
 
+bp = Blueprint('inventories', __name__)
 
 class InventorySearch(FlaskForm):
     inventory_id = IntegerField('Inventory id')
