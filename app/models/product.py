@@ -30,7 +30,7 @@ WHERE available = :available
 
 
     @staticmethod
-    def get_top_K_frequent(available=True, k = 1):
+    def get_top_K_expensive(available=True, k = 1):
         rows = app.db.execute('''
 SELECT id, name, description, price, available
 FROM Products

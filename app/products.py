@@ -23,7 +23,7 @@ def index():
     form = ProductsKInput()
 
     k = form.value.data
-    products = Product.get_top_K_frequent(True, k)
+    products = Product.get_top_K_expensive(True, k)
      
     return render_template('products.html',
                            avail_products=products, form = form)
