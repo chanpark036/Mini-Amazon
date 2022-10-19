@@ -20,6 +20,7 @@
       <th scope="col">User ID</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
+      <th scope="col">Time posted</th>
     </tr>
   </thead>
   <tbody>
@@ -29,6 +30,7 @@
         <td>{{feedback.uid}}</td>
         <td>{{feedback.review}}</td>
         <td>{{feedback.rating}}</td>
+        <td>{{feedback.submitted_timestamp}}</td>
       </tr>
     {% endfor %}
   </tbody>
