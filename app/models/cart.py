@@ -13,7 +13,7 @@ class Cart:
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
-SELECT Carts.uid as uid, Carts.pid as pid, Carts.quantity as quantity, Carts.u_price as price,
+SELECT Carts.uid as uid, Carts.pid as pid, Carts.quantity as quantity, Products.price as price,
 Products.name as name, Products.id as id
 FROM Carts, Products
 WHERE uid = :uid and Products.id = Carts.pid
