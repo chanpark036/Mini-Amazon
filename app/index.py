@@ -1,7 +1,6 @@
-from flask import render_template
+from flask import render_template, jsonify
 from flask_login import current_user
 import datetime
-
 from .models.product import Product
 from .models.purchase import Purchase
 
@@ -19,6 +18,16 @@ def index():
             current_user.id, datetime.datetime(1980, 9, 14, 0, 0, 0))
     else:
         purchases = None
+
+    # response_body = {
+    #     "products": avail_products,
+    #     "purchases":purchasehistory
+    # }
+    
+    # return {
+    #     "products": avail_products,
+    #     "purchases": purchasehistory
+    # }
     # render the page by adding information to the index.html file
     return render_template('index.html',
                            avail_products=products,
