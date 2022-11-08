@@ -56,4 +56,10 @@ ORDER BY submitted_timestamp DESC
             return [Feedback(*(rows[i])) for i in range(k)]
         else :
             return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def add_review(text, uid, ):
+        rows = app.db.execute('''
+INSERT INTO Feedback VALUES ()
+'''
         
