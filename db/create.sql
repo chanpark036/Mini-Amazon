@@ -7,7 +7,8 @@ CREATE TABLE Users (
    password VARCHAR(255) NOT NULL,
    firstname VARCHAR(255) NOT NULL,
    lastname VARCHAR(255) NOT NULL,
-   seller BOOLEAN DEFAULT FALSE
+   seller BOOLEAN DEFAULT FALSE,
+   balance FLOAT NOT NULL DEFAULT 0.00
 );
  
 CREATE TABLE Products (

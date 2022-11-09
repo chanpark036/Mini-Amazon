@@ -30,7 +30,8 @@ def gen_users(num_users):
             firstname = name_components[0]
             lastname = name_components[-1]
             is_seller = fake.pybool()
-            writer.writerow([uid, email, password, firstname, lastname, is_seller])
+            balance = fake.random_int(min=0)
+            writer.writerow([uid, email, password, firstname, lastname, is_seller, balance])
         print(f'{num_users} generated')
     return
 
