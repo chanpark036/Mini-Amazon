@@ -81,7 +81,8 @@ def logout():
 
 @bp.route('/account')
 def get_account_info():
-    user_id = User.get(current_user.id)
     if current_user.is_authenticated:
+        user_id = User.get(current_user.id)
         return render_template('user_info.html', 
                                user_id=user_id)
+    return redirect(url_for('users.login'))
