@@ -2,14 +2,15 @@
 
 {% block content %}
 
+{% if current_user.is_authenticated %}
+
 <h1>Your Account Information</h1>
 <h2>Email: {{user_id.email}} </h2>
 <h2>Name: {{user_id.firstname}} {{user_id.lastname}}</h2>
 <h2>Address: </h2>
 <h2>Balance: </h2>
 
-<!-- {% if current_user.is_authenticated %} -->
-<!-- {% endif %} -->
+{% endif %}
 
 
 {% endblock %}
