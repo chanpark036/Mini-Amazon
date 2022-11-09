@@ -44,7 +44,7 @@ WHERE email = :email
         try:
             rows = app.db.execute("""
 INSERT INTO Users(email, password, firstname, lastname, seller)
-VALUES(:email, :password, :firstname, :lastname. :seller)
+VALUES(:email, :password, :firstname, :lastname, :seller)
 RETURNING id
 """,
                                   email=email,
@@ -63,7 +63,7 @@ RETURNING id
     @login.user_loader
     def get(id):
         rows = app.db.execute("""
-SELECT id, email, firstname, lastname, is_seller
+SELECT id, email, firstname, lastname, seller
 FROM Users
 WHERE id = :id
 """,
