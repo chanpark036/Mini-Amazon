@@ -29,6 +29,11 @@ class PostFeedback(FlaskForm):
     seller_id = IntegerField('Seller ID')
     submit = SubmitField('Submit')
 
+class UpdateFeedback(FlaskForm):
+    review_id = IntegerField('Review ID')
+    review = TextAreaField('New Text')
+    submit = SubmitField('Submit')
+
 
 @bp.route('/feedback', methods=['GET', 'POST'])
 def feedback():
@@ -49,3 +54,10 @@ def review():
                          form.rating.data):
         flash('Thanks for writing a review!')
     return render_template('review.html', title='Review', form=form)
+
+@bp.route('/update-review', methods=['GET', 'POST'])
+def update_review():
+    form = UpdateFeedback()
+    Feedback.update_review(form.review_id.data,
+                         form.review.data)
+    return render_template('update-review.html', title='Update_Review', form=form)

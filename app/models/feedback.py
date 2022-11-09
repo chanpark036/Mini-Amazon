@@ -75,13 +75,13 @@ ORDER BY submitted_timestamp DESC
             return None
     
     @staticmethod
-    def update_review(id, text):
+    def update_review(id, review):
         rows = app.db.execute('''
 UPDATE Feedback
-SET review = text
+SET review = review
 WHERE id=id
 ''',
-                              text=text,
+                              review=review,
                               id=id)
     
     @staticmethod
