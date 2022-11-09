@@ -66,8 +66,6 @@ def register():
                          form.isseller.data):
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
-        else:
-            print('failed')
     return render_template('register.html', title='Register', form=form)
 
 
@@ -80,4 +78,6 @@ def logout():
 
 @bp.route('/account')
 def get_account_info():
-    return render_template('user_info.html')
+    user_id = User.get(current_user.id)
+    if current_user.is_authenticated:
+        return render_template('user_info.html', user_id=user_id)

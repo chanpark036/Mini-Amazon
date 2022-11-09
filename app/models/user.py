@@ -69,3 +69,12 @@ WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+    
+    
+    @staticmethod
+    def get_user(email):
+        rows = app.db.execute("""
+SELECT id, email, firstname, lastname, seller
+FROM Users
+WHERE email = :email                              
+""")
