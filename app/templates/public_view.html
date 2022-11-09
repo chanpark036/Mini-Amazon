@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.user_id.label }}<br/>
+    {{ form.user_id(size=32) }}<br/>
+  </p>
+  {{ form.search(class_="btn btn-black") }}
+</form>
+
+<h1>User Information</h1>
+<h2>Account ID: {{user_id.id}} </h2>
+<h2>Name: {{user_id.firstname}} {{user_id.lastname}}</h2>
+
+{% if current_user.seller %}
+    <h2>Email: {{user_id.email}} </h2>
+    <h2>Address: {{user_id.address}} </h2>
+    <h2>Reviews: </h2>
+{% endif %}
+
+{% endblock %}

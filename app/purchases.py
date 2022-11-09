@@ -22,3 +22,9 @@ def user_purchases():
     return render_template('user_purchases.html', 
                             purchase_history=purchases,
                             form=form)
+    
+@bp.route('/purchasehistory')
+def purchase_history():
+    purchases = Purchase.get_all_user_purchases(current_user.id)
+    return render_template('purchase_history.html', 
+                            purchase_history=purchases)

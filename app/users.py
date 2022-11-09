@@ -86,3 +86,17 @@ def get_account_info():
         return render_template('user_info.html', 
                                user_id=user_id)
     return redirect(url_for('users.login'))
+
+
+class UserPublicView(FlaskForm):
+    user_id = IntegerField('User id')
+    search = SubmitField('Search')
+    
+@bp.route('/userpublicview', methods=['GET', 'POST'])
+def get_user_public_view():
+    form = UserPublicView()
+    user_id = form.user_id.data
+    return render_template('public_view.html',
+                           user_id=user_id,
+                           form=form)
+# user public view page not displaying data after submitting form
