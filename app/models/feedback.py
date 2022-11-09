@@ -58,8 +58,43 @@ ORDER BY submitted_timestamp DESC
             return [Feedback(*row) for row in rows]
 
     @staticmethod
-    def add_review(text, uid, ):
+    def add_review(uid, pid, sid, submitted_timestamp, review, rating):
         rows = app.db.execute('''
-INSERT INTO Feedback VALUES ()
-'''
+INSERT INTO Feedback VALUES (uid, pid, sid, submitted_timestamp, review, rating)
+''',
+                            uid=uid,
+                            pid=pid,
+                            sid=sid,
+                            submitted_timestamp=submitted_timestamp,
+                            review=review,
+                            rating=rating)
+    
+    @staticmethod
+    def update_review(id, text):
+        rows = app.db.execute('''
+UPDATE Feedback
+SET review = text
+WHERE id=id
+''',
+                              text=text,
+                              id=id)
+    
+    @staticmethod
+    def update_rating(id, rating):
+        rows = app.db.execute('''
+UPDATE Feedback
+SET rating = rating
+WHERE id=id
+''',
+                              rating=rating,
+                              id=id)
+    
+    @staticmethod
+    def delete_review(id):
+       rows = app.db.execute('''
+DELETE FROM Feedback
+WHERE id=id
+''',
+                              id=id) 
+
         

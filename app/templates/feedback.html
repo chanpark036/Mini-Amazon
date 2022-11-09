@@ -3,23 +3,18 @@
 {% block content %}
 
 <br><br>
-<search_form action="" method="post" novalidate>
+<form action="" method="post" novalidate>
   {{ form.hidden_tag() }}
   <p>
     {{ form.user_id.label }}<br/>
     {{ form.user_id(size=32) }}<br/>
   </p>
   {{ form.search(class_="btn btn-black") }}
-</search_form>
+</form>
 
-<post_form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.user_id.label }}<br/>
-    {{ form.user_id(size=32) }}<br/>
-  </p>
-  {{ form.search(class_="btn btn-black") }}
-</post_form>
+
+
+<a href="{{ url_for('feedback.review') }}" type="button" class="btn btn-light">Write a Review</a>
 
 <h2>Reviews of User {{uid}}:</h2>
 <table class='table table-hover table-bordered container'>

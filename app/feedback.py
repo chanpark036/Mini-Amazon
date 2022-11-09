@@ -5,12 +5,16 @@ from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from faker import Faker
 
 from .models.product import Product
 from .models.feedback import Feedback
 
 from flask import Blueprint
 bp = Blueprint('feedback', __name__)
+
+Faker.seed(0)
+fake = Faker()
 
 
 class FeedbackSearch(FlaskForm):
@@ -23,14 +27,30 @@ class PostFeedback(FlaskForm):
     rating = IntegerField('Rating')
     product_id = IntegerField('Product ID')
     seller_id = IntegerField('Seller ID')
+    submit = SubmitField('Submit')
 
 
 @bp.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-    search_form = FeedbackSearch()
-    post_form = PostFeedback()
+    form = FeedbackSearch()
     user_id = form.user_id.data
     feedback = Feedback.get_recent_k(user_id, 5)
 
     return render_template('feedback.html',
-                           user_feedback=feedback, search_form = search_form, post_form = post_form, uid = user_id)
+                           user_feedback=feedback, form = form, uid = user_id)
+
+@bp.route('/review', methods=['GET', 'POST'])
+def review():
+    form = PostFeedback()
+    time = datetime.datetime.now()
+    print(current_user)
+    user = 3
+    Feedback.add_review(user,
+                         form.product_id.data,
+                         form.seller_id.data,
+                         time,
+                         form.review.data,
+                         form.rating.data)
+    flash('Thank you for submitting a review!')
+    return redirect(url_for('feedback.feedback'))
+    return render_template('review.html', title='Review', form=form)
