@@ -72,3 +72,8 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
 
+
+
+@bp.route('/account')
+def get_account_info():
+    return render_template('user_info.html')
