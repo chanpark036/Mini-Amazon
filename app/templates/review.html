@@ -7,27 +7,6 @@
 <form action="" method="post">
   {{ form.hidden_tag() }}
   <p>
-    {{ form.user_id.label }}<br/>
-    {{ form.user_id(size=32) }}<br/>
-    {% for error in form.user_id.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.product_id.label }}<br/>
-    {{ form.product_id(size=32) }}<br/>
-    {% for error in form.product_id.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
-    {{ form.seller_id.label }} <br/>
-    {{ form.seller_id(size=64) }}<br/>
-    {% for error in form.seller_id.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>
     {{ form.review.label }}<br/>
     {{ form.review(size=32) }}<br/>
     {% for error in form.review.errors %}

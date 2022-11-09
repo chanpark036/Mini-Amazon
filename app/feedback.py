@@ -43,14 +43,9 @@ def feedback():
 def review():
     form = PostFeedback()
     time = datetime.datetime.now()
-    print(current_user)
     user = 3
-    Feedback.add_review(user,
-                         form.product_id.data,
-                         form.seller_id.data,
-                         time,
+    if Feedback.add_review( user,
                          form.review.data,
-                         form.rating.data)
-    flash('Thank you for submitting a review!')
-    return redirect(url_for('feedback.feedback'))
+                         form.rating.data):
+        flash('Thanks for writing a review!')
     return render_template('review.html', title='Review', form=form)
