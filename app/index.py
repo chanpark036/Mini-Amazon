@@ -1,6 +1,8 @@
 from flask import render_template, jsonify
 from flask_login import current_user
 import datetime
+import json
+from decimal import *
 from .models.product import Product
 from .models.purchase import Purchase
 
@@ -8,7 +10,16 @@ from flask import Blueprint
 bp = Blueprint('index', __name__)
 
 
-@bp.route('/')
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        # 👇️ if passed in object is instance of Decimal
+        # convert it to a string
+        if isinstance(obj, Decimal):
+            return str(obj)
+        # 👇️ otherwise use the default behavior
+        return json.JSONEncoder.default(self, obj)
+
+@bp.route('/index')
 def index():
     # get all available products for sale:
     products = Product.get_all(True)
@@ -29,7 +40,5 @@ def index():
     #     "purchases": purchasehistory
     # }
     # render the page by adding information to the index.html file
-    return render_template('index.html',
-                           avail_products=products,
-                           purchase_history=purchases)
+    return json.dumps(list(map(lambda x: x.__dict__,products)),cls=DecimalEncoder)
 
