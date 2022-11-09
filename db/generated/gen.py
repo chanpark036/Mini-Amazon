@@ -31,7 +31,8 @@ def gen_users(num_users):
             lastname = name_components[-1]
             is_seller = fake.pybool()
             balance = fake.random_int(min=0)
-            writer.writerow([uid, email, password, firstname, lastname, is_seller, balance])
+            address = fake.sentence(nb_words=4)[:-1]
+            writer.writerow([uid, email, password, firstname, lastname, is_seller, balance, address])
         print(f'{num_users} generated')
     return
 
