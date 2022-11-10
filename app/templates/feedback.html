@@ -3,16 +3,14 @@
 {% block content %}
 
 <br><br>
-<form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.user_id.label }}<br/>
-    {{ form.user_id(size=32) }}<br/>
-  </p>
-  {{ form.search(class_="btn btn-black") }}
-</form>
 
-<h2>Reviews of User {{uid}}:</h2>
+
+
+<a href="{{ url_for('feedback.review_product') }}" type="button" class="btn btn-light">Write a Product Review</a>
+<a href="{{ url_for('feedback.review_seller') }}" type="button" class="btn btn-light">Write a Seller Review</a>
+
+
+<h2>Your Reviews:</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -20,7 +18,7 @@
       <th scope="col">User ID</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
-      <th scope="col">Time posted</th>
+      <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -28,9 +26,13 @@
       <tr>
         <th scope="row">{{feedback.id}}</th>
         <td>{{feedback.uid}}</td>
-        <td>{{feedback.review}}</td>
-        <td>{{feedback.rating}}</td>
-        <td>{{feedback.submitted_timestamp}}</td>
+        <td>{{feedback.review}}
+          <a href="{{ url_for('feedback.update_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
+        </td>
+        <td>{{feedback.rating}}
+          <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
+        </td>
+        <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>
       </tr>
     {% endfor %}
   </tbody>

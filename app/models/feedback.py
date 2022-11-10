@@ -56,4 +56,90 @@ ORDER BY submitted_timestamp DESC
             return [Feedback(*(rows[i])) for i in range(k)]
         else :
             return [Feedback(*row) for row in rows]
+    
+    @staticmethod
+    def get_all_by_uid(uid):
+        rows = app.db.execute('''
+SELECT id, uid, pid, submitted_timestamp, review, rating
+FROM Feedback
+WHERE uid = :uid
+ORDER BY submitted_timestamp DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def add_p_review(uid, pid, review, rating):
+        try:
+            rows = app.db.execute('''
+INSERT INTO Feedback(uid, pid, review, rating)
+VALUES(:uid, :pid, :review,:rating)
+RETURNING id
+''',
+                            uid=uid,
+                            pid=pid,
+                            review=review,
+                            rating=rating)
+            id = rows[0][0]
+            return feedback.get(id)
+        except Exception as e:
+            print(str(e))
+            return None
+    
+    @staticmethod
+    def add_s_review(uid, sid, review, rating):
+        try:
+            rows = app.db.execute('''
+INSERT INTO Feedback(uid, sid, review, rating)
+VALUES(:uid, :sid, :review,:rating)
+RETURNING id
+''',
+                            uid=uid,
+                            sid=sid,
+                            review=review,
+                            rating=rating)
+            id = rows[0][0]
+            return feedback.get(id)
+        except Exception as e:
+            print(str(e))
+            return None
+    
+    @staticmethod
+    def update_review(id, review):
+        rows = app.db.execute('''
+UPDATE Feedback
+SET review = :review
+WHERE id= :id
+''',
+                              review=review,
+                              id=id)
+    
+    @staticmethod
+    def update_rating(id, rating):
+        rows = app.db.execute('''
+UPDATE Feedback
+SET rating = :rating
+WHERE id= :id
+''',
+                              rating=rating,
+                              id=id)
+    
+    @staticmethod
+    def delete_review(id):
+       rows = app.db.execute('''
+DELETE FROM Feedback
+WHERE id= :id
+''',
+                              id=id) 
+
+    @staticmethod
+    def get(id):
+        rows = app.db.execute("""
+SELECT id, review, rating
+FROM Feedback
+WHERE id = :id
+""",
+                              id=id)
+        return Feedback(*(rows[0])) if rows else None
+
         

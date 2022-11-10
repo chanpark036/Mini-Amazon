@@ -64,9 +64,13 @@ def register():
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data,
+<<<<<<< HEAD
                          form.isseller.data,
                          0.0,
                          form.address.data):
+=======
+                         False):
+>>>>>>> origin/main
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
     return render_template('register.html', 
