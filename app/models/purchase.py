@@ -44,6 +44,7 @@ ORDER BY time_purchased DESC
                               purchases.fulfillment_status as fulfillment_status
                               FROM Purchases, Products
                               WHERE uid = :uid and Purchases.pid = Products.id
+                              ORDER BY time_purchased DESC
                               """,
                               uid = uid)
         return [Purchase(*row) for row in rows]

@@ -45,6 +45,8 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(),
                                        EqualTo('password')])
+    isseller = BooleanField('Are you a seller?', default = False)
+    address = StringField('Address', validators=[DataRequired()])
     submit = SubmitField('Register')
 
     def validate_email(self, email):
@@ -62,10 +64,18 @@ def register():
                          form.password.data,
                          form.firstname.data,
                          form.lastname.data,
+<<<<<<< HEAD
+                         form.isseller.data,
+                         0.0,
+                         form.address.data):
+=======
                          False):
+>>>>>>> origin/main
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', 
+                           title='Register', 
+                           form=form)
 
 
 @bp.route('/logout')
@@ -73,3 +83,24 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
 
+@bp.route('/account')
+def get_account_info():
+    if current_user.is_authenticated:
+        user_id = User.get(current_user.id)
+        return render_template('user_info.html', 
+                               user_id=user_id)
+    return redirect(url_for('users.login'))
+
+
+class UserPublicView(FlaskForm):
+    user_id = IntegerField('User id')
+    search = SubmitField('Search')
+    
+@bp.route('/userpublicview', methods=['GET', 'POST'])
+def get_user_public_view():
+    form = UserPublicView()
+    user_id = form.user_id.data
+    return render_template('public_view.html',
+                           user_id=user_id,
+                           form=form)
+# user public view page not displaying data after submitting form
