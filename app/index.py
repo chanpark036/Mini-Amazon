@@ -40,5 +40,7 @@ def index():
     #     "purchases": purchasehistory
     # }
     # render the page by adding information to the index.html file
-    return json.dumps(list(map(lambda x: x.__dict__,products)),cls=DecimalEncoder)
+    return render_template('index.html',
+                            product=avail_products,purchases=purchasehistory)
+    #json.dumps(list(map(lambda x: x.__dict__,products)),cls=DecimalEncoder)
 
