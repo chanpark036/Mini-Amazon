@@ -78,8 +78,8 @@ ORDER BY submitted_timestamp DESC
     def update_review(id, review):
         rows = app.db.execute('''
 UPDATE Feedback
-SET review = review
-WHERE id=id
+SET review = :review
+WHERE id= :id
 ''',
                               review=review,
                               id=id)
@@ -88,8 +88,8 @@ WHERE id=id
     def update_rating(id, rating):
         rows = app.db.execute('''
 UPDATE Feedback
-SET rating = rating
-WHERE id=id
+SET rating = :rating
+WHERE id= :id
 ''',
                               rating=rating,
                               id=id)
@@ -98,7 +98,7 @@ WHERE id=id
     def delete_review(id):
        rows = app.db.execute('''
 DELETE FROM Feedback
-WHERE id=id
+WHERE id= :id
 ''',
                               id=id) 
 

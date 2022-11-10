@@ -47,7 +47,6 @@ def feedback():
 @bp.route('/review', methods=['GET', 'POST'])
 def review():
     form = PostFeedback()
-    time = datetime.datetime.now()
     user = 3
     if Feedback.add_review( user,
                          form.review.data,
