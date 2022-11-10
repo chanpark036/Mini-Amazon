@@ -78,6 +78,7 @@ def gen_reviews(num_reviews, available_pids):
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids)
+            sid = fake.random_int(min=0, max=num_users-1)
             time_submitted = fake.date_time()
             review = fake.sentence()
             rating = fake.random_int(min=1, max=5)
