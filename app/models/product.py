@@ -30,11 +30,37 @@ WHERE available = :available
 
 
     @staticmethod
-    def get_top_K_expensive(available=True, k = 1):
+    def get_top_K_expensive(available=True, k = 0):
         rows = app.db.execute('''
 SELECT id, name, description, price, available
 FROM Products
 ORDER BY price DESC
 ''',
                               available=available)
-        return [Product(*row) for row in rows[:k]]
+                              
+        if k == 0:
+            return []    
+        else:
+            return [Product(*row) for row in rows[:k]]
+        
+#     @staticmethod
+#     def filterByCategory(category):
+#         rows = app.db.execute('''
+# SELECT id, name, description, price, available
+# FROM Products
+# WHERE category = :category
+# ''',
+#                               available=True)
+#         return [Product(*row) for row in rows]
+
+
+# TODO: CHANGE THE QUERY from name to category
+    @staticmethod
+    def filterByCategory(name):
+        rows = app.db.execute('''
+SELECT id, name, description, price, available
+FROM Products
+WHERE name = :name
+''',
+                            name = name)
+        return [Product(*row) for row in rows]
