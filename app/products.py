@@ -31,10 +31,25 @@ def index():
         products = []
     else:
         products = Product.get_top_K_expensive(True, k)
-    
-    
-    
 
     return render_template('products.html',
                            avail_products=products, form = form)
+
+#   
+
+# class FilterProductCategory(FlaskForm):
+#     category = SubmitField('Enter Category')
+
+# @bp.route('/products', methods = ['GET', 'POST'])
+# def index():    
+
+
+#     form = FilterProductCategory()
+#     category = form.category.data
+    
+#     products = filterByCategory(category)
+    
+
+#     return render_template('products.html',
+#                            avail_products=products, form = form)
 

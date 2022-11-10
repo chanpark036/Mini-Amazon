@@ -43,4 +43,12 @@ ORDER BY price DESC
         else:
             return [Product(*row) for row in rows[:k]]
         
-        
+    @staticmethod
+    def filterByCategory(category):
+        rows = app.db.execute('''
+SELECT id, name, description, price, available
+FROM Products
+WHERE category = :category
+''',
+                              available=available)
+        return [Product(*row) for row in rows]
