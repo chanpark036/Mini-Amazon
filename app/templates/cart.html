@@ -3,13 +3,12 @@
 {% block content %}
 
 <br><br>
-<form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
+<form action ="{{ url_for('carts.carts')}}" method="post" novalidate>
   <p>
-    {{ form.uid.label }}<br/>
-    {{ form.uid(size=32) }}<br/>
+    {{ form1.uid.label }}<br/>
+    {{ form1.uid(size=32) }}<br/>
   </p>
-  {{ form.search(class_="btn btn-black") }}
+  {{ form1.search(class_="btn btn-black") }}
 </form>
 
 
@@ -17,23 +16,44 @@
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope = "col">User ID</th>
       <th scope="col">Product Name</th>
+      <th scope="col">Product ID</th>
       <th scope = "col">Purchase Quantity</th>
-      <th scope = "col">Price</th>
+      <th scope = "col">Unit Price</th>
+      <th scope = "col">Total Price</th>
     </tr>
   </thead>
   <tbody>
     {% for purchase in printprods%}
       <tr>
-        <td>{{purchase.uid}}</td>
         <td>{{purchase.name}}</td>
-        <td>{{purchase.quantity}}</td>
+        <td>{{purchase.pid}}</td>
+        <td>{{purchase.quantity}}</td> 
         <td>{{purchase.u_price}}</td>
+        <td>{{purchase.u_price*purchase.quantity}}</td>
+        
       </tr>
     {% endfor %}
   </tbody>
 </table>
+
+<h2>Update Items In Cart:</h2>
+<table>
+  <form action ="{{ url_for('carts.changeCart')}}" method="post" novalidate>
+    <p>
+      {{ form2.pid.label }}<br/>
+      {{ form2.pid(size=32) }}<br/>
+      {{ form2.quantity.label }}<br/>
+      {{ form2.quantity(size=32) }}<br/>
+    </p>
+    {{ form2.updateCart(class_="btn btn-black") }}
+  </form>        
+</table>
+
+<h2>Submit Your Order</h2>
+<form action = "{{url_for('carts.submitOrder')}}" method = "post" novalidate>
+  {{form3.submit(class_="btn btn-black")}}
+</form>
 
 <br><br>
 
