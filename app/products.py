@@ -41,8 +41,8 @@ class ProductsKInput(FlaskForm):
     search = SubmitField('Search')
 
 class FilterProductCategory(FlaskForm):
-    category = StringField('Enter Category')
-    search = SubmitField('Enter Category')
+    category = StringField('Enter Name')
+    search = SubmitField('Enter Name')
 
 
 @bp.route('/products', methods = ['GET', 'POST'])
