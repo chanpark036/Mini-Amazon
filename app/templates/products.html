@@ -5,13 +5,13 @@
 <br><br>
 
 <!-- start new  -->
-<form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
+<form action="{{url_for('products.productCategory')}}" method="post" novalidate>
+  {{ form2.hidden_tag() }}
   <p>
-    {{ form.value.label }}<br/>
-    {{ form.value(size=32) }}<br/>
+    {{ form2.category.label }}<br/>
+    {{ form2.category(size=32) }}<br/>
   </p>
-  {{ form.search(class_="btn btn-black") }}
+  {{ form2.search(class_="btn btn-black") }}
 </form>
 
 
@@ -38,12 +38,12 @@
 
 <!-- Original -->
 <form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
+  {{ form1.hidden_tag() }}
   <p>
-    {{ form.value.label }}<br/>
-    {{ form.value(size=32) }}<br/>
+    {{ form1.value.label }}<br/>
+    {{ form1.value(size=32) }}<br/>
   </p>
-  {{ form.search(class_="btn btn-black") }}
+  {{ form1.search(class_="btn btn-black") }}
 </form>
 
 <!-- <h2>Products for sale</h2> -->

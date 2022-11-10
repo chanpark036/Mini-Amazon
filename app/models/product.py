@@ -62,5 +62,5 @@ SELECT id, name, description, price, available
 FROM Products
 WHERE name = :name
 ''',
-                              available=True)
+                            name = name)
         return [Product(*row) for row in rows]
