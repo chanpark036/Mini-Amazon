@@ -33,6 +33,7 @@ class PostFeedback(FlaskForm):
 class UpdateFeedback(FlaskForm):
     review_id = IntegerField('Review ID')
     review = TextAreaField('New Text')
+    rating = IntegerField('New Rating')
     submit = SubmitField('Submit')
 
 
@@ -53,7 +54,7 @@ def review_product():
     if Feedback.add_p_review( user,
                             product,
                          form.review.data,
-                         form.rating.data):
+                         form.rating.data) != None:
         return redirect(url_for('feedback.feedback'))
     return render_template('review-product.html', title='Review Product', form=form)
 
@@ -65,7 +66,7 @@ def review_seller():
     if Feedback.add_s_review( user,
                             seller,
                          form.review.data,
-                         form.rating.data):
+                         form.rating.data) != None:
         return redirect(url_for('feedback.feedback'))
     return render_template('review-seller.html', title='Review Seller', form=form)
 
@@ -75,6 +76,13 @@ def update_review(review_id):
     Feedback.update_review(review_id,
                          form.review.data)
     return render_template('update-review.html', title='Update Review', form=form)
+
+@bp.route('/update-rating/<review_id>', methods=['GET', 'POST'])
+def update_rating(review_id):
+    form = UpdateFeedback()
+    Feedback.update_rating(review_id,
+                         form.rating.data)
+    return render_template('update-rating.html', title='Update Rating', form=form)
 
 @bp.route('/feedback/<review_id>', methods=['GET','DELETE'])
 def delete_review(review_id):
