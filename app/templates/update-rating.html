@@ -9,7 +9,7 @@
   
   <p>
     {{ form.rating.label }}<br/>
-    {{ form.rating(size=32) }}<br/>
+    {{ form.rating }}<br/>
     {% for error in form.rating.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
