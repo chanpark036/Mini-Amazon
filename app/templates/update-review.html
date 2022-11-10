@@ -1,18 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
 {% extends "base.html" %}
 
 {% block content %}
 
-<h1>Update_Review</h1>
-
+<h1>Update Review</h1>
+  
 <form action="" method="post">
   {{ form.hidden_tag() }}
-  <p>
-    {{ form.review_id.label }}<br/>
-    {{ form.review_id(size=32) }}<br/>
-    {% for error in form.review_id.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
+  
   <p>
     {{ form.review.label }}<br/>
     {{ form.review(size=32) }}<br/>
@@ -24,3 +22,6 @@
 </form>
 
 {% endblock %}
+
+
+</html>

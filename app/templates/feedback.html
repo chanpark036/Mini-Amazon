@@ -15,7 +15,7 @@
 
 
 <a href="{{ url_for('feedback.review') }}" type="button" class="btn btn-light">Write a Review</a>
-<a href="{{ url_for('feedback.update_review') }}" type="button" class="btn btn-light">Edit a Review</a>
+
 
 <h2>Reviews of User {{uid}}:</h2>
 <table class='table table-hover table-bordered container'>
@@ -26,6 +26,8 @@
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
       <th scope="col">Time posted</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -36,6 +38,8 @@
         <td>{{feedback.review}}</td>
         <td>{{feedback.rating}}</td>
         <td>{{feedback.submitted_timestamp}}</td>
+        <td><a href="{{ url_for('feedback.update_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a></td>
+        <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>
       </tr>
     {% endfor %}
   </tbody>

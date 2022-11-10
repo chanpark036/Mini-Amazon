@@ -52,11 +52,17 @@ def review():
                          form.review.data,
                          form.rating.data):
         flash('Thanks for writing a review!')
+        return redirect(url_for('feedback.feedback'))
     return render_template('review.html', title='Review', form=form)
 
-@bp.route('/update-review', methods=['GET', 'POST'])
-def update_review():
+@bp.route('/update-review/<review_id>', methods=['GET', 'POST'])
+def update_review(review_id):
     form = UpdateFeedback()
-    Feedback.update_review(form.review_id.data,
+    Feedback.update_review(review_id,
                          form.review.data)
-    return render_template('update-review.html', title='Update_Review', form=form)
+    return render_template('update-review.html', title='Update Review', form=form)
+
+@bp.route('/feedback/<review_id>', methods=['GET','DELETE'])
+def delete_review(review_id):
+    Feedback.delete_review(review_id)
+    return redirect(url_for('feedback.feedback'))
