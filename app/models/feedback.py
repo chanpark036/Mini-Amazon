@@ -69,14 +69,33 @@ ORDER BY submitted_timestamp DESC
         return [Feedback(*row) for row in rows]
 
     @staticmethod
-    def add_review(uid, review, rating):
+    def add_p_review(uid, pid, review, rating):
         try:
             rows = app.db.execute('''
-    INSERT INTO Feedback(uid, review, rating)
-    VALUES(:uid, :review,:rating)
-    RETURNING id
-    ''',
+INSERT INTO Feedback(uid, pid, review, rating)
+VALUES(:uid, :pid, :review,:rating)
+RETURNING id
+''',
                             uid=uid,
+                            pid=pid,
+                            review=review,
+                            rating=rating)
+            id = rows[0][0]
+            return feedback.get(id)
+        except Exception as e:
+            print(str(e))
+            return None
+    
+    @staticmethod
+    def add_s_review(uid, sid, review, rating):
+        try:
+            rows = app.db.execute('''
+INSERT INTO Feedback(uid, sid, review, rating)
+VALUES(:uid, :sid, :review,:rating)
+RETURNING id
+''',
+                            uid=uid,
+                            sid=sid,
                             review=review,
                             rating=rating)
             id = rows[0][0]

@@ -9,6 +9,7 @@ from faker import Faker
 
 from .models.product import Product
 from .models.feedback import Feedback
+from .models.user import User
 
 from flask import Blueprint
 bp = Blueprint('feedback', __name__)
@@ -38,21 +39,35 @@ class UpdateFeedback(FlaskForm):
 @bp.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     form = FeedbackSearch()
-    user_id = form.user_id.data
-    feedback = Feedback.get_recent_k(user_id, 5)
+    user_id = 3
+    feedback = Feedback.get_all_by_uid(user_id)
 
     return render_template('feedback.html',
                            user_feedback=feedback, form = form, uid = user_id)
 
-@bp.route('/review', methods=['GET', 'POST'])
-def review():
+@bp.route('/review-product', methods=['GET', 'POST'])
+def review_product():
     form = PostFeedback()
     user = 3
-    if Feedback.add_review( user,
+    product = 2
+    if Feedback.add_p_review( user,
+                            product,
                          form.review.data,
                          form.rating.data):
         return redirect(url_for('feedback.feedback'))
-    return render_template('review.html', title='Review', form=form)
+    return render_template('review-product.html', title='Review Product', form=form)
+
+@bp.route('/review-seller', methods=['GET', 'POST'])
+def review_seller():
+    form = PostFeedback()
+    user = 3
+    seller = 2
+    if Feedback.add_s_review( user,
+                            seller,
+                         form.review.data,
+                         form.rating.data):
+        return redirect(url_for('feedback.feedback'))
+    return render_template('review-seller.html', title='Review Seller', form=form)
 
 @bp.route('/update-review/<review_id>', methods=['GET', 'POST'])
 def update_review(review_id):
