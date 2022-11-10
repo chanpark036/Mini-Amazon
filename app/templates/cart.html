@@ -16,26 +16,26 @@
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope = "col">User ID</th>
       <th scope="col">Product Name</th>
       <th scope="col">Product ID</th>
       <th scope = "col">Purchase Quantity</th>
-      <th scope = "col">Price</th>
+      <th scope = "col">Unit Price</th>
+      <th scope = "col">Total Price</th>
     </tr>
   </thead>
   <tbody>
     {% for purchase in printprods%}
       <tr>
-        <td>{{purchase.uid}}</td>
         <td>{{purchase.name}}</td>
         <td>{{purchase.pid}}</td>
-        <td>{{purchase.quantity}}
-      </td> 
+        <td>{{purchase.quantity}}</td> 
         <td>{{purchase.u_price}}</td>
+        <td>{{purchase.u_price*purchase.quantity}}</td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
+
 <h2>Update Items In Cart:</h2>
 <table>
   <form action ="{{ url_for('carts.changeCart')}}" method="post" novalidate>
