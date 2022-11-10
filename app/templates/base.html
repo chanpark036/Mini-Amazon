@@ -42,6 +42,22 @@
         background-color: #000 !important;
         color: #fff;
     }
+    .nav-links a {
+      color: #fff;
+     }
+     .menu {
+      display: flex;
+      gap: 1em;
+      font-size: 18px;
+     }
+     .menu li:hover {
+      background-color: #ecad0c;
+      border-radius: 5px;
+      transition: 0.3s ease;
+     }
+     .menu li {
+      padding: 5px 14px;
+     }
   </style>
 </head>
 
@@ -49,6 +65,16 @@
   <div class="sidenav">
     {% block msg %}
       <h1 style="color:aliceblue">Welcome to CompSci 316 Mini Amazon!</h1>
+      <ul class = "nav-links">
+        <div class = "menu">
+          <li><a href = "/">Home</li>
+          <li><a href = "/carts">Cart</li>
+          <li><a href = "/inventory">Inventory</li>
+          <li><a href = "/feedback">Feedback</li>
+          <li><a href = "/account">View Account</li>
+          <li><a href = "/products">Products</li>
+        </div>
+      </ul>
       <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
