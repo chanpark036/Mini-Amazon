@@ -40,7 +40,7 @@ class UpdateFeedback(FlaskForm):
 @bp.route('/feedback', methods=['GET', 'POST'])
 def feedback():
     form = FeedbackSearch()
-    user_id = 3
+    user_id = current_user.id
     feedback = Feedback.get_all_by_uid(user_id)
 
     return render_template('feedback.html',
@@ -49,7 +49,7 @@ def feedback():
 @bp.route('/review-product', methods=['GET', 'POST'])
 def review_product():
     form = PostFeedback()
-    user = 3
+    user = current_user.id
     product = 2  
     if request.method == "POST":
         Feedback.add_p_review( user,
@@ -62,8 +62,8 @@ def review_product():
 @bp.route('/review-seller', methods=['GET', 'POST'])
 def review_seller():
     form = PostFeedback()
-    user = 3
-    seller = 2
+    user = current_user.id
+    seller = 1
     if request.method == "POST":
         Feedback.add_s_review( user,
                             seller,
