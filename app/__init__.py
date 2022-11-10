@@ -23,6 +23,7 @@ def create_app():
     
     from .carts import bp as cart_bp
     app.register_blueprint(cart_bp)
+    
     from .purchases import bp as purchase_bp
     app.register_blueprint(purchase_bp)
 

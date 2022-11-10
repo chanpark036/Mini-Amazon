@@ -8,6 +8,18 @@
   <p>
     {{ form.inventory_id.label }}<br/>
     {{ form.inventory_id(size=32) }}<br/>
+
+    {{ form.product_id.label }}<br/>
+    {{ form.product_id(size=32) }}<br/>
+
+    {{ form.quantity.label }}<br/>
+    {{ form.quantity(size=32) }}<br/>
+
+    {{ form.price.label }}<br/>
+    {{ form.price(size=32) }}<br/>
+
+    {{ form.action.label }} <br/>
+    {{ form.action(size=32) }}<br/>
   </p>
   {{ form.search(class_="btn btn-black") }}
 </form>
