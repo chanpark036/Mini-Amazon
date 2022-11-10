@@ -50,12 +50,12 @@ def feedback():
 def review_product():
     form = PostFeedback()
     user = 3
-    product = 2
-    Feedback.add_p_review( user,
+    product = 2  
+    if request.method == "POST":
+        Feedback.add_p_review( user,
                             product,
                          form.review.data,
                          form.rating.data)
-    if request.method == "POST":
         return redirect(url_for('feedback.feedback'))
     return render_template('review-product.html', title='Review Product', form=form)
 
@@ -64,11 +64,11 @@ def review_seller():
     form = PostFeedback()
     user = 3
     seller = 2
-    Feedback.add_s_review( user,
+    if request.method == "POST":
+        Feedback.add_s_review( user,
                             seller,
                          form.review.data,
                          form.rating.data)
-    if request.method == "POST":
         return redirect(url_for('feedback.feedback'))
     return render_template('review-seller.html', title='Review Seller', form=form)
 
