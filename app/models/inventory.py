@@ -16,3 +16,25 @@ WHERE sid = :sid
 ''',
                               sid=sid)
         return [Inventory(*row) for row in rows]
+
+    @staticmethod
+    def add(sid, pid, quantity, u_price):
+        app.db.execute('''
+        INSERT INTO Inventory (sid, pid, quantity, u_price)
+        VALUES (:sid, :pid, :quantity, :u_price)
+        ''', sid = sid, pid = pid, quantity = quantity, u_price = u_price)
+
+    @staticmethod
+    def remove(sid, pid):
+        app.db.execute('''
+            DELETE FROM Inventory
+            WHERE sid = :sid AND pid = :pid
+            ''', sid=sid, pid=pid)
+    
+    @staticmethod
+    def change_q(sid, pid, quantity):
+        app.db.execute('''
+            UPDATE Inventory
+            SET quantity = :quantity
+            WHERE sid = :sid AND pid = :pid
+        ''', quantity = quantity, sid = sid, pid=pid)
