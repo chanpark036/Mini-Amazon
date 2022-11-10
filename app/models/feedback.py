@@ -56,6 +56,17 @@ ORDER BY submitted_timestamp DESC
             return [Feedback(*(rows[i])) for i in range(k)]
         else :
             return [Feedback(*row) for row in rows]
+    
+    @staticmethod
+    def get_all_by_uid(uid):
+        rows = app.db.execute('''
+SELECT id, uid, pid, submitted_timestamp, review, rating
+FROM Feedback
+WHERE uid = :uid
+ORDER BY submitted_timestamp DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
 
     @staticmethod
     def add_review(uid, review, rating):

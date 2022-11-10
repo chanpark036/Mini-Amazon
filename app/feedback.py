@@ -51,7 +51,6 @@ def review():
     if Feedback.add_review( user,
                          form.review.data,
                          form.rating.data):
-        flash('Thanks for writing a review!')
         return redirect(url_for('feedback.feedback'))
     return render_template('review.html', title='Review', form=form)
 
