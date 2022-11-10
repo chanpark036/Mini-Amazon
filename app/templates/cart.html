@@ -31,6 +31,7 @@
         <td>{{purchase.quantity}}</td> 
         <td>{{purchase.u_price}}</td>
         <td>{{purchase.u_price*purchase.quantity}}</td>
+        
       </tr>
     {% endfor %}
   </tbody>
@@ -49,6 +50,10 @@
   </form>        
 </table>
 
+<h2>Submit Your Order</h2>
+<form action = "{{url_for('carts.submitOrder')}}" method = "post" novalidate>
+  {{form3.submit(class_="btn btn-black")}}
+</form>
 
 <br><br>
 
