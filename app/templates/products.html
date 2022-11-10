@@ -4,6 +4,30 @@
 
 <br><br>
 
+<!-- start new  -->
+
+<h2>PRODUCT CATEGORIES</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products_by_category%}
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>{{product.name}}</td>
+        <td>{{product.price}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<!-- end new -->
+
+<!-- Original -->
 <form action="" method="post" novalidate>
   {{ form.hidden_tag() }}
   <p>
@@ -13,7 +37,8 @@
   {{ form.search(class_="btn btn-black") }}
 </form>
 
-<h2>Products for sale</h2>
+<!-- <h2>Products for sale</h2> -->
+<h2>TOP K PRODUCTS</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>

@@ -21,7 +21,7 @@ class ProductsKInput(FlaskForm):
 @bp.route('/products', methods = ['GET', 'POST'])
 def index():    
 
-
+    # form corresponds with top K
     form = ProductsKInput()
 
     
@@ -43,13 +43,11 @@ def index():
 # @bp.route('/products', methods = ['GET', 'POST'])
 # def index():    
 
-
 #     form = FilterProductCategory()
 #     category = form.category.data
     
-#     products = filterByCategory(category)
+#     products = Product.filterByCategory(category)
     
-
 #     return render_template('products.html',
-#                            avail_products=products, form = form)
+#                            products_by_category=products, form = form)
 

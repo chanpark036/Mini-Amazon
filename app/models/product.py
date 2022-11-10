@@ -50,5 +50,5 @@ SELECT id, name, description, price, available
 FROM Products
 WHERE category = :category
 ''',
-                              available=available)
+                              available=True)
         return [Product(*row) for row in rows]
