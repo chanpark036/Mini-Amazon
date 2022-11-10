@@ -15,16 +15,26 @@ from .models.product import Product
 from .models.purchase import Purchase
 
 class ProductsKInput(FlaskForm):
-    value = IntegerField('Get top k expensive products')
+    value = IntegerField('Get top k expensive products') or 0
     search = SubmitField('Search')
 
 @bp.route('/products', methods = ['GET', 'POST'])
 def index():    
+
+
     form = ProductsKInput()
 
+    
     k = form.value.data
-    products = Product.get_top_K_expensive(True, k)
-     
+    
+    if k is None:
+        products = []
+    else:
+        products = Product.get_top_K_expensive(True, k)
+    
+    
+    
+
     return render_template('products.html',
                            avail_products=products, form = form)
 
