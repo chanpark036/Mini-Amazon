@@ -18,7 +18,7 @@ class InventorySearch(FlaskForm):
     quantity = IntegerField('Quantity')
     price = FloatField('Price')
     action = StringField('Action')
-    search = SubmitField('Search')
+    search = SubmitField('Enter')
 
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():

@@ -5,7 +5,7 @@ from faker import Faker
 num_users = 100
 num_products = 2000
 num_purchases = 2500
-num_reviews = 500
+num_reviews = 1000
 
 Faker.seed(0)
 fake = Faker()
@@ -30,7 +30,9 @@ def gen_users(num_users):
             firstname = name_components[0]
             lastname = name_components[-1]
             is_seller = fake.pybool()
-            writer.writerow([uid, email, password, firstname, lastname, is_seller])
+            balance = fake.random_int(min=0)
+            address = fake.sentence(nb_words=4)[:-1]
+            writer.writerow([uid, email, password, firstname, lastname, is_seller, balance, address])
         print(f'{num_users} generated')
     return
 
@@ -78,10 +80,11 @@ def gen_reviews(num_reviews, available_pids):
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids)
+            sid = fake.random_int(min=0, max=num_users-1)
             time_submitted = fake.date_time()
             review = fake.sentence()
             rating = fake.random_int(min=1, max=5)
-            writer.writerow([id, uid, pid, time_submitted, review, rating])
+            writer.writerow([id, uid, pid, sid, time_submitted, review, rating])
         print(f'{num_reviews} generated')
     return
 
@@ -92,10 +95,11 @@ def gen_carts(num_users, available_pids):
         for id in range(num_users):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
+            uid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids)
             quantity = fake.random_int(min=1)
             unit_price = fake.pyfloat(positive=True)
-            writer.writerow([id, pid, quantity, unit_price])
+            writer.writerow([uid, pid, quantity, unit_price])
         print(f'{num_users} generated')
     return
 
@@ -104,7 +108,7 @@ def gen_sellers( available_pids):
     with open('Users.csv','r') as f:
         reader = csv.reader(f,delimiter = ',')
         for row in reader:
-            if row[-1] == 'True':
+            if row[-3] == 'True':
                 sellers.append(row[0])
 
     with open('Sellers.csv', 'w') as f:
