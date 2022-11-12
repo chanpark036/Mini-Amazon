@@ -75,6 +75,9 @@ ORDER BY submitted_timestamp DESC
 INSERT INTO Feedback(uid, pid, review, rating)
 VALUES(:uid, :pid, :review,:rating)
 RETURNING id
+WHERE NOT EXISTS (SELECT *
+                 FROM Feedback
+                 WHERE uid=:uid AND pid=:pid)
 ''',
                             uid=uid,
                             pid=pid,
@@ -93,6 +96,9 @@ RETURNING id
 INSERT INTO Feedback(uid, sid, review, rating)
 VALUES(:uid, :sid, :review,:rating)
 RETURNING id
+WHERE NOT EXISTS (SELECT *
+                 FROM Feedback
+                 WHERE uid=:uid AND sid=:sid)
 ''',
                             uid=uid,
                             sid=sid,

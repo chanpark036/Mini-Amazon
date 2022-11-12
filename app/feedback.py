@@ -39,12 +39,14 @@ class UpdateFeedback(FlaskForm):
 
 @bp.route('/feedback', methods=['GET', 'POST'])
 def feedback():
-    form = FeedbackSearch()
-    user_id = current_user.id
-    feedback = Feedback.get_all_by_uid(user_id)
+    if current_user.is_authenticated:
+        form = FeedbackSearch()
+        user_id = current_user.id
+        feedback = Feedback.get_all_by_uid(user_id)
 
-    return render_template('feedback.html',
+        return render_template('feedback.html',
                            user_feedback=feedback, form = form, uid = user_id)
+    return redirect(url_for('users.login'))
 
 @bp.route('/review-product', methods=['GET', 'POST'])
 def review_product():
