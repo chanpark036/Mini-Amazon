@@ -2,10 +2,11 @@ from flask import current_app as app
 
 
 class Feedback:
-    def __init__(self, id, uid, pid, submitted_timestamp, review, rating):
+    def __init__(self, id, uid, pid, sid, submitted_timestamp, review, rating):
         self.id = id
         self.uid = uid
         self.pid = pid
+        self.sid = sid
         self.submitted_timestamp = submitted_timestamp
         self.review = review
         self.rating = rating
@@ -13,7 +14,7 @@ class Feedback:
     @staticmethod
     def get_all():
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 '''
                               )
@@ -22,7 +23,7 @@ FROM Feedback
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 WHERE id = :id
 ''',
@@ -32,7 +33,7 @@ WHERE id = :id
     @staticmethod
     def get_all_by_uid_since(uid, since):
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 WHERE uid = :uid
 AND submitted_timestamp >= :since
@@ -45,7 +46,7 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_recent_k(uid, k):
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 WHERE uid = :uid
 ORDER BY submitted_timestamp DESC
@@ -60,7 +61,7 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 WHERE uid = :uid
 ORDER BY submitted_timestamp DESC
@@ -74,10 +75,10 @@ ORDER BY submitted_timestamp DESC
             rows = app.db.execute('''
 INSERT INTO Feedback(uid, pid, review, rating)
 VALUES(:uid, :pid, :review,:rating)
-RETURNING id
-WHERE NOT EXISTS (SELECT *
+WHERE NOT EXISTS (SELECT id
                  FROM Feedback
                  WHERE uid=:uid AND pid=:pid)
+RETURNING id
 ''',
                             uid=uid,
                             pid=pid,
@@ -95,10 +96,10 @@ WHERE NOT EXISTS (SELECT *
             rows = app.db.execute('''
 INSERT INTO Feedback(uid, sid, review, rating)
 VALUES(:uid, :sid, :review,:rating)
-RETURNING id
-WHERE NOT EXISTS (SELECT *
+WHERE NOT EXISTS (SELECT id
                  FROM Feedback
                  WHERE uid=:uid AND sid=:sid)
+RETURNING id
 ''',
                             uid=uid,
                             sid=sid,
