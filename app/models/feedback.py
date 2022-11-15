@@ -96,44 +96,44 @@ ORDER BY rating DESC
         rows = app.db.execute('''
 SELECT pid, AVG(rating), COUNT(*)
 FROM Feedback
-GROUP BY pid
 WHERE pid = :pid
+GROUP BY pid
 ''',
                               pid=pid)
-        return [Feedback(*row) for row in rows]
+        return rows
 
     @staticmethod
     def get_s_stats(sid):
         rows = app.db.execute('''
 SELECT sid, AVG(rating), COUNT(*)
 FROM Feedback
-GROUP BY sid
 WHERE sid = :sid
+GROUP BY sid
 ''',
                               sid=sid)
-        return [Feedback(*row) for row in rows]
+        return rows
 
     @staticmethod
     def get_p_ratings(pid):
         rows = app.db.execute('''
 SELECT rating, COUNT(*)
 FROM Feedback
-GROUP BY rating
 WHERE pid = :pid
+GROUP BY rating
 ''',
                               pid=pid)
-        return [Feedback(*row) for row in rows]
+        return rows
 
     @staticmethod
     def get_s_ratings(sid):
         rows = app.db.execute('''
 SELECT rating, COUNT(*)
 FROM Feedback
-GROUP BY rating
 WHERE sid = :sid
+GROUP BY rating
 ''',
                               sid=sid)
-        return [Feedback(*row) for row in rows]
+        return rows
 
     @staticmethod
     def add_p_review(uid, pid, review, rating):

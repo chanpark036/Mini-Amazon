@@ -94,3 +94,15 @@ def update_rating(review_id):
 def delete_review(review_id):
     Feedback.delete_review(review_id)
     return redirect(url_for('feedback.feedback'))
+
+@bp.route('/review-summary/<type>/<id>', methods=['GET', 'POST'])
+def summarize_reviews(type, id):
+    if type == 'p':
+        reviews = Feedback.get_all_by_pid(id)
+        stats = Feedback.get_p_stats(id)
+        ratings = Feedback.get_p_ratings(id)
+    else:
+        reviews = Feedback.get_all_by_sid(id)
+        stats = Feedback.get_s_stats(id)
+        ratings = Feedback.get_s_ratings(id)
+    return render_template('review-summary.html', title='Reviews', reviews=reviews, stats=stats, ratings=ratings)
