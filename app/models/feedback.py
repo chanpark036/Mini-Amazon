@@ -68,6 +68,72 @@ ORDER BY submitted_timestamp DESC
 ''',
                               uid=uid)
         return [Feedback(*row) for row in rows]
+    
+    @staticmethod
+    def get_all_by_pid(pid):
+        rows = app.db.execute('''
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+FROM Feedback
+WHERE pid = :pid
+ORDER BY rating DESC
+''',
+                              pid=pid)
+        return [Feedback(*row) for row in rows]
+    
+    @staticmethod
+    def get_all_by_sid(sid):
+        rows = app.db.execute('''
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+FROM Feedback
+WHERE sid = :sid
+ORDER BY rating DESC
+''',
+                              sid=sid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_p_stats(pid):
+        rows = app.db.execute('''
+SELECT pid, AVG(rating), COUNT(*)
+FROM Feedback
+GROUP BY pid
+WHERE pid = :pid
+''',
+                              pid=pid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_s_stats(sid):
+        rows = app.db.execute('''
+SELECT sid, AVG(rating), COUNT(*)
+FROM Feedback
+GROUP BY sid
+WHERE sid = :sid
+''',
+                              sid=sid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_p_ratings(pid):
+        rows = app.db.execute('''
+SELECT rating, COUNT(*)
+FROM Feedback
+GROUP BY rating
+WHERE pid = :pid
+''',
+                              pid=pid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_s_ratings(sid):
+        rows = app.db.execute('''
+SELECT rating, COUNT(*)
+FROM Feedback
+GROUP BY rating
+WHERE sid = :sid
+''',
+                              sid=sid)
+        return [Feedback(*row) for row in rows]
 
     @staticmethod
     def add_p_review(uid, pid, review, rating):
