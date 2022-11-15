@@ -6,8 +6,8 @@
 
 
 
-<a href="{{ url_for('feedback.review_product') }}" type="button" class="btn btn-light">Write a Product Review</a>
-<a href="{{ url_for('feedback.review_seller') }}" type="button" class="btn btn-light">Write a Seller Review</a>
+<a href="{{ url_for('feedback.review_product', product_id = 2) }}" type="button" class="btn btn-light">Write a Product Review</a>
+<a href="{{ url_for('feedback.review_seller', seller_id = 2) }}" type="button" class="btn btn-light">Write a Seller Review</a>
 
 
 <h2>Your Reviews:</h2>

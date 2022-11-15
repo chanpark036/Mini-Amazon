@@ -75,9 +75,6 @@ ORDER BY submitted_timestamp DESC
             rows = app.db.execute('''
 INSERT INTO Feedback(uid, pid, review, rating)
 VALUES(:uid, :pid, :review,:rating)
-WHERE NOT EXISTS (SELECT id
-                 FROM Feedback
-                 WHERE uid=:uid AND pid=:pid)
 RETURNING id
 ''',
                             uid=uid,
@@ -96,9 +93,6 @@ RETURNING id
             rows = app.db.execute('''
 INSERT INTO Feedback(uid, sid, review, rating)
 VALUES(:uid, :sid, :review,:rating)
-WHERE NOT EXISTS (SELECT id
-                 FROM Feedback
-                 WHERE uid=:uid AND sid=:sid)
 RETURNING id
 ''',
                             uid=uid,

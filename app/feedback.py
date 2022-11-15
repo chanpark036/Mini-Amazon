@@ -48,27 +48,25 @@ def feedback():
                            user_feedback=feedback, form = form, uid = user_id)
     return redirect(url_for('users.login'))
 
-@bp.route('/review-product', methods=['GET', 'POST'])
-def review_product():
+@bp.route('/review-product/<product_id>', methods=['GET', 'POST'])
+def review_product(product_id):
     form = PostFeedback()
     user = current_user.id
-    product = 2  
     if request.method == "POST":
         Feedback.add_p_review( user,
-                            product,
+                            product_id,
                          form.review.data,
                          form.rating.data)
         return redirect(url_for('feedback.feedback'))
     return render_template('review-product.html', title='Review Product', form=form)
 
-@bp.route('/review-seller', methods=['GET', 'POST'])
-def review_seller():
+@bp.route('/review-seller/<seller_id>', methods=['GET', 'POST'])
+def review_seller(seller_id):
     form = PostFeedback()
     user = current_user.id
-    seller = 1
     if request.method == "POST":
         Feedback.add_s_review( user,
-                            seller,
+                            seller_id,
                          form.review.data,
                          form.rating.data)
         return redirect(url_for('feedback.feedback'))
