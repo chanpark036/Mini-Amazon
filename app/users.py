@@ -100,3 +100,18 @@ def get_user_public_view():
                            user_id=user_id,
                            form=form)
 # user public view page not displaying data after submitting form
+
+class UpdateEmail(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Submit')
+
+@bp.route('/update-email', methods=['GET', 'POST'])
+def update_email():
+    form = UpdateEmail()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_email(user_id,
+                        form.email.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-email.html', title='Update Email', form=form)

@@ -72,3 +72,13 @@ WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+    
+    @staticmethod
+    def update_email(id, email):
+        rows = app.db.execute("""
+UPDATE Users
+SET email = :email
+WHERE id= :id
+""",
+                              email=email,
+                              id=id)
