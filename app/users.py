@@ -151,3 +151,19 @@ def update_name():
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
     return render_template('update-name.html', title='Update Name', form=form)
+
+
+class UpdateAddress(FlaskForm):
+    address = StringField('Address', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+@bp.route('/update-address', methods=['GET', 'POST'])
+def update_address():
+    form = UpdateAddress()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_address(user_id,
+                         form.address.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-address.html', title='Update Address', form=form)

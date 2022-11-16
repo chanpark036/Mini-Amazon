@@ -113,15 +113,15 @@ WHERE id= :id
                               lastname=lastname,
                               id=id)
         
-#     @staticmethod
-#     def update_address(id, address):
-#         rows = app.db.execute("""
-# UPDATE Users
-# SET address = :address
-# WHERE id= :id
-# """,
-#                               address=address,
-#                               id=id)
+    @staticmethod
+    def update_address(id, address):
+        rows = app.db.execute("""
+UPDATE Users
+SET address = :address
+WHERE id= :id
+""",
+                              address=address,
+                              id=id)
         
 #     @staticmethod
 #     def update_balance(id, balance):
