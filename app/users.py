@@ -132,3 +132,22 @@ def update_password():
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
     return render_template('update-password.html', title='Update Password', form=form)
+
+
+class UpdateName(FlaskForm):
+    firstname = StringField('First Name', validators=[DataRequired()])
+    lastname = StringField('Last Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+@bp.route('/update-name', methods=['GET', 'POST'])
+def update_name():
+    form = UpdateName()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_firstname(user_id,
+                         form.firstname.data)
+        User.update_lastname(user_id,
+                         form.lastname.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-name.html', title='Update Name', form=form)

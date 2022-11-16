@@ -93,16 +93,25 @@ WHERE id= :id
                               password=generate_password_hash(password),
                               id=id)
         
-#     @staticmethod
-#     def update_name(id, firstname, lastname):
-#         rows = app.db.execute("""
-# UPDATE Users
-# SET firstname = :firstname AND lastname = :lastname
-# WHERE id= :id
-# """,
-#                               firstname=firstname,
-#                               lastname=lastname,
-#                               id=id)
+    @staticmethod
+    def update_firstname(id, firstname):
+        rows = app.db.execute("""
+UPDATE Users
+SET firstname = :firstname 
+WHERE id= :id
+""",
+                              firstname=firstname,
+                              id=id)
+        
+    @staticmethod
+    def update_lastname(id, lastname):
+        rows = app.db.execute("""
+UPDATE Users
+SET lastname = :lastname
+WHERE id= :id
+""",
+                              lastname=lastname,
+                              id=id)
         
 #     @staticmethod
 #     def update_address(id, address):

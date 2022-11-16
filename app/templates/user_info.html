@@ -6,9 +6,15 @@
 
 <h1>Your Account Information</h1>
 <h2>Account ID: {{user_id.id}} </h2>
-<h2>Email: {{user_id.email}} <a href="{{ url_for('users.update_email') }}" type="button" class="btn btn-dark">Edit Email</a> </h2>
-<h2> Password: HIDDEN <a href="{{ url_for('users.update_password') }}" type="button" class="btn btn-dark">Edit Password</a> </h2>
-<h2>Name: {{user_id.firstname}} {{user_id.lastname}}</h2>
+<h2>Email: {{user_id.email}} 
+    <a href="{{ url_for('users.update_email') }}" type="button" class="btn btn-dark">Edit Email</a> 
+</h2>
+<h2> Password: HIDDEN 
+    <a href="{{ url_for('users.update_password') }}" type="button" class="btn btn-dark">Edit Password</a> 
+</h2>
+<h2>Name: {{user_id.firstname}} {{user_id.lastname}} 
+    <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Name</a> 
+</h2>
 <h2>Address: {{user_id.address}} </h2>
 <h2>Balance: ${{user_id.balance}} </h2>
 
