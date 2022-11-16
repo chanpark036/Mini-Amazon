@@ -18,7 +18,9 @@
 <h2>Address: {{user_id.address}} 
     <a href="{{ url_for('users.update_address') }}" type="button" class="btn btn-dark">Edit Address</a> 
 </h2>
-<h2>Balance: ${{user_id.balance}} </h2>
+<h2>Balance: ${{user_id.balance}} 
+    <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-dark">Edit Balance</a> 
+</h2>
 
 
 

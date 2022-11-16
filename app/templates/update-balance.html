@@ -2,15 +2,15 @@
 
 {% block content %}
 
-<h1>Update Address</h1>
+<h1>Update Balance</h1>
   
 <form action="" method="post">
   {{ form.hidden_tag() }}
   
   <p>
-    {{ form.address.label }}<br/>
-    {{ form.address(size=32) }}<br/>
-    {% for error in form.address.errors %}
+    {{ form.balance.label }}<br/>
+    {{ form.balance(size=32) }}<br/>
+    {% for error in form.balance.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>

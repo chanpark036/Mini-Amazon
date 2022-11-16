@@ -123,12 +123,12 @@ WHERE id= :id
                               address=address,
                               id=id)
         
-#     @staticmethod
-#     def update_balance(id, balance):
-#         rows = app.db.execute("""
-# UPDATE Users
-# SET balance = :balance
-# WHERE id= :id
-# """,
-#                               balance=balance,
-#                               id=id)
+    @staticmethod
+    def update_balance(id, balance):
+        rows = app.db.execute("""
+UPDATE Users
+SET balance = :balance
+WHERE id= :id
+""",
+                              balance=balance,
+                              id=id)

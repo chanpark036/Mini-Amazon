@@ -167,3 +167,19 @@ def update_address():
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
     return render_template('update-address.html', title='Update Address', form=form)
+
+
+class UpdateBalance(FlaskForm):
+    balance = IntegerField('Balance')
+    submit = SubmitField('Submit')
+
+@bp.route('/update-balance', methods=['GET', 'POST'])
+def update_balance():
+    form = UpdateBalance()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_balance(user_id,
+                            form.balance.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-balance.html', title='Update Balance', form=form)
