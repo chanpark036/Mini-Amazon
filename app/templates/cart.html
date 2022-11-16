@@ -21,6 +21,7 @@
       <th scope = "col">Purchase Quantity</th>
       <th scope = "col">Unit Price</th>
       <th scope = "col">Total Price</th>
+      <th scope = "col">Delete from Cart</th>
     </tr>
   </thead>
   <tbody>
@@ -31,6 +32,9 @@
         <td>{{purchase.quantity}}</td> 
         <td>{{purchase.u_price}}</td>
         <td>{{purchase.u_price*purchase.quantity}}</td>
+        <td>
+          <a href="{{ url_for('carts.delete_product', user_id = purchase.uid, purchase_id = purchase.pid) }}" type="button" class="btn btn-light">Delete</a>
+        </td>
         
       </tr>
     {% endfor %}

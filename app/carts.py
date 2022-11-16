@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, redirect, url_for
 from flask_login import current_user
 import datetime
 from flask_wtf import FlaskForm
@@ -48,6 +48,19 @@ def changeCart():
     products = Cart.updateCount(pid, newValue)
     # find the products current user has bought:
     # render the page by adding information to the index.html file
+    return render_template('cart.html',
+                           printprods = products,
+                           form1 = searchForm,
+                           form2 = updateForm,
+                           form3 = submitForm)
+    
+@bp.route('/carts/<user_id>,<purchase_id>', methods=['GET','DELETE'])
+def delete_product(user_id, purchase_id):
+    print(user_id)
+    products = Cart.delete_product(user_id, purchase_id)
+    searchForm = enterID()
+    updateForm = updateData()
+    submitForm = submitOrderForm()
     return render_template('cart.html',
                            printprods = products,
                            form1 = searchForm,
