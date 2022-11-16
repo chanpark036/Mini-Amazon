@@ -36,6 +36,8 @@
 </table> -->
 <!-- end new -->
 
+
+
 <!-- Original -->
 <form action="" method="post" novalidate>
   {{ form1.hidden_tag() }}
@@ -48,7 +50,7 @@
 
 <!-- <h2>Products for sale</h2> -->
 <h2>SEARCH RESULTS FOR PRODUCTS</h2>
-<table class='table table-hover table-bordered container'>
+<table class='table table-hover table-bordered container' id="products-table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">Product ID</th>
@@ -93,4 +95,11 @@
 <p><a href="{{ url_for('users.login') }}">Log in</a> to see your purchase history!</p>
 {% endif %}
 
+<script>
+  $(document).ready( function () {
+    // alert('hello')
+      $('#products-table').DataTable();
+  } );
+</script>
 {% endblock %}
+

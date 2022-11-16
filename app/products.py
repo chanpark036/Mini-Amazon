@@ -51,13 +51,14 @@ def index():
     # form corresponds with top K
     form1 = ProductsKInput()
     form2 = FilterProductCategory()
-    k = form1.value.data
+    # k = form1.value.data
     
-    if k is None:
-        products = []
-    else:
-        products = Product.get_top_K_expensive(True, k)
+    # if k is None:
+    #     products = []
+    # else:
+    #     products = Product.get_top_K_expensive(True, k)
 
+    products = Product.get_all(True)    
     return render_template('products.html',
                            avail_products=products, form1 = form1, form2 = form2)
 
