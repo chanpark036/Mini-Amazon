@@ -111,7 +111,24 @@ def update_email():
     user_id = current_user.id
     if form.validate_on_submit():
         User.update_email(user_id,
-                        form.email.data)
+                          form.email.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
     return render_template('update-email.html', title='Update Email', form=form)
+
+class UpdatePassword(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(),EqualTo('password')])
+    submit = SubmitField('Submit')
+
+# TODO: if passwords do not match, does not tell user that password change failed
+@bp.route('/update-password', methods=['GET', 'POST'])
+def update_password():
+    form = UpdatePassword()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_password(user_id,
+                             form.password.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-password.html', title='Update Password', form=form)

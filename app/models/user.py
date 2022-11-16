@@ -82,3 +82,44 @@ WHERE id= :id
 """,
                               email=email,
                               id=id)
+        
+    @staticmethod
+    def update_password(id, password):
+        rows = app.db.execute("""
+UPDATE Users
+SET password = :password
+WHERE id= :id
+""",
+                              password=generate_password_hash(password),
+                              id=id)
+        
+#     @staticmethod
+#     def update_name(id, firstname, lastname):
+#         rows = app.db.execute("""
+# UPDATE Users
+# SET firstname = :firstname AND lastname = :lastname
+# WHERE id= :id
+# """,
+#                               firstname=firstname,
+#                               lastname=lastname,
+#                               id=id)
+        
+#     @staticmethod
+#     def update_address(id, address):
+#         rows = app.db.execute("""
+# UPDATE Users
+# SET address = :address
+# WHERE id= :id
+# """,
+#                               address=address,
+#                               id=id)
+        
+#     @staticmethod
+#     def update_balance(id, balance):
+#         rows = app.db.execute("""
+# UPDATE Users
+# SET balance = :balance
+# WHERE id= :id
+# """,
+#                               balance=balance,
+#                               id=id)
