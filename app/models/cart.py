@@ -46,3 +46,13 @@ RETURNING uid
        id = rows[0][0]
        print(uid)
        return Cart.get(id) 
+   
+    def addProduct(uid, pid, price):
+        rows = app.db.execute('''
+INSERT INTO Carts(uid, pid, quantity, u_price)
+VALUES(:uid, :pid, :quantity, :price)
+''',
+                            uid=uid,
+                            pid=pid,
+                            quantity = 1,
+                            price=price)

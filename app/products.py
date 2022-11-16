@@ -13,6 +13,7 @@ bp = Blueprint('products', __name__)
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.cart import Cart
 
 
 class ProductsKInput(FlaskForm):
@@ -44,4 +45,12 @@ def index():
     products = Product.get_all(True)    
     return render_template('products.html',
                            avail_products=products, form1 = form1, form2 = form2)
-
+@bp.route('/products/<pid>,<price>', methods = ['GET','POST'])
+def addToCart(pid, price):
+    form1 = ProductsKInput()
+    form2 = FilterProductCategory()
+    products = Product.get_all(True)
+    uid = current_user.id
+    Cart.addProduct(uid, pid, price)
+    return render_template('products.html',
+                           avail_products=products, form1 = form1, form2 = form2)
