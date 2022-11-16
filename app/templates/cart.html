@@ -3,13 +3,6 @@
 {% block content %}
 
 <br><br>
-<form action ="{{ url_for('carts.carts')}}" method="post" novalidate>
-  <p>
-    {{ form1.uid.label }}<br/>
-    {{ form1.uid(size=32) }}<br/>
-  </p>
-  {{ form1.search(class_="btn btn-black") }}
-</form>
 
 
 <h2>Items in cart:</h2>
