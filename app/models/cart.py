@@ -20,13 +20,14 @@ WHERE uid = :uid and Products.id = Carts.pid
                               uid=uid)
         return [Cart(*row) for row in rows]
     @staticmethod
-    def updateCount(pid, newValue):
+    def updateCount(uid, pid, newValue):
         rows = app.db.execute('''
 UPDATE Carts
 SET quantity = :newValue
-WHERE pid = :pid
+WHERE pid = :pid and uid = :uid
 RETURNING uid
 ''',
+                              uid = uid,
                               pid = pid, 
                               newValue=newValue)
         id = rows[0][0]

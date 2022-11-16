@@ -29,7 +29,10 @@
       <tr>
         <td>{{purchase.name}}</td>
         <td>{{purchase.pid}}</td>
-        <td>{{purchase.quantity}}</td> 
+        <td>{{purchase.quantity}}
+          <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity+1) }}" type="button" class="btn btn-light">+</a> 
+          <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity-1) }}" type="button" class="btn btn-light">-</a>        
+        </td> 
         <td>{{purchase.u_price}}</td>
         <td>{{purchase.u_price*purchase.quantity}}</td>
         <td>
@@ -41,18 +44,6 @@
   </tbody>
 </table>
 
-<h2>Update Items In Cart:</h2>
-<table>
-  <form action ="{{ url_for('carts.changeCart')}}" method="post" novalidate>
-    <p>
-      {{ form2.pid.label }}<br/>
-      {{ form2.pid(size=32) }}<br/>
-      {{ form2.quantity.label }}<br/>
-      {{ form2.quantity(size=32) }}<br/>
-    </p>
-    {{ form2.updateCart(class_="btn btn-black") }}
-  </form>        
-</table>
 
 <h2>Submit Your Order</h2>
 <form action = "{{url_for('carts.submitOrder')}}" method = "post" novalidate>

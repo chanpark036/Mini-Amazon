@@ -38,14 +38,12 @@ def carts():
                            form2 = form2, 
                            form3 = form3)
     
-@bp.route('/changeCart', methods = ['GET', 'POST'])
-def changeCart():
+@bp.route('/carts/<uid>,<pid>,<newValue>', methods = ['GET', 'POST'])
+def changeCart(uid, pid, newValue):
+    products = Cart.updateCount(uid, pid, newValue)
     searchForm = enterID()
     updateForm = updateData()
     submitForm = submitOrderForm()
-    newValue = updateForm.quantity.data
-    pid = updateForm.pid.data
-    products = Cart.updateCount(pid, newValue)
     # find the products current user has bought:
     # render the page by adding information to the index.html file
     return render_template('cart.html',
@@ -56,7 +54,6 @@ def changeCart():
     
 @bp.route('/carts/<user_id>,<purchase_id>', methods=['GET','DELETE'])
 def delete_product(user_id, purchase_id):
-    print(user_id)
     products = Cart.delete_product(user_id, purchase_id)
     searchForm = enterID()
     updateForm = updateData()
