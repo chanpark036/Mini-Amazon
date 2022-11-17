@@ -99,18 +99,18 @@ def review_seller(seller_id):
 @bp.route('/update-review/<review_id>', methods=['GET', 'POST'])
 def update_review(review_id):
     form = UpdateFeedback()
-    Feedback.update_review(review_id,
-                         form.review.data)
     if request.method == "POST":
+        Feedback.update_review(review_id,
+                         form.review.data)
         return redirect(url_for('feedback.feedback'))
     return render_template('update-review.html', title='Update Review', form=form)
 
 @bp.route('/update-rating/<review_id>', methods=['GET', 'POST'])
 def update_rating(review_id):
     form = UpdateFeedback()
-    Feedback.update_rating(review_id,
-                         form.rating.data)
     if request.method == "POST":
+        Feedback.update_rating(review_id,
+                         form.rating.data)
         return redirect(url_for('feedback.feedback'))
     return render_template('update-rating.html', title='Update Rating', form=form)
 
