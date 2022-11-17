@@ -177,10 +177,13 @@ class UpdateBalance(FlaskForm):
 def update_balance():
     form = UpdateBalance()
     user_id = current_user.id
+    curr_balance = current_user.balance
     if form.validate_on_submit():
-        User.update_balance(user_id,
-                            form.balance.data)
+        transaction = form.balance.data
+        new_balance = curr_balance + float(transaction)
+        if new_balance >= 0: # TODO: display message saying transaction not possible if new balance < 0
+            User.update_balance(user_id,
+                                new_balance)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
     return render_template('update-balance.html', title='Update Balance', form=form)
-# TODO: consider adding to balance, withdrawing from balance
