@@ -13,28 +13,12 @@ bp = Blueprint('products', __name__)
 
 from .models.product import Product
 from .models.purchase import Purchase
+from .models.cart import Cart
 
 
-###
 class ProductsKInput(FlaskForm):
     value = IntegerField('Get top k expensive products') or 0
     search = SubmitField('Search')
-
-# @bp.route('/products', methods = ['GET', 'POST'])
-# def index():    
-
-#     # form corresponds with top K
-#     form = ProductsKInput()
-
-#     k = form.value.data
-    
-#     if k is None:
-#         products = []
-#     else:
-#         products = Product.filterByCategory(k)
-
-#     return render_template('products.html',
-#                            avail_products=products, form = form)
 
 class ProductsKInput(FlaskForm):
     value = IntegerField('Get top k expensive products') or 0
@@ -51,28 +35,22 @@ def index():
     # form corresponds with top K
     form1 = ProductsKInput()
     form2 = FilterProductCategory()
-    k = form1.value.data
+    # k = form1.value.data
     
-    if k is None:
-        products = []
-    else:
-        products = Product.get_top_K_expensive(True, k)
+    # if k is None:
+    #     products = []
+    # else:
+    #     products = Product.get_top_K_expensive(True, k)
 
+    products = Product.get_all(True)    
     return render_template('products.html',
                            avail_products=products, form1 = form1, form2 = form2)
-
-#   
-
-
-@bp.route('/productCategory', methods = ['GET', 'POST'])
-def productCategory():    
-    
+@bp.route('/products/<pid>,<price>', methods = ['GET','POST'])
+def addToCart(pid, price):
     form1 = ProductsKInput()
     form2 = FilterProductCategory()
-    category = form2.category.data
-    
-    products = Product.filterByCategory(category)
-    
+    products = Product.get_all(True)
+    uid = current_user.id
+    Cart.addProduct(uid, pid, price)
     return render_template('products.html',
-                           products_by_category=products, form1 = form1, form2 = form2)
-
+                           avail_products=products, form1 = form1, form2 = form2)
