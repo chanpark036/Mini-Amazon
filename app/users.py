@@ -17,7 +17,6 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
-
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -53,7 +52,6 @@ class RegistrationForm(FlaskForm):
         if User.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
 
-
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -73,7 +71,6 @@ def register():
                            title='Register', 
                            form=form)
 
-
 @bp.route('/logout')
 def logout():
     logout_user()
@@ -92,11 +89,101 @@ class UserPublicView(FlaskForm):
     user_id = IntegerField('User id')
     search = SubmitField('Search')
     
+# TODO: could add more public details for accounts
 @bp.route('/userpublicview', methods=['GET', 'POST'])
 def get_user_public_view():
     form = UserPublicView()
-    user_id = form.user_id.data
+    user = User.get(form.user_id.data)
     return render_template('public_view.html',
-                           user_id=user_id,
+                           user_id=user,
                            form=form)
-# user public view page not displaying data after submitting form
+
+
+class UpdateEmail(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Submit')
+
+@bp.route('/update-email', methods=['GET', 'POST'])
+def update_email():
+    form = UpdateEmail()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_email(user_id,
+                          form.email.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-email.html', title='Update Email', form=form)
+
+
+class UpdatePassword(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField('Repeat Password', validators=[DataRequired(),EqualTo('password')])
+    submit = SubmitField('Submit')
+
+# TODO: if passwords do not match, does not tell user that password change failed
+@bp.route('/update-password', methods=['GET', 'POST'])
+def update_password():
+    form = UpdatePassword()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_password(user_id,
+                             form.password.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-password.html', title='Update Password', form=form)
+
+
+class UpdateName(FlaskForm):
+    firstname = StringField('First Name', validators=[DataRequired()])
+    lastname = StringField('Last Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+@bp.route('/update-name', methods=['GET', 'POST'])
+def update_name():
+    form = UpdateName()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_firstname(user_id,
+                         form.firstname.data)
+        User.update_lastname(user_id,
+                         form.lastname.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-name.html', title='Update Name', form=form)
+
+
+class UpdateAddress(FlaskForm):
+    address = StringField('Address', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+@bp.route('/update-address', methods=['GET', 'POST'])
+def update_address():
+    form = UpdateAddress()
+    user_id = current_user.id
+    if form.validate_on_submit():
+        User.update_address(user_id,
+                         form.address.data)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-address.html', title='Update Address', form=form)
+
+
+class UpdateBalance(FlaskForm):
+    balance = IntegerField('Balance')
+    submit = SubmitField('Submit')
+
+# TODO: display message saying transaction not possible if new balance < 0
+@bp.route('/update-balance', methods=['GET', 'POST'])
+def update_balance():
+    form = UpdateBalance()
+    user_id = current_user.id
+    curr_balance = current_user.balance
+    if form.validate_on_submit():
+        transaction = form.balance.data
+        new_balance = curr_balance + float(transaction)
+        if new_balance >= 0:
+            User.update_balance(user_id,
+                                new_balance)
+    if request.method == "POST":
+        return redirect(url_for('users.get_account_info'))
+    return render_template('update-balance.html', title='Update Balance', form=form)

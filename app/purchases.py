@@ -10,13 +10,13 @@ from .models.purchase import Purchase
 from flask import Blueprint
 bp = Blueprint('purchases', __name__)
 
-class UserPurchasesSearch(FlaskForm):
+class SearchUserPurchases(FlaskForm):
     user_id = IntegerField('User id')
     search = SubmitField('Search')
 
 @bp.route('/searchuserpurchases', methods=['GET', 'POST'])
 def user_purchases():
-    form = UserPurchasesSearch()
+    form = SearchUserPurchases()
     uid = form.user_id.data
     purchases = Purchase.get_all_user_purchases(uid)
     return render_template('user_purchases.html', 
@@ -26,5 +26,5 @@ def user_purchases():
 @bp.route('/purchasehistory')
 def purchase_history():
     purchases = Purchase.get_all_user_purchases(current_user.id)
-    return render_template('purchase_history.html', 
+    return render_template('purchase_history.html',
                             purchase_history=purchases)
