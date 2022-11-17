@@ -17,7 +17,6 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
-
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -53,7 +52,6 @@ class RegistrationForm(FlaskForm):
         if User.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
 
-
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -73,7 +71,6 @@ def register():
                            title='Register', 
                            form=form)
 
-
 @bp.route('/logout')
 def logout():
     logout_user()
@@ -92,14 +89,15 @@ class UserPublicView(FlaskForm):
     user_id = IntegerField('User id')
     search = SubmitField('Search')
     
+# TODO: could add more public details for accounts
 @bp.route('/userpublicview', methods=['GET', 'POST'])
 def get_user_public_view():
     form = UserPublicView()
-    user_id = form.user_id.data
+    user = User.get(form.user_id.data)
     return render_template('public_view.html',
-                           user_id=user_id,
+                           user_id=user,
                            form=form)
-# user public view page not displaying data after submitting form
+
 
 class UpdateEmail(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -115,6 +113,7 @@ def update_email():
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
     return render_template('update-email.html', title='Update Email', form=form)
+
 
 class UpdatePassword(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
@@ -173,6 +172,7 @@ class UpdateBalance(FlaskForm):
     balance = IntegerField('Balance')
     submit = SubmitField('Submit')
 
+# TODO: display message saying transaction not possible if new balance < 0
 @bp.route('/update-balance', methods=['GET', 'POST'])
 def update_balance():
     form = UpdateBalance()
@@ -181,7 +181,7 @@ def update_balance():
     if form.validate_on_submit():
         transaction = form.balance.data
         new_balance = curr_balance + float(transaction)
-        if new_balance >= 0: # TODO: display message saying transaction not possible if new balance < 0
+        if new_balance >= 0:
             User.update_balance(user_id,
                                 new_balance)
     if request.method == "POST":
