@@ -1,6 +1,7 @@
 from werkzeug.security import generate_password_hash
 import csv
 from faker import Faker
+import random
 
 num_users = 100
 num_products = 2000
@@ -39,6 +40,7 @@ def gen_users(num_users):
 
 def gen_products(num_products):
     available_pids = []
+    available_categories = ['Apps', 'Food', 'Books', 'Electronics', 'Health', 'Outdoor', 'Entertainment']
     with open('Products.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
@@ -47,7 +49,8 @@ def gen_products(num_products):
                 print(f'{pid}', end=' ', flush=True)
             name = fake.sentence(nb_words=4)[:-1]
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
-            category = "CAT"
+            category_index = random.randint(0, len(available_categories) - 1)
+            category = available_categories[category_index]
             description = "yada yada"
             available = fake.pybool()
             if available:
