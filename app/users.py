@@ -183,3 +183,4 @@ def update_balance():
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
     return render_template('update-balance.html', title='Update Balance', form=form)
+# TODO: consider adding to balance, withdrawing from balance
