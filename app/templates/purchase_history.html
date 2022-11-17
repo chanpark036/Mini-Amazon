@@ -6,19 +6,21 @@
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Purchase ID</th>
-      <th scope="col">Product Name</th>
-      <th scope="col">Time Purchased</th>
+      <th scope="col">Total Cost</th>
+      <th scope="col">Number of Items</th>
       <th scope="col">Fulfillment Status</th>
+      <th scope="col">Link to Detailed Order Page</th>
     </tr>
   </thead>
   <tbody>
     {% for purchase in purchase_history%}
       <tr>
-        <th scope="row">{{purchase.id}}</th>
-        <td>{{purchase.name}}</td>
-        <td>{{purchase.time_purchased}}</td>
+        <th scope="row"></th>
+        <td> TOTAL COST </td>
+        <td> NUMBER OF ITEMS </td>
         <td>{{purchase.fulfillment_status}}</td>
+        <td> LINK TO DETAILED ORDER PAGE </td>
+        <td> </td>
       </tr>
     {% endfor %}
   </tbody>

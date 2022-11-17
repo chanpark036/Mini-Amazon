@@ -72,3 +72,63 @@ WHERE id = :id
 """,
                               id=id)
         return User(*(rows[0])) if rows else None
+    
+    @staticmethod
+    def update_email(id, email):
+        rows = app.db.execute("""
+UPDATE Users
+SET email = :email
+WHERE id= :id
+""",
+                              email=email,
+                              id=id)
+        
+    @staticmethod
+    def update_password(id, password):
+        rows = app.db.execute("""
+UPDATE Users
+SET password = :password
+WHERE id= :id
+""",
+                              password=generate_password_hash(password),
+                              id=id)
+        
+    @staticmethod
+    def update_firstname(id, firstname):
+        rows = app.db.execute("""
+UPDATE Users
+SET firstname = :firstname 
+WHERE id= :id
+""",
+                              firstname=firstname,
+                              id=id)
+        
+    @staticmethod
+    def update_lastname(id, lastname):
+        rows = app.db.execute("""
+UPDATE Users
+SET lastname = :lastname
+WHERE id= :id
+""",
+                              lastname=lastname,
+                              id=id)
+        
+    @staticmethod
+    def update_address(id, address):
+        rows = app.db.execute("""
+UPDATE Users
+SET address = :address
+WHERE id= :id
+""",
+                              address=address,
+                              id=id)
+        
+    @staticmethod
+    def update_balance(id, balance):
+        rows = app.db.execute("""
+UPDATE Users
+SET balance = :balance
+WHERE id= :id
+""",
+                              balance=balance,
+                              id=id)

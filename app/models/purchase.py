@@ -33,7 +33,8 @@ ORDER BY time_purchased DESC
                               since=since)
         return [Purchase(*row) for row in rows]
 
-# API: Given a user id, find all purchases of that user.
+    # API: Given a user id, find all purchases of that user.
+    @staticmethod
     def get_all_user_purchases(uid):
         rows = app.db.execute("""
                               SELECT Purchases.id as id, 
@@ -48,3 +49,26 @@ ORDER BY time_purchased DESC
                               """,
                               uid = uid)
         return [Purchase(*row) for row in rows]
+    
+    # @staticmethod
+    # def get_purchase_history_info(uid):
+    #     rows = app.db.execute("""
+    #                           SELECT SUM(Carts.u_price), Carts.quantity, purchases.fulfillment_status
+    #                           FROM Purchases, Carts
+    #                           WHERE Carts.uid = :Carts.uid and Purchases.pid = Products.id
+    #                           ORDER BY Purchases.time_purchased DESC
+    #                           """,
+    #                           uid = uid)
+    #     return [Purchase(*row) for row in rows]
+    
+    # @staticmethod
+    # def get_purchase_total_cost(uid):
+    #     rows = app.db.execute("""
+    #                           SELECT SUM(Carts.u_price)
+    #                           FROM Purchases, Carts
+    #                           WHERE Carts.uid = :Carts.uid and Purchases.pid = Carts.id
+    #                           GROUP BY Purchases.time_purchased
+    #                           ORDER BY Purchases.time_purchased DESC
+    #                           """,
+    #                           uid = uid)
+    #     return [Purchase(*row) for row in rows]
