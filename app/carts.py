@@ -13,6 +13,17 @@ bp = Blueprint('carts', __name__)
 class submitOrderForm(FlaskForm):
     submit = SubmitField('Submit Order')
     
+def getNumItems(productList):
+    quantity = 0
+    for prod in productList:
+        quantity+=prod.quantity
+    return quantity
+def getTotalPrice(productList):
+    price = 0
+    for prod in productList:
+        price+=(prod.u_price * prod.quantity)
+    return price
+    
 @bp.route('/carts', methods = ['GET', 'POST'])
 def carts():
     # get all available products for sale:
@@ -25,7 +36,8 @@ def carts():
     # render the page by adding information to the index.html file
     return render_template('cart.html',
                            printprods = products,
-                           
+                           numItems = getNumItems(products),
+                           totalPrice = getTotalPrice(products),
                            form3 = form3)
     
 @bp.route('/carts/<uid>,<pid>,<newValue>', methods = ['GET', 'POST'])
@@ -37,7 +49,8 @@ def changeCart(uid, pid, newValue):
     # render the page by adding information to the index.html file
     return render_template('cart.html',
                            printprods = products,
-                           
+                           numItems = getNumItems(products),
+                           totalPrice = getTotalPrice(products),
                            form3 = submitForm)
     
 @bp.route('/carts/<user_id>,<purchase_id>', methods=['GET','DELETE'])
@@ -46,10 +59,12 @@ def delete_product(user_id, purchase_id):
     
     submitForm = submitOrderForm()
     return render_template('cart.html',
-                           printprods = products,
-                           
+                           printprods = products, 
+                           numItems = getNumItems(products),
+                           totalPrice = getTotalPrice(products),
                            form3 = submitForm)
     
 @bp.route('/submitOrder', methods = ['GET','POST'])
 def submitOrder():
     return render_template('submitPage.html')
+    

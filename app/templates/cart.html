@@ -30,14 +30,25 @@
         <td>{{purchase.u_price*purchase.quantity}}</td>
         <td>
           <a href="{{ url_for('carts.delete_product', user_id = purchase.uid, purchase_id = purchase.pid) }}" type="button" class="btn btn-light">Delete</a>
-        </td>
-        
+        </td>  
       </tr>
     {% endfor %}
   </tbody>
 </table>
-
-
+<table class = "center table-bordered">
+  <tr>
+    <th>Total Number of Items</th>
+    <th>Total Price</th>
+  </tr>
+  <tr>
+    <td>
+      {{numItems}}
+    </td>
+    <td>
+      {{totalPrice}}
+    </td>
+  </tr>
+  </table>
 <h2>Submit Your Order</h2>
 <form action = "{{url_for('carts.submitOrder')}}" method = "post" novalidate>
   {{form3.submit(class_="btn btn-black")}}
