@@ -6,6 +6,7 @@ from wtforms import IntegerField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.cart import Cart
+from .models.inventory import Inventory
 
 from flask import Blueprint
 bp = Blueprint('carts', __name__)
@@ -64,7 +65,11 @@ def delete_product(user_id, purchase_id):
                            totalPrice = getTotalPrice(products),
                            form3 = submitForm)
     
-@bp.route('/submitOrder', methods = ['GET','POST'])
+@bp.route('/submitOrder', methods = ['GET','POST','DELETE'])
 def submitOrder():
+    products = Cart.get(current_user.id)
+    for prod in products:
+        Inventory.decreaseInventory(prod.pid, prod.quantity)
+    products = Cart.emptyCart(current_user.id)
     return render_template('submitPage.html')
     
