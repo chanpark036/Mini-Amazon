@@ -67,9 +67,11 @@ def delete_product(user_id, purchase_id):
     
 @bp.route('/submitOrder', methods = ['GET','POST','DELETE'])
 def submitOrder():
-    products = Cart.get(current_user.id)
-    for prod in products:
+    orderProducts = list(Cart.get(current_user.id))
+    for prod in orderProducts:
         Inventory.decreaseInventory(prod.pid, prod.quantity)
     products = Cart.emptyCart(current_user.id)
-    return render_template('submitPage.html')
+    return render_template('submitPage.html',
+                           orderInfo = orderProducts,
+                           totalPrice = getTotalPrice(orderProducts))
     

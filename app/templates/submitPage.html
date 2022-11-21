@@ -1,5 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Your order has been submitted!</h2>
+<h3 class = "centerText">Your order has been submitted!</h3>
+<br><br>
+<table class = "center table-bordered">
+    <tr>
+      <th>Item</th>
+      <th>Item Quantity</th>
+      <th>Item Total</th>
+    </tr>
+    <tbody>
+    {% for product in orderInfo %}
+    <tr>  
+      <td>
+        {{product.name}}
+      </td>
+      <td>
+        {{product.quantity}}
+      </td>
+      <td>
+        {{product.u_price*product.quantity}}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br><br>
+<table class = "center table-bordered">
+    <tr>
+        <th>Order Total</th>
+        <th>Fulfillment Status</th>
+    </tr>
+    <tr>
+        <td>
+            {{totalPrice}}
+        </td>
+    </tr>
+
 {%endblock%}
