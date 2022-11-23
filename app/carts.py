@@ -7,7 +7,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.cart import Cart
 from .models.inventory import Inventory
-
+from .models.user import User
 from flask import Blueprint
 bp = Blueprint('carts', __name__)
 
@@ -67,11 +67,25 @@ def delete_product(user_id, purchase_id):
     
 @bp.route('/submitOrder', methods = ['GET','POST','DELETE'])
 def submitOrder():
+    #decrease inventory
     orderProducts = list(Cart.get(current_user.id))
     for prod in orderProducts:
         Inventory.decreaseInventory(prod.pid, prod.quantity)
-    products = Cart.emptyCart(current_user.id)
+    
+    #decrease buyer balance
+    curr_balance = current_user.balance
+    cost = getTotalPrice(orderProducts)
+    new_balance = curr_balance - float(cost)
+    if new_balance>=0:
+        User.update_balance(current_user.id, new_balance)
+    else:
+        print("invalid transaction")
+        #@TODO: display message on frontend about insufficient funds
+    #@TODO increment seller funds for each product
+    
+    #empty cart
+    Cart.emptyCart(current_user.id)
     return render_template('submitPage.html',
                            orderInfo = orderProducts,
-                           totalPrice = getTotalPrice(orderProducts))
+                           totalPrice = cost)
     
