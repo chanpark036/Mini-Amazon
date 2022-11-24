@@ -2,28 +2,6 @@
 
 {% block content %}
 
-<br><br>
-<form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.inventory_id.label }}<br/>
-    {{ form.inventory_id(size=32) }}<br/>
-
-    {{ form.product_id.label }}<br/>
-    {{ form.product_id(size=32) }}<br/>
-
-    {{ form.quantity.label }}<br/>
-    {{ form.quantity(size=32) }}<br/>
-
-    {{ form.price.label }}<br/>
-    {{ form.price(size=32) }}<br/>
-
-    {{ form.action.label }} <br/>
-    {{ form.action(size=32) }}<br/>
-  </p>
-  {{ form.search(class_="btn btn-black") }}
-</form>
-
 <h2>Products in Inventory for User {{sid}}:</h2>
 {% if available%}
 <table class='table table-hover table-bordered container'>
@@ -32,6 +10,7 @@
       <th scope="col">Product ID</th>
       <th scope="col">Product Price</th>
       <th scope="col">Quantity</th>
+      <th scope="col">Remove?</th>
     </tr>
   </thead>
   <tbody>
@@ -39,11 +18,31 @@
       <tr>
         <th scope="row">{{product.pid}}</th>
         <td>{{product.price}}</td>
-        <td>{{product.quantity}}</td>
+        <td>{{product.quantity}}
+        <a href="{{ url_for('inventories.modifyQuantity', uid = product.sid, pid = product.pid, new_q = product.quantity+1) }}" type="button" class="btn btn-light">+</a> 
+        <a href="{{ url_for('inventories.modifyQuantity', uid = product.sid, pid = product.pid, new_q = product.quantity-1) }}" type="button" class="btn btn-light">-</a>
+        </td>   
+        <td>
+          <a href="{{ url_for('inventories.removeProduct', uid = product.sid, pid = product.pid) }}" type="button" class="btn btn-light">Delete</a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
+
+ADD PRODUCT
+<form action = "{{url_for('inventories.addProduct')}}" method = "post" novalidate>
+  {{ form.product_id.label }}
+  {{ form.product_id(size=32) }}<br/>
+
+  {{ form.quantity.label }}
+  {{ form.quantity(size=32) }}<br/>
+
+  {{ form.price.label }}
+  {{ form.price(size=32) }}<br/>
+
+  {{form.submit(class_="btn btn-black")}}
+</form>
 {% else %}
 <b style='color:red;'> Not a seller </b>
 {% endif %}

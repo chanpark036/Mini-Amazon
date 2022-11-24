@@ -12,38 +12,58 @@ from flask import Blueprint
 
 bp = Blueprint('inventories', __name__)
 
+seller_id = 2
 class InventorySearch(FlaskForm):
-    inventory_id = IntegerField('Inventory id')
-    product_id = IntegerField('Product id')
-    quantity = IntegerField('Quantity')
-    price = FloatField('Price')
-    action = StringField('Action')
-    search = SubmitField('Enter')
+    product_id = IntegerField('Product id: ')
+    quantity = IntegerField('Quantity: ')
+    price = FloatField('Price: ')
+    submit = SubmitField('Enter')
 
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():
-    available = True
     form = InventorySearch()
-    seller_id = form.inventory_id.data
-    if not seller_id:
-        seller_id = 0
-
-    product_id = form.product_id.data
-    quantity = form.quantity.data
-    price = form.price.data
-    action = form.action.data
-    if action == 'change':
-        Inventory.change_q(seller_id,product_id,quantity)
-    elif action == 'add':
-        Inventory.add(seller_id,product_id,quantity,price)
-    elif action == 'remove':
-        Inventory.remove(seller_id,product_id)
+    available = True
+    #seller_id = current_user.id
+    seller_id = 2 #change
     inv = Inventory.get(seller_id)
     if len(inv) == 0:
         available = False
     return render_template('inventory.html',
                             sid = seller_id,
-                           inventory_products=inv, form = form, available = available)
+                           inventory_products=inv, form=form, available = available) 
+                           #if available not true then how to become a seller?
+
+@bp.route('/inventory/<uid>,<pid>,<new_q>', methods = ['GET', 'POST'])
+def modifyQuantity(uid, pid, new_q):
+    products = Inventory.change_q(uid, pid, new_q)
+    form = InventorySearch()
+    # find the products current user has bought:
+    # render the page by adding information to the index.html file
+    return render_template('inventory.html',
+                            sid = uid,
+                           inventory_products = products, form=form, available = True)
+    
+@bp.route('/inventory/<uid>,<pid>', methods=['GET','DELETE'])
+def removeProduct(uid, pid):
+    products = Inventory.remove(uid, pid)
+    form = InventorySearch()
+    return render_template('inventory.html',
+                            sid = uid,
+                           inventory_products = products, form=form, available = True)
+
+@bp.route('/inventory/add', methods=['GET','POST'])
+def addProduct():
+    form = InventorySearch()
+    uid = 2 #change
+    pid = form.product_id.data
+    quantity = form.quantity.data
+    u_price = form.price.data
+
+    products = Inventory.add(uid, pid, quantity,u_price)
+    
+    return render_template('inventory.html',
+                           sid = uid,
+                           inventory_products = products, form=form, available = True)
     
 
 

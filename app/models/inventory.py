@@ -10,10 +10,11 @@ class Inventory:
     @staticmethod
     def get(sid):
         rows = app.db.execute('''
-SELECT *
-FROM Inventory
-WHERE sid = :sid
-''',
+            SELECT *
+            FROM Inventory
+            WHERE sid = :sid
+            ORDER BY pid
+            ''',
                               sid=sid)
         return [Inventory(*row) for row in rows]
 
@@ -23,6 +24,7 @@ WHERE sid = :sid
         INSERT INTO Inventory (sid, pid, quantity, u_price)
         VALUES (:sid, :pid, :quantity, :u_price)
         ''', sid = sid, pid = pid, quantity = quantity, u_price = u_price)
+        return Inventory.get(sid)
 
     @staticmethod
     def remove(sid, pid):
@@ -30,6 +32,7 @@ WHERE sid = :sid
             DELETE FROM Inventory
             WHERE sid = :sid AND pid = :pid
             ''', sid=sid, pid=pid)
+        return Inventory.get(sid)
     
     @staticmethod
     def change_q(sid, pid, quantity):
@@ -38,3 +41,4 @@ WHERE sid = :sid
             SET quantity = :quantity
             WHERE sid = :sid AND pid = :pid
         ''', quantity = quantity, sid = sid, pid=pid)
+        return Inventory.get(sid)
