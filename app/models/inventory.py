@@ -42,3 +42,12 @@ class Inventory:
             WHERE sid = :sid AND pid = :pid
         ''', quantity = quantity, sid = sid, pid=pid)
         return Inventory.get(sid)
+        
+    @staticmethod
+    def decreaseInventory(pid, change):
+        app.db.execute('''
+            UPDATE Inventory
+            SET quantity = quantity-:change
+            WHERE pid = :pid
+        ''', change = change, pid=pid)
+

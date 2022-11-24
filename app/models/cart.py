@@ -44,7 +44,15 @@ RETURNING uid
                               uid=uid,
                               pid=pid)
        id = rows[0][0]
-       print(uid)
+       return Cart.get(id) 
+    def emptyCart(uid):
+       rows = app.db.execute('''
+DELETE FROM Carts
+WHERE uid = :uid
+RETURNING uid
+''',
+                              uid=uid)
+       id = rows[0][0]
        return Cart.get(id) 
    
     def addProduct(uid, pid, price):
