@@ -45,3 +45,14 @@ def index():
     return render_template('products.html',
                            avail_products=products, form1 = form1, form2 = form2)
 
+@bp.route('/product-detail/<product_id>', methods=['GET', 'POST'])
+def detail_product(product_id):
+    form1 = ProductsKInput()
+    form2 = FilterProductCategory()
+    
+    # Feedback.update_review(review_id,
+    #                      form.review.data)
+    # if request.method == "POST":
+    #     return redirect(url_for('feedback.feedback'))
+    return render_template('product-detail.html',
+                             form1 = form1, form2 = form2)

@@ -13,6 +13,7 @@
       <th scope="col">Category</th>
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
+      <th scope="col">Detail View</th>
     </tr>
   </thead>
   <tbody>
@@ -22,6 +23,9 @@
         <td>{{product.category}}</td>
         <td>{{product.name}}</td>
         <td>{{product.price}}</td>
+        <td>{{product.detail}}
+          <a href="{{ url_for('products.detail_product', product_id = product.id) }}" type="button" class="btn btn-light">Detail View</a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
