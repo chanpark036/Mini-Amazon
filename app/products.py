@@ -56,7 +56,7 @@ def detail_product(product_id):
     # if request.method == "POST":
     #     return redirect(url_for('feedback.feedback'))
     return render_template('product-detail.html',
-                             form1 = form1, form2 = form2)
+                             form1 = form1, form2 = form2, product_id=product_id)
 
 
 @bp.route('/products/<pid>,<price>', methods = ['GET','POST'])

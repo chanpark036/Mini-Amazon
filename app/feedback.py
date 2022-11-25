@@ -81,7 +81,7 @@ def review_product(product_id):
                             product_id,
                          form.review.data,
                          form.rating.data)
-        return redirect(url_for('feedback.feedback'))
+        return redirect(url_for('products.detail_product', product_id=product_id))
     return render_template('review-product.html', title='Review Product', form=form)
 
 @bp.route('/review-seller/<seller_id>', methods=['GET', 'POST'])
