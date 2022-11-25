@@ -6,5 +6,68 @@
 
 <a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Review this Product</a>
 
+<h3>Stats</h3>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Average Rating</th>
+      <th scope="col">Number of Ratings</th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for stat in stats%}
+      <tr>
+        <th scope="row">{{stat[1]}}</th>
+        <th scope="row">{{stat[2]}}</th>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Rating Counts</h3>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">1</th>
+      <th scope="col">2</th>
+      <th scope="col">3</th>
+      <th scope="col">4</th>
+      <th scope="col">5</th>
+
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <th scope="row">{{ratings.one}}</th>
+        <th scope="row">{{ratings.two}}</th>
+        <th scope="row">{{ratings.three}}</th>
+        <th scope="row">{{ratings.four}}</th>
+        <th scope="row">{{ratings.five}}</th>
+      </tr>
+  </tbody>
+</table>
+
+
+<h3>Reviews</h3>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Review</th>
+      <th scope="col">Rating</th>
+      <th scope="col">PID</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for feedback in reviews%}
+      <tr>
+        <td>{{feedback.review}}</td>
+        <td>{{feedback.rating}}        
+        <td>{{feedback.pid}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 {% endblock %}
 
