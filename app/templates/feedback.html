@@ -6,8 +6,8 @@
 
 
 
-<a href="{{ url_for('feedback.review_product') }}" type="button" class="btn btn-light">Write a Product Review</a>
-<a href="{{ url_for('feedback.review_seller') }}" type="button" class="btn btn-light">Write a Seller Review</a>
+<a href="{{ url_for('feedback.review_product', product_id = 2) }}" type="button" class="btn btn-light">Write a Product Review</a>
+<a href="{{ url_for('feedback.review_seller', seller_id = 2) }}" type="button" class="btn btn-light">Write a Seller Review</a>
 
 
 <h2>Your Reviews:</h2>
@@ -18,6 +18,8 @@
       <th scope="col">User ID</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
+      <th scope="col">PID</th>
+      <th scope="col">SID</th>
       <th scope="col">Delete</th>
     </tr>
   </thead>
@@ -32,6 +34,8 @@
         <td>{{feedback.rating}}
           <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
         </td>
+        <td>{{feedback.pid}}</td>
+        <td>{{feedback.sid}}</td>
         <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>
       </tr>
     {% endfor %}

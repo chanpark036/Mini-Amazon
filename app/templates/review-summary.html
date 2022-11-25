@@ -2,11 +2,9 @@
 
 {% block content %}
 
-<br>HEY what's up<br>
+<br><br>
 
-<a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Review this Product</a>
-
-<h3>Stats</h3>
+<h2>Stats</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -25,7 +23,7 @@
   </tbody>
 </table>
 
-<h3>Rating Counts</h3>
+<h2>Rating Counts</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
@@ -49,25 +47,32 @@
 </table>
 
 
-<h3>Reviews</h3>
+<h2>Reviews</h2>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
+      <th scope="col">Review ID</th>
+      <th scope="col">User ID</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
       <th scope="col">PID</th>
+      <th scope="col">SID</th>
     </tr>
   </thead>
   <tbody>
     {% for feedback in reviews%}
       <tr>
+        <th scope="row">{{feedback.id}}</th>
+        <td>{{feedback.uid}}</td>
         <td>{{feedback.review}}</td>
         <td>{{feedback.rating}}        
         <td>{{feedback.pid}}</td>
+        <td>{{feedback.sid}}</td>
       </tr>
     {% endfor %}
   </tbody>
 </table>
 
-{% endblock %}
+<br><br>
 
+{% endblock %}
