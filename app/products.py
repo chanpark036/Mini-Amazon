@@ -83,13 +83,23 @@ def detail_product(product_id):
     # if request.method == "POST":
     #     return redirect(url_for('feedback.feedback'))
 
+    #Product Details
+    product_details = Product.get(product_id)
+
+    # product_name = product_details[1]
+    # product_category = product_details[2]
+    # product_description = product_details[3]
+    # product_price = product_details[4]
+
+
     # Reviews
     reviews = Feedback.get_all_by_pid(product_id)
     stats = Feedback.get_p_stats(product_id)
     rating = Feedback.get_p_ratings(product_id)
     ratings = create_rating(rating)
     return render_template('product-detail.html',
-                             form1 = form1, form2 = form2, product_id=product_id, reviews=reviews, stats=stats, ratings=ratings)
+                             form1 = form1, form2 = form2, product_id=product_id, reviews=reviews, stats=stats, ratings=ratings, 
+                             product_details = product_details)
 
 
 @bp.route('/products/<pid>,<price>', methods = ['GET','POST'])
