@@ -28,7 +28,7 @@ FROM Feedback
 WHERE id = :id
 ''',
                               id=id)
-        return Feedback(*(rows[0])) if rows else None
+        return rows
 
     @staticmethod
     def get_all_by_uid_since(uid, since):
@@ -141,9 +141,6 @@ GROUP BY rating
             rows = app.db.execute('''
 INSERT INTO Feedback(uid, pid, review, rating)
 VALUES(:uid, :pid, :review,:rating)
-WHERE NOT EXISTS (SELECT *
-                 FROM Feedback
-                 WHERE uid=:uid AND pid=:pid)
 RETURNING id
 ''',
                             uid=uid,
@@ -162,11 +159,6 @@ RETURNING id
             rows = app.db.execute('''
 INSERT INTO Feedback(uid, sid, review, rating)
 VALUES(:uid, :sid, :review,:rating)
-WHERE EXISTS (SELECT *
-                FROM Purchases P, Inventory I
-                WHERE F.pid = I.pid
-                AND P.uid = :uid
-                AND I.sid = :sid)
 RETURNING id
 ''',
                             uid=uid,
@@ -207,14 +199,5 @@ WHERE id= :id
 ''',
                               id=id) 
 
-    @staticmethod
-    def get(id):
-        rows = app.db.execute("""
-SELECT id, review, rating
-FROM Feedback
-WHERE id = :id
-""",
-                              id=id)
-        return Feedback(*(rows[0])) if rows else None
 
         

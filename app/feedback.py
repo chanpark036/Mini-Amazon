@@ -103,7 +103,8 @@ def update_review(review_id):
         Feedback.update_review(review_id,
                          form.review.data)
         return redirect(url_for('feedback.feedback'))
-    return render_template('update-review.html', title='Update Review', form=form)
+    review = Feedback.get(review_id)
+    return render_template('update-review.html', title='Update Review', form=form, review_id=review_id, review=review)
 
 @bp.route('/update-rating/<review_id>', methods=['GET', 'POST'])
 def update_rating(review_id):
@@ -112,7 +113,8 @@ def update_rating(review_id):
         Feedback.update_rating(review_id,
                          form.rating.data)
         return redirect(url_for('feedback.feedback'))
-    return render_template('update-rating.html', title='Update Rating', form=form)
+    rating = Feedback.get(review_id)
+    return render_template('update-rating.html', title='Update Rating', form=form, review_id=review_id, rating=rating)
 
 @bp.route('/feedback/<review_id>', methods=['GET','DELETE'])
 def delete_review(review_id):
