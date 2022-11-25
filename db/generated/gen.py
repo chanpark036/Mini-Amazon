@@ -1,6 +1,7 @@
 from werkzeug.security import generate_password_hash
 import csv
 from faker import Faker
+import random
 
 num_users = 100
 num_products = 2000
@@ -29,16 +30,17 @@ def gen_users(num_users):
             name_components = profile['name'].split(' ')
             firstname = name_components[0]
             lastname = name_components[-1]
-            is_seller = fake.pybool()
+            seller = fake.random.choice([True, False])
             balance = fake.random_int(min=0)
             address = fake.sentence(nb_words=4)[:-1]
-            writer.writerow([uid, email, password, firstname, lastname, is_seller, balance, address])
+            writer.writerow([uid, email, password, firstname, lastname, seller, balance, address])
         print(f'{num_users} generated')
     return
 
 
 def gen_products(num_products):
     available_pids = []
+    available_categories = ['Apps', 'Food', 'Books', 'Electronics', 'Health', 'Outdoor', 'Entertainment']
     with open('Products.csv', 'w') as f:
         writer = get_csv_writer(f)
         print('Products...', end=' ', flush=True)
@@ -47,11 +49,13 @@ def gen_products(num_products):
                 print(f'{pid}', end=' ', flush=True)
             name = fake.sentence(nb_words=4)[:-1]
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
+            category_index = random.randint(0, len(available_categories) - 1)
+            category = available_categories[category_index]
             description = "yada yada"
             available = fake.pybool()
             if available:
                 available_pids.append(pid)
-            writer.writerow([pid, name, description, price, available])
+            writer.writerow([pid, name, category, description, price, available])
         print(f'{num_products} generated; {len(available_pids)} available')
     return available_pids
 

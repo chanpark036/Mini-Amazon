@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Update Balance</h1>
+  
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  
+  <p>
+    Current balance: ${{ current_user.balance }}<br/>
+    Enter positive number to add to balance and negative number to withdraw from balance.<br/> 
+    {{ form.balance(size=32) }}<br/>
+    {% for error in form.balance.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}

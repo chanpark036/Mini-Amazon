@@ -3,13 +3,6 @@
 {% block content %}
 
 <br><br>
-<form action ="{{ url_for('carts.carts')}}" method="post" novalidate>
-  <p>
-    {{ form1.uid.label }}<br/>
-    {{ form1.uid(size=32) }}<br/>
-  </p>
-  {{ form1.search(class_="btn btn-black") }}
-</form>
 
 
 <h2>Items in cart:</h2>
@@ -21,6 +14,7 @@
       <th scope = "col">Purchase Quantity</th>
       <th scope = "col">Unit Price</th>
       <th scope = "col">Total Price</th>
+      <th scope = "col">Delete from Cart</th>
     </tr>
   </thead>
   <tbody>
@@ -28,28 +22,33 @@
       <tr>
         <td>{{purchase.name}}</td>
         <td>{{purchase.pid}}</td>
-        <td>{{purchase.quantity}}</td> 
+        <td>{{purchase.quantity}}
+          <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity+1) }}" type="button" class="btn btn-light">+</a> 
+          <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity-1) }}" type="button" class="btn btn-light">-</a>        
+        </td> 
         <td>{{purchase.u_price}}</td>
         <td>{{purchase.u_price*purchase.quantity}}</td>
-        
+        <td>
+          <a href="{{ url_for('carts.delete_product', user_id = purchase.uid, purchase_id = purchase.pid) }}" type="button" class="btn btn-light">Delete</a>
+        </td>  
       </tr>
     {% endfor %}
   </tbody>
 </table>
-
-<h2>Update Items In Cart:</h2>
-<table>
-  <form action ="{{ url_for('carts.changeCart')}}" method="post" novalidate>
-    <p>
-      {{ form2.pid.label }}<br/>
-      {{ form2.pid(size=32) }}<br/>
-      {{ form2.quantity.label }}<br/>
-      {{ form2.quantity(size=32) }}<br/>
-    </p>
-    {{ form2.updateCart(class_="btn btn-black") }}
-  </form>        
-</table>
-
+<table class = "center table-bordered">
+  <tr>
+    <th>Total Number of Items</th>
+    <th>Total Price</th>
+  </tr>
+  <tr>
+    <td>
+      {{numItems}}
+    </td>
+    <td>
+      {{totalPrice}}
+    </td>
+  </tr>
+  </table>
 <h2>Submit Your Order</h2>
 <form action = "{{url_for('carts.submitOrder')}}" method = "post" novalidate>
   {{form3.submit(class_="btn btn-black")}}
