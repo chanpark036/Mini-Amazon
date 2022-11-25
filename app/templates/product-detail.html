@@ -2,7 +2,24 @@
 
 {% block content %}
 
-<br>HEY what's up<br>
+<!-- <h3>% product_details.name %</h3> -->
+<h3>About this product</h3>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+
+      <tr>
+        <th scope="row">{{ product_details.name }}</th>
+        <th scope="row">{{ product_details.description }}</th>
+      </tr>
+
+  </tbody>
+</table>
 
 <a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Review this Product</a>
 
@@ -12,7 +29,6 @@
     <tr>
       <th scope="col">Average Rating</th>
       <th scope="col">Number of Ratings</th>
-
     </tr>
   </thead>
   <tbody>

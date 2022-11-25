@@ -12,7 +12,7 @@ class Product:
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, name, price, available
+SELECT id, name, category, description, price, available
 FROM Products
 WHERE id = :id
 ''',
@@ -29,6 +29,8 @@ WHERE available = :available
                               available=available)
         return [Product(*row) for row in rows]
 
+##
+##
 
     @staticmethod
     def get_top_K_expensive(available=True, k = 0):
