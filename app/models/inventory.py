@@ -38,6 +38,8 @@ WHERE sid = :sid
             SET quantity = :quantity
             WHERE sid = :sid AND pid = :pid
         ''', quantity = quantity, sid = sid, pid=pid)
+        
+    
     @staticmethod
     def decreaseInventory(pid, change):
         app.db.execute('''

@@ -50,6 +50,30 @@ ORDER BY time_purchased DESC
                               uid = uid)
         return [Purchase(*row) for row in rows]
     
+    #!melannie testing!
+    @staticmethod
+    def get_most_recent_purchase_id():
+        rows = app.db.execute('''
+                                SELECT id, uid, pid, time_purchased, fulfillment_status
+                                FROM Purchases
+                                ORDER BY id DESC
+                                ''')
+        id = rows[0][0]
+        return id
+    
+    @staticmethod
+    def add_purchase_history(id, uid, pid, time_purchased):
+        rows = app.db.execute('''
+                                INSERT INTO Purchases (id, uid, pid, time_purchased, fulfillment_status)
+                                VALUES(:id, :uid, :pid, :time_purchased, :fulfillment_status)
+                                ''',
+                            id = id,
+                            uid=uid,
+                            pid=pid,
+                            time_purchased =time_purchased,
+                            fulfillment_status = False)
+        
+    
     # @staticmethod
     # def get_purchase_history_info(uid):
     #     rows = app.db.execute("""
