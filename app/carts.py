@@ -7,7 +7,10 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.cart import Cart
 from .models.inventory import Inventory
+from .models.purchase import Purchase
 from .models.user import User
+
+
 from flask import Blueprint
 bp = Blueprint('carts', __name__)
 
@@ -83,6 +86,12 @@ def submitOrder():
         #@TODO: display message on frontend about insufficient funds
     #@TODO increment seller funds for each product
     
+    #write order to purchase history
+    purchase_id = Purchase.get_most_recent_purchase_id() + 1
+    x = datetime.datetime.now()
+    for prod in orderProducts:
+        Purchase.add_purchase_history(purchase_id, current_user.id, prod.pid, x)
+        purchase_id+=1
     #empty cart
     Cart.emptyCart(current_user.id)
     return render_template('submitPage.html',
