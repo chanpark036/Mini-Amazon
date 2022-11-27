@@ -3,25 +3,18 @@
 {% block content %}
 
 <!-- <h3>% product_details.name %</h3> -->
-<h3>About this product</h3>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
+<h1>{{ product_details.name }}</h1>
+<h4>Price: ${{ product_details.price }}</h4>
+<h4>Category: {{ product_details.category }}</h4>
+<h4>Description: {{ product_details.description }}</h4>
 
-      <tr>
-        <th scope="row">{{ product_details.name }}</th>
-        <th scope="row">{{ product_details.description }}</th>
-      </tr>
-
-  </tbody>
-</table>
+<br>
+<br>
 
 <a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Review this Product</a>
+
+<br>
+
 
 <h3>Stats</h3>
 <table class='table table-hover table-bordered container'>
@@ -40,6 +33,9 @@
     {% endfor %}
   </tbody>
 </table>
+
+<br>
+
 
 <h3>Rating Counts</h3>
 <table class='table table-hover table-bordered container'>
@@ -64,6 +60,7 @@
   </tbody>
 </table>
 
+<br>
 
 <h3>Reviews</h3>
 <table class='table table-hover table-bordered container'>
