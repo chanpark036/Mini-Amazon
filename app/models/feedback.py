@@ -2,10 +2,11 @@ from flask import current_app as app
 
 
 class Feedback:
-    def __init__(self, id, uid, pid, submitted_timestamp, review, rating):
+    def __init__(self, id, uid, pid, sid, submitted_timestamp, review, rating):
         self.id = id
         self.uid = uid
         self.pid = pid
+        self.sid = sid
         self.submitted_timestamp = submitted_timestamp
         self.review = review
         self.rating = rating
@@ -13,7 +14,7 @@ class Feedback:
     @staticmethod
     def get_all():
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 '''
                               )
@@ -22,17 +23,17 @@ FROM Feedback
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 WHERE id = :id
 ''',
                               id=id)
-        return Feedback(*(rows[0])) if rows else None
+        return rows
 
     @staticmethod
     def get_all_by_uid_since(uid, since):
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 WHERE uid = :uid
 AND submitted_timestamp >= :since
@@ -45,7 +46,7 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_recent_k(uid, k):
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 WHERE uid = :uid
 ORDER BY submitted_timestamp DESC
@@ -60,13 +61,79 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
-SELECT id, uid, pid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
 FROM Feedback
 WHERE uid = :uid
 ORDER BY submitted_timestamp DESC
 ''',
                               uid=uid)
         return [Feedback(*row) for row in rows]
+    
+    @staticmethod
+    def get_all_by_pid(pid):
+        rows = app.db.execute('''
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+FROM Feedback
+WHERE pid = :pid
+ORDER BY rating DESC
+''',
+                              pid=pid)
+        return [Feedback(*row) for row in rows]
+    
+    @staticmethod
+    def get_all_by_sid(sid):
+        rows = app.db.execute('''
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+FROM Feedback
+WHERE sid = :sid
+ORDER BY rating DESC
+''',
+                              sid=sid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_p_stats(pid):
+        rows = app.db.execute('''
+SELECT pid, AVG(rating), COUNT(*)
+FROM Feedback
+WHERE pid = :pid
+GROUP BY pid
+''',
+                              pid=pid)
+        return rows
+
+    @staticmethod
+    def get_s_stats(sid):
+        rows = app.db.execute('''
+SELECT sid, AVG(rating), COUNT(*)
+FROM Feedback
+WHERE sid = :sid
+GROUP BY sid
+''',
+                              sid=sid)
+        return rows
+
+    @staticmethod
+    def get_p_ratings(pid):
+        rows = app.db.execute('''
+SELECT rating, COUNT(*)
+FROM Feedback
+WHERE pid = :pid
+GROUP BY rating
+''',
+                              pid=pid)
+        return rows
+
+    @staticmethod
+    def get_s_ratings(sid):
+        rows = app.db.execute('''
+SELECT rating, COUNT(*)
+FROM Feedback
+WHERE sid = :sid
+GROUP BY rating
+''',
+                              sid=sid)
+        return rows
 
     @staticmethod
     def add_p_review(uid, pid, review, rating):
@@ -132,14 +199,5 @@ WHERE id= :id
 ''',
                               id=id) 
 
-    @staticmethod
-    def get(id):
-        rows = app.db.execute("""
-SELECT id, review, rating
-FROM Feedback
-WHERE id = :id
-""",
-                              id=id)
-        return Feedback(*(rows[0])) if rows else None
 
         

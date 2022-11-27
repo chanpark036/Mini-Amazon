@@ -4,6 +4,12 @@
 
 {% block content %}
 
+{% for feedback in review%}
+
+<h3>Current Review:</h3> {{feedback.review}}
+
+{% endfor %}
+
 <h1>New Review</h1>
   
 <form action="" method="post">
