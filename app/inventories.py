@@ -17,7 +17,7 @@ class InventorySearch(FlaskForm):
     product_id = IntegerField('Product id: ')
     quantity = IntegerField('Quantity: ')
     price = FloatField('Price: ')
-    submit = SubmitField('Enter')
+    submit = SubmitField('ADD')
 
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():
@@ -52,15 +52,14 @@ def removeProduct(uid, pid):
                            inventory_products = products, form=form, available = True)
 
 @bp.route('/inventory/add', methods=['GET','POST'])
-def addProduct():
-    form = InventorySearch()
+def addProduct(): #ensure that pid is not already in database and if is then give error
+    #pid could be in database already but under a different seller
     uid = 2 #change
+    form = InventorySearch()
     pid = form.product_id.data
     quantity = form.quantity.data
     u_price = form.price.data
-
     products = Inventory.add(uid, pid, quantity,u_price)
-    
     return render_template('inventory.html',
                            sid = uid,
                            inventory_products = products, form=form, available = True)

@@ -10,7 +10,7 @@
       <th scope="col">Product ID</th>
       <th scope="col">Product Price</th>
       <th scope="col">Quantity</th>
-      <th scope="col">Remove?</th>
+      <th scope="col">Remove/Add</th>
     </tr>
   </thead>
   <tbody>
@@ -23,26 +23,32 @@
         <a href="{{ url_for('inventories.modifyQuantity', uid = product.sid, pid = product.pid, new_q = product.quantity-1) }}" type="button" class="btn btn-light">-</a>
         </td>   
         <td>
-          <a href="{{ url_for('inventories.removeProduct', uid = product.sid, pid = product.pid) }}" type="button" class="btn btn-light">Delete</a>
+          <a href="{{ url_for('inventories.removeProduct', uid = product.sid, pid = product.pid) }}" type="button" class="btn btn-black">REMOVE</a>
         </td>
       </tr>
     {% endfor %}
+    <form action = "{{url_for('inventories.addProduct')}}" method = "post" novalidate>
+      <th>
+      <!--{{ form.product_id.label }}-->
+      {{ form.product_id(size=8) }}
+      </th>
+
+      <td>
+      <!--{{ form.price.label }}-->
+      {{ form.price(size=8) }}
+      </td>
+
+      <td>
+      <!--{{ form.quantity.label }}-->
+      {{ form.quantity(size=8) }}
+      </td>
+
+      <td>
+      {{form.submit(class_="btn btn-black")}}
+      </td>
+    </form>
   </tbody>
 </table>
-
-ADD PRODUCT
-<form action = "{{url_for('inventories.addProduct')}}" method = "post" novalidate>
-  {{ form.product_id.label }}
-  {{ form.product_id(size=32) }}<br/>
-
-  {{ form.quantity.label }}
-  {{ form.quantity(size=32) }}<br/>
-
-  {{ form.price.label }}
-  {{ form.price(size=32) }}<br/>
-
-  {{form.submit(class_="btn btn-black")}}
-</form>
 {% else %}
 <b style='color:red;'> Not a seller </b>
 {% endif %}

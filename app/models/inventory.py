@@ -21,8 +21,15 @@ class Inventory:
     @staticmethod
     def add(sid, pid, quantity, u_price):
         app.db.execute('''
-        INSERT INTO Inventory (sid, pid, quantity, u_price)
-        VALUES (:sid, :pid, :quantity, :u_price)
+        DO
+        $do$
+        BEGIN
+            IF NOT EXISTS (SELECT FROM Inventory WHERE pid = :pid and sid = :sid) THEN
+            INSERT INTO Inventory (sid, pid, quantity, u_price)
+            VALUES (:sid, :pid, :quantity, :u_price);
+            END IF;
+        END
+        $do$
         ''', sid = sid, pid = pid, quantity = quantity, u_price = u_price)
         return Inventory.get(sid)
 
@@ -42,7 +49,7 @@ class Inventory:
             WHERE sid = :sid AND pid = :pid
         ''', quantity = quantity, sid = sid, pid=pid)
         return Inventory.get(sid)
-        
+
     @staticmethod
     def decreaseInventory(pid, change):
         app.db.execute('''
@@ -50,4 +57,5 @@ class Inventory:
             SET quantity = quantity-:change
             WHERE pid = :pid
         ''', change = change, pid=pid)
+        return Inventory.get(sid)
 
