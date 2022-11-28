@@ -73,26 +73,16 @@ ORDER BY time_purchased DESC
                             time_purchased =time_purchased,
                             fulfillment_status = False)
         
-    
-    # @staticmethod
-    # def get_purchase_history_info(uid):
-    #     rows = app.db.execute("""
-    #                           SELECT SUM(Carts.u_price), Carts.quantity, purchases.fulfillment_status
-    #                           FROM Purchases, Carts
-    #                           WHERE Carts.uid = :Carts.uid and Purchases.pid = Products.id
-    #                           ORDER BY Purchases.time_purchased DESC
-    #                           """,
-    #                           uid = uid)
-    #     return [Purchase(*row) for row in rows]
-    
-    # @staticmethod
-    # def get_purchase_total_cost(uid):
-    #     rows = app.db.execute("""
-    #                           SELECT SUM(Carts.u_price)
-    #                           FROM Purchases, Carts
-    #                           WHERE Carts.uid = :Carts.uid and Purchases.pid = Carts.id
-    #                           GROUP BY Purchases.time_purchased
-    #                           ORDER BY Purchases.time_purchased DESC
-    #                           """,
-    #                           uid = uid)
-    #     return [Purchase(*row) for row in rows]
+    @staticmethod
+    def get_order_history_information(uid):
+        rows = app.db.execute("""
+                              SELECT SUM(Products.price) as total_price, 
+                              COUNT(*) as total_quantity,
+                              Purchases.fulfillment_status as fulfillment_status
+                              FROM Purchases, Products
+                              WHERE Purchases.uid = :uid and Purchases.pid = Products.id
+                              GROUP BY Purchases.time_purchased, Purchases.fulfillment_status
+                              ORDER BY Purchases.time_purchased DESC
+                              """,
+                              uid = uid)
+        return rows

@@ -15,9 +15,8 @@
   <tbody>
     {% for purchase in purchase_history%}
       <tr>
-        <th scope="row"></th>
-        <td> TOTAL COST </td>
-        <td> NUMBER OF ITEMS </td>
+        <th scope="row"> {{purchase.total_price}} </th>
+        <td> {{purchase.total_quantity}} </td>
         <td>{{purchase.fulfillment_status}}</td>
         <td> LINK TO DETAILED ORDER PAGE </td>
         <td> </td>

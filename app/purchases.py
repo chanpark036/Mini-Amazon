@@ -25,6 +25,6 @@ def user_purchases():
     
 @bp.route('/purchasehistory')
 def purchase_history():
-    purchases = Purchase.get_all_user_purchases(current_user.id)
+    purchases = Purchase.get_order_history_information(current_user.id)
     return render_template('purchase_history.html',
                             purchase_history=purchases)
