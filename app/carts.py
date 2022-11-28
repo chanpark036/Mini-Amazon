@@ -37,40 +37,45 @@ def carts():
     form3 = submitOrderForm()
     uid = current_user.id
     products = Cart.get(uid)
+    x = datetime.datetime.now()
     # find the products current user has bought:
     # render the page by adding information to the index.html file
     return render_template('cart.html',
                            printprods = products,
                            numItems = getNumItems(products),
                            totalPrice = getTotalPrice(products),
-                           form3 = form3)
+                           form3 = form3,
+                           time = x)
     
 @bp.route('/carts/<uid>,<pid>,<newValue>', methods = ['GET', 'POST'])
 def changeCart(uid, pid, newValue):
     products = Cart.updateCount(uid, pid, newValue)
     
     submitForm = submitOrderForm()
+    x = datetime.datetime.now()
     # find the products current user has bought:
     # render the page by adding information to the index.html file
     return render_template('cart.html',
                            printprods = products,
                            numItems = getNumItems(products),
                            totalPrice = getTotalPrice(products),
-                           form3 = submitForm)
+                           form3 = submitForm,
+                           time = x)
     
 @bp.route('/carts/<user_id>,<purchase_id>', methods=['GET','DELETE'])
 def delete_product(user_id, purchase_id):
     products = Cart.delete_product(user_id, purchase_id)
     
     submitForm = submitOrderForm()
+    x = datetime.datetime.now()
     return render_template('cart.html',
                            printprods = products, 
                            numItems = getNumItems(products),
                            totalPrice = getTotalPrice(products),
-                           form3 = submitForm)
+                           form3 = submitForm, time = x)
     
-@bp.route('/submitOrder', methods = ['GET','POST','DELETE'])
-def submitOrder():
+@bp.route('/submitOrder/<user_id>,<time>', methods = ['GET','POST','DELETE'])
+def submitOrder(user_id, time):
     #decrease inventory
     orderProducts = list(Cart.get(current_user.id))
     for prod in orderProducts:
@@ -86,16 +91,15 @@ def submitOrder():
         print("invalid transaction")
         #@TODO: display message on frontend about insufficient funds
     #@TODO increment seller funds for each product
-    
     #write order to purchase history
     purchase_id = Purchase.get_most_recent_purchase_id() + 1
-    x = datetime.datetime.now()
     for prod in orderProducts:
-        Purchase.add_purchase_history(purchase_id, current_user.id, prod.pid, x)
+        Purchase.add_purchase_history(purchase_id, current_user.id, prod.pid, time)
         purchase_id+=1
     #empty cart
     Cart.emptyCart(current_user.id)
     return render_template('submitPage.html',
                            orderInfo = orderProducts,
-                           totalPrice = cost)
+                           totalPrice = cost,
+                           time = time)
     

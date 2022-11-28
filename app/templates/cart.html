@@ -50,7 +50,7 @@
   </tr>
   </table>
 <h2>Submit Your Order</h2>
-<form action = "{{url_for('carts.submitOrder')}}" method = "post" novalidate>
+<form action = "{{url_for('carts.submitOrder', user_id = current_user.id, time = time)}}" method = "post" novalidate>
   {{form3.submit(class_="btn btn-black")}}
 </form>
 
