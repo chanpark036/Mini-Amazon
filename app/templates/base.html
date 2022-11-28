@@ -58,7 +58,7 @@
      }
      .menu {
       display: flex;
-      gap: 1em;
+      gap: 1.5em;
       font-size: 18px;
      }
      .menu li:hover {
@@ -84,7 +84,7 @@
   <div class="sidenav">
     {% block msg %}
     <div class = "site-logo">
-        <img src="/static/logo316.png", style="width:14em; height:auto;"/>
+        <img src="/static/logo316.png", style="width:16em; height:auto;"/>
     </div>
       
       <ul class = "nav-links">
@@ -97,7 +97,7 @@
           <li><a href = "/products">Products</li>
         </div>
       </ul>
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px;">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
         {% else %}
