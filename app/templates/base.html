@@ -22,12 +22,17 @@
         height: 150px;
         background: #FFF;
     }
-
+    .site_logo {
+      width: 80%;
+      height: auto;
+    }
     .sidenav {
         height: 100%;
         background-color: #000;
         overflow-x: hidden;
         padding-top: 20px;
+        display: flex;
+        align-items: center;
     }
 
     .main {
@@ -78,7 +83,10 @@
 <body>
   <div class="sidenav">
     {% block msg %}
-      <!-- <img src="/static/logo.png"/> -->
+    <div class = "site-logo">
+        <img src="/static/logo316.png", style="width:14em; height:auto;"/>
+    </div>
+      
       <ul class = "nav-links">
         <div class = "menu">
           <li><a href = "/">Home</li>
@@ -98,6 +106,7 @@
       </div>
     {% endblock %}
   </div>
+
   <div class="main">
     {% block content %}{% endblock %}
   </div>
