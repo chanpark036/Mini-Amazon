@@ -32,7 +32,8 @@ def getTotalPrice(productList):
 def carts():
     # get all available products for sale:
     #uid=keyboard input field
-    
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
     form3 = submitOrderForm()
     uid = current_user.id
     products = Cart.get(uid)
