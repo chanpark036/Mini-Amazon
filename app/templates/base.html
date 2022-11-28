@@ -22,12 +22,17 @@
         height: 150px;
         background: #FFF;
     }
-
+    .site_logo {
+      width: 80%;
+      height: auto;
+    }
     .sidenav {
         height: 100%;
         background-color: #000;
         overflow-x: hidden;
         padding-top: 20px;
+        display: flex;
+        align-items: center;
     }
 
     .main {
@@ -78,7 +83,10 @@
 <body>
   <div class="sidenav">
     {% block msg %}
-      <!-- <img src="/static/logo.png"/> -->
+    <div class = "site-logo">
+        <img src="/static/logo316.png", style="width:16em; height:auto;"/>
+    </div>
+      
       <ul class = "nav-links">
         <div class = "menu">
           <li><a href = "/">Home</li>
@@ -89,7 +97,7 @@
           <li><a href = "/products">Products</li>
         </div>
       </ul>
-      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px;">
         {% if current_user.is_authenticated %}
           Hello {{current_user.firstname}}! <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
         {% else %}
@@ -98,6 +106,7 @@
       </div>
     {% endblock %}
   </div>
+
   <div class="main">
     {% block content %}{% endblock %}
   </div>

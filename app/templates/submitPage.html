@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+
+{% if current_user.is_authenticated %}
+
 <h3 class = "centerText">Your order has been submitted!</h3>
 <br><br>
 <table class = "center table-bordered">
@@ -36,5 +40,7 @@
             {{totalPrice}}
         </td>
     </tr>
+
+{% endif%}
 
 {%endblock%}
