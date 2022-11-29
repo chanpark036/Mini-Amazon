@@ -2,7 +2,7 @@ from flask import current_app as app
 
 
 class Feedback:
-    def __init__(self, id, uid, pid, sid, submitted_timestamp, review, rating):
+    def __init__(self, id, uid, pid, sid, submitted_timestamp, review, rating, upvotes):
         self.id = id
         self.uid = uid
         self.pid = pid
@@ -10,11 +10,12 @@ class Feedback:
         self.submitted_timestamp = submitted_timestamp
         self.review = review
         self.rating = rating
+        self.upvotes = upvotes
 
     @staticmethod
     def get_all():
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 '''
                               )
@@ -23,7 +24,7 @@ FROM Feedback
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE id = :id
 ''',
@@ -33,7 +34,7 @@ WHERE id = :id
     @staticmethod
     def get_all_by_uid_since(uid, since):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE uid = :uid
 AND submitted_timestamp >= :since
@@ -46,7 +47,7 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_recent_k(uid, k):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE uid = :uid
 ORDER BY submitted_timestamp DESC
@@ -61,7 +62,7 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE uid = :uid
 ORDER BY submitted_timestamp DESC
@@ -72,7 +73,7 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_all_by_pid(pid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE pid = :pid
 ORDER BY rating DESC
@@ -83,7 +84,7 @@ ORDER BY rating DESC
     @staticmethod
     def get_all_by_sid(sid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE sid = :sid
 ORDER BY rating DESC
@@ -136,17 +137,18 @@ GROUP BY rating
         return rows
 
     @staticmethod
-    def add_p_review(uid, pid, review, rating):
+    def add_p_review(uid, pid, review, rating, upvotes):
         try:
             rows = app.db.execute('''
-INSERT INTO Feedback(uid, pid, review, rating)
-VALUES(:uid, :pid, :review,:rating)
+INSERT INTO Feedback(uid, pid, review, rating, upvotes)
+VALUES(:uid, :pid, :review,:rating,:upvotes)
 RETURNING id
 ''',
                             uid=uid,
                             pid=pid,
                             review=review,
-                            rating=rating)
+                            rating=rating,
+                            upvotes=upvotes)
             id = rows[0][0]
             return feedback.get(id)
         except Exception as e:
@@ -154,17 +156,18 @@ RETURNING id
             return None
     
     @staticmethod
-    def add_s_review(uid, sid, review, rating):
+    def add_s_review(uid, sid, review, rating, upvotes):
         try:
             rows = app.db.execute('''
-INSERT INTO Feedback(uid, sid, review, rating)
-VALUES(:uid, :sid, :review,:rating)
+INSERT INTO Feedback(uid, sid, review, rating, upvotes)
+VALUES(:uid, :sid, :review,:rating,:upvotes
 RETURNING id
 ''',
                             uid=uid,
                             sid=sid,
                             review=review,
-                            rating=rating)
+                            rating=rating,
+                            upvotes=upvotes)
             id = rows[0][0]
             return feedback.get(id)
         except Exception as e:
@@ -198,6 +201,17 @@ DELETE FROM Feedback
 WHERE id= :id
 ''',
                               id=id) 
+    
+    @staticmethod
+    def update_votes(id, votes):
+        rows = app.db.execute('''
+UPDATE Feedback
+SET upvotes = :upvotes
+WHERE id= :id
+''',
+                              upvotes=upvotes,
+                              id=id)
+
 
 
         

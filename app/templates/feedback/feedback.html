@@ -14,28 +14,20 @@
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Review ID</th>
-      <th scope="col">User ID</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
-      <th scope="col">PID</th>
-      <th scope="col">SID</th>
       <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
     {% for feedback in user_feedback%}
       <tr>
-        <th scope="row">{{feedback.id}}</th>
-        <td>{{feedback.uid}}</td>
         <td>{{feedback.review}}
           <a href="{{ url_for('feedback.update_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
         </td>
         <td>{{feedback.rating}}
           <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
         </td>
-        <td>{{feedback.pid}}</td>
-        <td>{{feedback.sid}}</td>
         <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>
       </tr>
     {% endfor %}
