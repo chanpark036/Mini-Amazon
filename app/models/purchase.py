@@ -78,11 +78,36 @@ ORDER BY time_purchased DESC
         rows = app.db.execute("""
                               SELECT SUM(Products.price) as total_price, 
                               COUNT(*) as total_quantity,
-                              Purchases.fulfillment_status as fulfillment_status
+                              Purchases.fulfillment_status as fulfillment_status,
+                              Purchases.time_purchased as time_purchased
                               FROM Purchases, Products
                               WHERE Purchases.uid = :uid and Purchases.pid = Products.id
-                              GROUP BY Purchases.time_purchased, Purchases.fulfillment_status
-                              ORDER BY Purchases.time_purchased DESC
+                              GROUP BY time_purchased, fulfillment_status
+                              ORDER BY time_purchased DESC
                               """,
                               uid = uid)
         return rows
+    
+    @staticmethod
+    def get_detailed_order_page(uid, time_purchased):
+        rows = app.db.execute("""
+                              SELECT Products.name as name,
+                              SUM(Products.price) as total_price, 
+                              COUNT(name) as total_quantity,
+                              Purchases.fulfillment_status as fulfillment_status,
+                              Purchases.time_purchased as time_purchased
+                              FROM Purchases, Products
+                              WHERE Purchases.uid = :uid and Purchases.time_purchased = :time_purchased and Purchases.pid = Products.id 
+                              GROUP BY name, time_purchased, fulfillment_status
+                              """,
+                              uid = uid,
+                              time_purchased = time_purchased)
+        return rows
+    
+    # @staticmethod
+    # def get_time_purchased(uid, ):
+    #     rows = appdb.execute("""
+                              
+    #                           """,
+    #                           uid = uid)
+    #     return rows

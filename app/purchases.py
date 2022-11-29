@@ -28,3 +28,11 @@ def purchase_history():
     purchases = Purchase.get_order_history_information(current_user.id)
     return render_template('purchase_history.html',
                             purchase_history=purchases)
+    
+@bp.route('/detailedOrderPage/<user_id>,<time_purchased>', methods = ['GET','POST','DELETE'])
+def detailed_order_page(user_id, time_purchased):
+    orderDetails = Purchase.get_detailed_order_page(current_user.id, time_purchased)
+    
+    return render_template('detailed-order-page.html',
+                           orderDetails=orderDetails,
+                           time_purchased=time_purchased)
