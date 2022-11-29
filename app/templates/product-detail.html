@@ -45,6 +45,7 @@
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
+      <th scope="col">User</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
       <th scope="col">Was this helpful?</th>
@@ -53,6 +54,7 @@
   <tbody>
     {% for feedback in reviews%}
       <tr>
+        <td>{{feedback.firstname}} {{feedback.lastname}}</td>
         <td>{{feedback.review}}</td>
         <td>{{feedback.rating}}        
         <td> {{feedback.upvotes}} people found this helpful!

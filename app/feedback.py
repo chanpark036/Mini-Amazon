@@ -67,7 +67,6 @@ def feedback():
         form = FeedbackSearch()
         user_id = current_user.id
         feedback = Feedback.get_all_by_uid(user_id)
-
         return render_template('feedback/feedback.html',
                            user_feedback=feedback, form = form, uid = user_id)
     return redirect(url_for('users.login'))

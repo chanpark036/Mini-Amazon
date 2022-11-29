@@ -2,7 +2,7 @@ from flask import current_app as app
 
 
 class Feedback:
-    def __init__(self, id, uid, pid, sid, submitted_timestamp, review, rating, upvotes):
+    def __init__(self, id, uid, pid, sid, submitted_timestamp, review, rating, upvotes, pname= " ", firstname = " ", lastname = "last", email= " "):
         self.id = id
         self.uid = uid
         self.pid = pid
@@ -11,6 +11,10 @@ class Feedback:
         self.review = review
         self.rating = rating
         self.upvotes = upvotes
+        self.pname = pname
+        self.firstname = firstname
+        self.lastname = lastname
+        self.email = email
 
     @staticmethod
     def get_all():
@@ -62,9 +66,10 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_all_by_uid(uid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
-FROM Feedback
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
+FROM Feedback F, Products P
 WHERE uid = :uid
+AND F.pid = P.id
 ORDER BY submitted_timestamp DESC
 ''',
                               uid=uid)
@@ -73,9 +78,10 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_all_by_pid(pid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
-FROM Feedback
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, U.email, U.firstname, U.lastname
+FROM Feedback F, Users U
 WHERE pid = :pid
+AND F.uid = U.id
 ORDER BY rating DESC
 ''',
                               pid=pid)
@@ -84,9 +90,10 @@ ORDER BY rating DESC
     @staticmethod
     def get_all_by_sid(sid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
-FROM Feedback
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, U.email, U.firstname, U.lastname
+FROM Feedback F, Users U
 WHERE sid = :sid
+AND F.uid = U.id
 ORDER BY rating DESC
 ''',
                               sid=sid)
