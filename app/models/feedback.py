@@ -106,7 +106,7 @@ GROUP BY pid
     @staticmethod
     def get_s_stats(sid):
         rows = app.db.execute('''
-SELECT sid, AVG(rating), COUNT(*)
+SELECT sid, AVG(rating), COUNT(review)
 FROM Feedback
 WHERE sid = :sid
 GROUP BY sid
@@ -117,7 +117,7 @@ GROUP BY sid
     @staticmethod
     def get_p_ratings(pid):
         rows = app.db.execute('''
-SELECT rating, COUNT(*)
+SELECT rating, COUNT(review)
 FROM Feedback
 WHERE pid = :pid
 GROUP BY rating

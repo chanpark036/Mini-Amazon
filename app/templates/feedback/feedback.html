@@ -30,8 +30,7 @@
           <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
         </td>
         <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>
-        <td>{{feedback.upvotes}} people found this helpful!
-          <a href="{{ url_for('feedback.update_votes', review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
+        <td>{{feedback.upvotes}} people found this helpful!</td>
       </tr>
     {% endfor %}
   </tbody>

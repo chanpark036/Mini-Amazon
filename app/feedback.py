@@ -136,7 +136,7 @@ def summarize_reviews(type, id):
     ratings = create_rating(rating)
     return render_template('feedback/review-summary.html', title='Reviews', reviews=reviews, stats=stats, ratings=ratings)
 
-@bp.route('/feedback/<review_id>/<upvotes>', methods=['GET', 'POST'])
-def update_votes(review_id, upvotes):
+@bp.route('/product-detail/<product_id>/<review_id>/<upvotes>', methods=['GET', 'POST'])
+def update_votes(review_id, upvotes, product_id):
     Feedback.update_votes(review_id, upvotes)
-    return redirect(url_for('feedback.feedback'))
+    return redirect(url_for('products.detail_product', product_id=product_id))

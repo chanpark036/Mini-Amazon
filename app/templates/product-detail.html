@@ -16,24 +16,6 @@
 <br>
 
 
-<h3>Stats</h3>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">Average Rating</th>
-      <th scope="col">Number of Ratings</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for stat in stats%}
-      <tr>
-        <th scope="row">{{stat[1]}}</th>
-        <th scope="row">{{stat[2]}}</th>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
 <br>
 
 
@@ -62,13 +44,15 @@
 
 <br>
 
-<h3>Reviews</h3>
+<h2>Reviews</h2>
+<h3>Average Rating: {{stats[0][1]}}</h3>
+<h3>See all {{stats[0][2]}} reviews</h3>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
-      <th scope="col">PID</th>
+      <th scope="col">Was this helpful?</th>
     </tr>
   </thead>
   <tbody>
@@ -76,7 +60,8 @@
       <tr>
         <td>{{feedback.review}}</td>
         <td>{{feedback.rating}}        
-        <td>{{feedback.pid}}</td>
+        <td> {{feedback.upvotes}} people found this helpful!
+          <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
       </tr>
     {% endfor %}
   </tbody>
