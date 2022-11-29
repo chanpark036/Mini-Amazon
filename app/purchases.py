@@ -29,10 +29,18 @@ def purchase_history():
     return render_template('purchase_history.html',
                             purchase_history=purchases)
     
+def getTotalPrice(productList):
+    price = 0
+    for prod in productList:
+        price+=prod.total_price
+    return price
+
 @bp.route('/detailedOrderPage/<user_id>,<time_purchased>', methods = ['GET','POST','DELETE'])
 def detailed_order_page(user_id, time_purchased):
     orderDetails = Purchase.get_detailed_order_page(current_user.id, time_purchased)
+    total_cost = getTotalPrice(orderDetails)
     
     return render_template('detailed-order-page.html',
                            orderDetails=orderDetails,
-                           time_purchased=time_purchased)
+                           time_purchased=time_purchased,
+                           total=total_cost)

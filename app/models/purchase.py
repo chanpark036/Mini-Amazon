@@ -103,11 +103,3 @@ ORDER BY time_purchased DESC
                               uid = uid,
                               time_purchased = time_purchased)
         return rows
-    
-    # @staticmethod
-    # def get_time_purchased(uid, ):
-    #     rows = appdb.execute("""
-                              
-    #                           """,
-    #                           uid = uid)
-    #     return rows
