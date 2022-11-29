@@ -106,7 +106,7 @@ SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.u
 FROM Feedback F, Users U
 WHERE pid = :pid
 AND F.uid = U.id
-ORDER BY rating DESC
+ORDER BY upvotes DESC
 ''',
                               pid=pid)
         return [Feedback(*row) for row in rows]
@@ -118,7 +118,7 @@ SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.u
 FROM Feedback F, Users U
 WHERE sid = :sid
 AND F.uid = U.id
-ORDER BY rating DESC
+ORDER BY upvotes DESC
 ''',
                               sid=sid)
         return [Feedback(*row) for row in rows]
