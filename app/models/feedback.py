@@ -64,13 +64,37 @@ ORDER BY submitted_timestamp DESC
             return [Feedback(*row) for row in rows]
     
     @staticmethod
-    def get_all_by_uid(uid):
+    def get_all_by_uid_help(uid):
+        rows = app.db.execute('''
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
+FROM Feedback F, Products P
+WHERE uid = :uid
+AND F.pid = P.id
+ORDER BY upvotes DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_all_by_uid_recent(uid):
         rows = app.db.execute('''
 SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
 FROM Feedback F, Products P
 WHERE uid = :uid
 AND F.pid = P.id
 ORDER BY submitted_timestamp DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_all_by_uid_rating(uid):
+        rows = app.db.execute('''
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
+FROM Feedback F, Products P
+WHERE uid = :uid
+AND F.pid = P.id
+ORDER BY rating DESC
 ''',
                               uid=uid)
         return [Feedback(*row) for row in rows]

@@ -36,6 +36,10 @@ class UpdateFeedback(FlaskForm):
     rating = SelectField('Rating', choices=[1,2,3,4,5])
     submit = SubmitField('Submit')
 
+class orderBy(FlaskForm):
+    order = SelectField('Order' , choices=[('submitted_timestamp','Most Recent'), ('upvotes', 'Most Helpful'), ('rating', 'Rating')])
+    submit = SubmitField('Submit')
+
 def create_rating(lst):
     one,two,three,four,five = 0, 0, 0, 0, 0
     for row in lst:
@@ -65,10 +69,21 @@ class Ratings:
 def feedback():
     if current_user.is_authenticated:
         form = FeedbackSearch()
+        form1 = orderBy()
         user_id = current_user.id
-        feedback = Feedback.get_all_by_uid(user_id)
-        return render_template('feedback/feedback.html',
-                           user_feedback=feedback, form = form, uid = user_id)
+        feedback = Feedback.get_all_by_uid_help(user_id)
+        """ if request.method == "POST":
+            if form1.order.data == 'upvotes':
+                feedback = Feedback.get_all_by_uid_help(user_id) 
+                return redirect(url_for('feedback.feedback'))
+            if form1.order.data == "submitted_timestamp":
+                feedback = Feedback.get_all_by_uid_recent(user_id)
+                return redirect(url_for('feedback.feedback'))
+            else:
+                feedback = Feedback.get_all_by_uid_rating(user_id)
+                return redirect(url_for('feedback.feedback'))"""
+        return render_template('feedback/feedback.html', 
+                           user_feedback=feedback, form = form, uid = user_id, form1 = form1)
     return redirect(url_for('users.login'))
 
 @bp.route('/review-product/<product_id>', methods=['GET', 'POST'])
