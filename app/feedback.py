@@ -36,6 +36,10 @@ class UpdateFeedback(FlaskForm):
     rating = SelectField('Rating', choices=[1,2,3,4,5])
     submit = SubmitField('Submit')
 
+class orderBy(FlaskForm):
+    order = SelectField('Order' , choices=[('submitted_timestamp','Most Recent'), ('upvotes', 'Most Helpful'), ('rating', 'Rating')])
+    submit = SubmitField('Submit')
+
 def create_rating(lst):
     one,two,three,four,five = 0, 0, 0, 0, 0
     for row in lst:
@@ -65,11 +69,21 @@ class Ratings:
 def feedback():
     if current_user.is_authenticated:
         form = FeedbackSearch()
+        form1 = orderBy()
         user_id = current_user.id
-        feedback = Feedback.get_all_by_uid(user_id)
-
-        return render_template('feedback.html',
-                           user_feedback=feedback, form = form, uid = user_id)
+        feedback = Feedback.get_all_by_uid_help(user_id)
+        """ if request.method == "POST":
+            if form1.order.data == 'upvotes':
+                feedback = Feedback.get_all_by_uid_help(user_id) 
+                return redirect(url_for('feedback.feedback'))
+            if form1.order.data == "submitted_timestamp":
+                feedback = Feedback.get_all_by_uid_recent(user_id)
+                return redirect(url_for('feedback.feedback'))
+            else:
+                feedback = Feedback.get_all_by_uid_rating(user_id)
+                return redirect(url_for('feedback.feedback'))"""
+        return render_template('feedback/feedback.html', 
+                           user_feedback=feedback, form = form, uid = user_id, form1 = form1)
     return redirect(url_for('users.login'))
 
 @bp.route('/review-product/<product_id>', methods=['GET', 'POST'])
@@ -80,9 +94,10 @@ def review_product(product_id):
         Feedback.add_p_review( user,
                             product_id,
                          form.review.data,
-                         form.rating.data)
+                         form.rating.data,
+                         0)
         return redirect(url_for('products.detail_product', product_id=product_id))
-    return render_template('review-product.html', title='Review Product', form=form)
+    return render_template('feedback/review-product.html', title='Review Product', form=form)
 
 @bp.route('/review-seller/<seller_id>', methods=['GET', 'POST'])
 def review_seller(seller_id):
@@ -92,9 +107,10 @@ def review_seller(seller_id):
         Feedback.add_s_review( user,
                             seller_id,
                          form.review.data,
-                         form.rating.data)
+                         form.rating.data,
+                         0)
         return redirect(url_for('feedback.feedback'))
-    return render_template('review-seller.html', title='Review Seller', form=form)
+    return render_template('feedback/review-seller.html', title='Review Seller', form=form)
 
 @bp.route('/update-review/<review_id>', methods=['GET', 'POST'])
 def update_review(review_id):
@@ -104,7 +120,7 @@ def update_review(review_id):
                          form.review.data)
         return redirect(url_for('feedback.feedback'))
     review = Feedback.get(review_id)
-    return render_template('update-review.html', title='Update Review', form=form, review_id=review_id, review=review)
+    return render_template('feedback/update-review.html', title='Update Review', form=form, review_id=review_id, review=review)
 
 @bp.route('/update-rating/<review_id>', methods=['GET', 'POST'])
 def update_rating(review_id):
@@ -114,7 +130,7 @@ def update_rating(review_id):
                          form.rating.data)
         return redirect(url_for('feedback.feedback'))
     rating = Feedback.get(review_id)
-    return render_template('update-rating.html', title='Update Rating', form=form, review_id=review_id, rating=rating)
+    return render_template('feedback/update-rating.html', title='Update Rating', form=form, review_id=review_id, rating=rating)
 
 @bp.route('/feedback/<review_id>', methods=['GET','DELETE'])
 def delete_review(review_id):
@@ -132,4 +148,9 @@ def summarize_reviews(type, id):
         stats = Feedback.get_s_stats(id)
         rating = Feedback.get_s_ratings(id)
     ratings = create_rating(rating)
-    return render_template('review-summary.html', title='Reviews', reviews=reviews, stats=stats, ratings=ratings)
+    return render_template('feedback/review-summary.html', title='Reviews', reviews=reviews, stats=stats, ratings=ratings)
+
+@bp.route('/product-detail/<product_id>/<review_id>/<upvotes>', methods=['GET', 'POST'])
+def update_votes(review_id, upvotes, product_id):
+    Feedback.update_votes(review_id, upvotes)
+    return redirect(url_for('products.detail_product', product_id=product_id))
