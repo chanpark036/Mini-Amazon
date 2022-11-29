@@ -31,7 +31,7 @@ def gen_users(num_users):
             firstname = name_components[0]
             lastname = name_components[-1]
             seller = fake.random.choice([True, False])
-            balance = fake.random_int(min=0)
+            balance = fake.pyfloat(positive=True)
             address = fake.sentence(nb_words=4)[:-1]
             writer.writerow([uid, email, password, firstname, lastname, seller, balance, address])
         print(f'{num_users} generated')
@@ -51,7 +51,7 @@ def gen_products(num_products):
             price = f'{str(fake.random_int(max=500))}.{fake.random_int(max=99):02}'
             category_index = random.randint(0, len(available_categories) - 1)
             category = available_categories[category_index]
-            description = "yada yada"
+            description = fake.sentence(nb_words=50)[:-1]
             available = fake.pybool()
             if available:
                 available_pids.append(pid)

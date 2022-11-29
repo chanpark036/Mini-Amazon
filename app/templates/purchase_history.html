@@ -22,8 +22,7 @@
         <td>{{purchase.fulfillment_status}}</td>
         <td> {{purchase.time_purchased}} </td>
         <td> 
-          <a href="{{ url_for('purchases.detailed_order_page', user_id = current_user.id, 
-          time_purchased = purchase.time_purchased) }}" type="button" class="btn btn-light">View Order</a>
+          <a href="{{ url_for('purchases.detailed_order_page', user_id=current_user.id, time_purchased=purchase.time_purchased) }}" type="button" class="btn btn-light">View Order</a>
         </td>
         <td> </td>
       </tr>

@@ -4,7 +4,7 @@
 
 {% if current_user.is_authenticated %}
 
-<br><br>
+<h1 style="text-align:center">Order Details</h1>
 <table class = "center table-bordered">
     <tr>
       <th>Item</th>
@@ -32,7 +32,8 @@
     </tbody>
 </table>
 
-<h2>Total Price: ${{total}}</h2>
+<br><br>
+<h3 style="text-align:center">Total Price: ${{total}}</h3>
 
 {% endif%}
 
