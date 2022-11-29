@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if current_user.is_authenticated %}
+
+<h1 style="text-align:center">Order Details</h1>
+<table class = "center table-bordered">
+    <tr>
+      <th>Item</th>
+      <th>Item Quantity</th>
+      <th>Item Total</th>
+      <th>Fulfillment Status</th>
+    </tr>
+    <tbody>
+        {% for item in orderDetails%}
+    <tr>  
+      <td>
+        {{item.name}}
+      </td>
+      <td>
+        {{item.total_quantity}}
+      </td>
+      <td>
+        ${{item.total_price}}
+      </td>
+      <td>
+        {{item.fulfillment_status}}
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<br><br>
+<h3 style="text-align:center">Total Price: ${{total}}</h3>
+
+{% endif%}
+
+{%endblock%}
