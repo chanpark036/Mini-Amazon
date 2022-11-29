@@ -203,7 +203,7 @@ WHERE id= :id
                               id=id) 
     
     @staticmethod
-    def update_votes(id, votes):
+    def update_votes(id, upvotes):
         rows = app.db.execute('''
 UPDATE Feedback
 SET upvotes = :upvotes
