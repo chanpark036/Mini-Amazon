@@ -8,18 +8,12 @@
 <h4>Category: {{ product_details.category }}</h4>
 <h4>Description: {{ product_details.description }}</h4>
 
-<br>
-<br>
 
-<a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Review this Product</a>
-
-<br>
-<br>
 <br>
 
 <h2>Reviews</h2>
-<h3>Average Rating: {{stats[0][1]}}</h3>
-<h3>See all {{stats[0][2]}} reviews</h3>
+<h4>Average Rating: {{stats[0][1]}}</h4>
+<h4>{{stats[0][2]}} customer reviews</h4>
 <div>
   <img src="/static/images/5stars.png", style="width:8em; height:auto;"/>
   {{ratings.five}}
@@ -41,6 +35,13 @@
   {{ratings.one}}
 </div>
 
+<br>
+
+<a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Write a Review</a>
+
+<br>
+
+<br>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
