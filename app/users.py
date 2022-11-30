@@ -33,7 +33,7 @@ def login():
             next_page = url_for('index.index')
 
         return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('user/login.html', title='Sign In', form=form)
 
 
 class RegistrationForm(FlaskForm):
@@ -67,7 +67,7 @@ def register():
                          form.address.data):
             flash('Congratulations, you are now a registered user!')
             return redirect(url_for('users.login'))
-    return render_template('register.html', 
+    return render_template('user/register.html', 
                            title='Register', 
                            form=form)
 
@@ -80,9 +80,9 @@ def logout():
 def get_account_info():
     if current_user.is_authenticated:
         user_id = User.get(current_user.id)
-        return render_template('user_info.html', 
+        return render_template('user/user_info.html', 
                                user_id=user_id)
-    return redirect(url_for('users.login'))
+    return redirect(url_for('user/users.login'))
 
 
 class UserPublicView(FlaskForm):
@@ -93,7 +93,7 @@ class UserPublicView(FlaskForm):
 def get_user_public_view():
     form = UserPublicView()
     user = User.get(form.user_id.data)
-    return render_template('public_view.html',
+    return render_template('user/public_view.html',
                            user_id=user,
                            form=form)
 
@@ -111,7 +111,7 @@ def update_email():
                           form.email.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-email.html', 
+    return render_template('user/update-email.html', 
                            title='Update Email', 
                            form=form)
 
@@ -131,7 +131,7 @@ def update_password():
                              form.password.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-password.html', 
+    return render_template('user/update-password.html', 
                            title='Update Password', 
                            form=form)
 
@@ -152,7 +152,7 @@ def update_name():
                          form.lastname.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-name.html', 
+    return render_template('user/update-name.html', 
                            title='Update Name', 
                            form=form)
 
@@ -170,7 +170,7 @@ def update_address():
                          form.address.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-address.html', 
+    return render_template('user/update-address.html', 
                            title='Update Address', 
                            form=form)
 
@@ -192,6 +192,6 @@ def update_balance():
             User.update_balance(user_id, new_balance)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-balance.html', 
+    return render_template('user/update-balance.html', 
                            title='Update Balance', 
                            form=form)
