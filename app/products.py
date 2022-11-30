@@ -55,6 +55,17 @@ class Ratings:
         self.four = four
         self.five = five
 
+class Stats:
+    def __init__(self, avg, count):
+        self.avg = avg
+        self.count = count
+
+def create_stats(lst):
+    if len(lst) == 0:
+        return Stats("N/A", 0)
+    else:
+        avg = round(lst[0][1],1)
+        return Stats(avg,lst[0][2])
 
 @bp.route('/products', methods = ['GET', 'POST'])
 def index():    
@@ -94,7 +105,8 @@ def detail_product(product_id):
 
     # Reviews
     reviews = Feedback.get_all_by_pid(product_id)
-    stats = Feedback.get_p_stats(product_id)
+    stat = Feedback.get_p_stats(product_id)
+    stats = create_stats(stat)
     rating = Feedback.get_p_ratings(product_id)
     ratings = create_rating(rating)
     return render_template('product-detail.html',

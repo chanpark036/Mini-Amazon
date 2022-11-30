@@ -168,6 +168,30 @@ GROUP BY rating
         return rows
 
     @staticmethod
+    def get_p_u_ratings(pid, uid):
+        rows = app.db.execute('''
+SELECT review
+FROM Feedback
+WHERE pid = :pid
+AND uid = :uid
+''',
+                              pid=pid,
+                              uid=uid)
+        return rows
+
+    @staticmethod
+    def get_s_u_ratings(sid, uid):
+        rows = app.db.execute('''
+SELECT review
+FROM Feedback
+WHERE sid = :sid
+AND uid = :uid
+''',
+                              sid=sid,
+                              uid=uid)
+        return rows
+    
+    @staticmethod
     def add_p_review(uid, pid, review, rating, upvotes):
         try:
             rows = app.db.execute('''
