@@ -19,15 +19,17 @@ def user_purchases():
     form = SearchUserPurchases()
     uid = form.user_id.data
     purchases = Purchase.get_all_user_purchases(uid)
-    return render_template('user_purchases.html', 
+    return render_template('user/user_purchases.html', 
                             purchase_history=purchases,
                             form=form)
     
 @bp.route('/purchasehistory', methods=['GET'])
 def purchase_history():
-    purchase_history = Purchase.get_purchase_history(current_user.id)
-    return render_template('purchase_history.html',
-                            purchase_history=purchase_history)
+    if current_user.is_authenticated:
+        purchase_history = Purchase.get_purchase_history(current_user.id)
+        return render_template('user/purchase_history.html',
+                                purchase_history=purchase_history)
+    return redirect(url_for('users.login'))
     
 # get total cost of a list of products
 def get_total_price(productList):
@@ -38,9 +40,11 @@ def get_total_price(productList):
 
 @bp.route('/detailedOrderPage/<user_id>/<time_purchased>', methods = ['GET','POST','DELETE'])
 def detailed_order_page(user_id, time_purchased):
-    orderDetails = Purchase.get_detailed_order_page(current_user.id, time_purchased)
-    total_cost = get_total_price(orderDetails)
-    return render_template('detailed-order-page.html',
-                           orderDetails=orderDetails,
-                           time_purchased=time_purchased,
-                           total=total_cost)
+    if current_user.is_authenticated:
+        orderDetails = Purchase.get_detailed_order_page(current_user.id, time_purchased)
+        total_cost = get_total_price(orderDetails)
+        return render_template('user/detailed-order-page.html',
+                            orderDetails=orderDetails,
+                            time_purchased=time_purchased,
+                            total=total_cost)
+    return redirect(url_for('users.login'))
