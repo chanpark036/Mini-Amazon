@@ -40,30 +40,6 @@ class orderBy(FlaskForm):
     order = SelectField('Order' , choices=[('submitted_timestamp','Most Recent'), ('upvotes', 'Most Helpful'), ('rating', 'Rating')])
     submit = SubmitField('Submit')
 
-def create_rating(lst):
-    one,two,three,four,five = 0, 0, 0, 0, 0
-    for row in lst:
-        if row[0] == 1:
-            one = row[1]
-        if row[0] == 2:
-            two = row[1]
-        if row[0] == 3:
-            three = row[1]
-        if row[0] == 4:
-            four = row[1]
-        if row[0] == 5:
-            five = row[1]
-    return Ratings(one,two,three,four,five)
-
-
-class Ratings:
-    def __init__(self, one, two, three, four, five):
-        self.one = one
-        self.two = two
-        self.three = three
-        self.four = four
-        self.five = five
-
 
 @bp.route('/feedback', methods=['GET', 'POST'])
 def feedback():
@@ -93,9 +69,9 @@ def review_product(product_id):
     if request.method == "POST":
         Feedback.add_p_review( user,
                             product_id,
-                         form.review.data,
-                         form.rating.data,
-                         0)
+                    form.review.data,
+                    form.rating.data,
+                    0)
         return redirect(url_for('products.detail_product', product_id=product_id))
     return render_template('feedback/review-product.html', title='Review Product', form=form)
 
@@ -136,19 +112,6 @@ def update_rating(review_id):
 def delete_review(review_id):
     Feedback.delete_review(review_id)
     return redirect(url_for('feedback.feedback'))
-
-@bp.route('/review-summary/<type>/<id>', methods=['GET', 'POST'])
-def summarize_reviews(type, id):
-    if type == 'p':
-        reviews = Feedback.get_all_by_pid(id)
-        stats = Feedback.get_p_stats(id)
-        rating = Feedback.get_p_ratings(id)
-    else:
-        reviews = Feedback.get_all_by_sid(id)
-        stats = Feedback.get_s_stats(id)
-        rating = Feedback.get_s_ratings(id)
-    ratings = create_rating(rating)
-    return render_template('feedback/review-summary.html', title='Reviews', reviews=reviews, stats=stats, ratings=ratings)
 
 @bp.route('/product-detail/<product_id>/<review_id>/<upvotes>', methods=['GET', 'POST'])
 def update_votes(review_id, upvotes, product_id):

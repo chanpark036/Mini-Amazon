@@ -37,9 +37,14 @@
 
 <br>
 
+{%if hasReview %}
+<h5>You have already reviewed this product.</h5>
+{% else %}
 <a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Write a Review</a>
 
 <br>
+{% endif %}
+
 
 <br>
 <table class='table table-hover table-bordered container'>
