@@ -89,7 +89,6 @@ class UserPublicView(FlaskForm):
     user_id = IntegerField('User id')
     search = SubmitField('Search')
     
-# TODO: could add more public details for accounts
 @bp.route('/userpublicview', methods=['GET', 'POST'])
 def get_user_public_view():
     form = UserPublicView()
@@ -112,7 +111,9 @@ def update_email():
                           form.email.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-email.html', title='Update Email', form=form)
+    return render_template('update-email.html', 
+                           title='Update Email', 
+                           form=form)
 
 
 class UpdatePassword(FlaskForm):
@@ -130,7 +131,9 @@ def update_password():
                              form.password.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-password.html', title='Update Password', form=form)
+    return render_template('update-password.html', 
+                           title='Update Password', 
+                           form=form)
 
 
 class UpdateName(FlaskForm):
@@ -149,7 +152,9 @@ def update_name():
                          form.lastname.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-name.html', title='Update Name', form=form)
+    return render_template('update-name.html', 
+                           title='Update Name', 
+                           form=form)
 
 
 class UpdateAddress(FlaskForm):
@@ -165,7 +170,9 @@ def update_address():
                          form.address.data)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-address.html', title='Update Address', form=form)
+    return render_template('update-address.html', 
+                           title='Update Address', 
+                           form=form)
 
 
 class UpdateBalance(FlaskForm):
@@ -182,8 +189,9 @@ def update_balance():
         transaction = form.balance.data
         new_balance = curr_balance + float(transaction)
         if new_balance >= 0:
-            User.update_balance(user_id,
-                                new_balance)
+            User.update_balance(user_id, new_balance)
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
-    return render_template('update-balance.html', title='Update Balance', form=form)
+    return render_template('update-balance.html', 
+                           title='Update Balance', 
+                           form=form)

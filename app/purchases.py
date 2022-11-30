@@ -14,7 +14,7 @@ class SearchUserPurchases(FlaskForm):
     user_id = IntegerField('User id')
     search = SubmitField('Search')
 
-@bp.route('/searchuserpurchases', methods=['GET', 'POST'])
+@bp.route('/searchuserpurchases', methods=['GET'])
 def user_purchases():
     form = SearchUserPurchases()
     uid = form.user_id.data
@@ -23,23 +23,23 @@ def user_purchases():
                             purchase_history=purchases,
                             form=form)
     
-@bp.route('/purchasehistory')
+@bp.route('/purchasehistory', methods=['GET'])
 def purchase_history():
-    purchases = Purchase.get_order_history_information(current_user.id)
+    purchase_history = Purchase.get_purchase_history(current_user.id)
     return render_template('purchase_history.html',
-                            purchase_history=purchases)
+                            purchase_history=purchase_history)
     
-def getTotalPrice(productList):
+# get total cost of a list of products
+def get_total_price(productList):
     price = 0
     for prod in productList:
-        price+=prod.total_price
+        price += prod.total_price
     return price
 
-@bp.route('/detailedOrderPage/<user_id>,<time_purchased>', methods = ['GET','POST','DELETE'])
+@bp.route('/detailedOrderPage/<user_id>/<time_purchased>', methods = ['GET','POST','DELETE'])
 def detailed_order_page(user_id, time_purchased):
     orderDetails = Purchase.get_detailed_order_page(current_user.id, time_purchased)
-    total_cost = getTotalPrice(orderDetails)
-    
+    total_cost = get_total_price(orderDetails)
     return render_template('detailed-order-page.html',
                            orderDetails=orderDetails,
                            time_purchased=time_purchased,

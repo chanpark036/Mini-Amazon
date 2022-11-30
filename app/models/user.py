@@ -57,8 +57,6 @@ RETURNING id
             id = rows[0][0]
             return User.get(id)
         except Exception as e:
-            # likely email already in use; better error checking and reporting needed;
-            # the following simply prints the error to the console:
             print(str(e))
             return None
 
@@ -73,16 +71,22 @@ WHERE id = :id
                               id=id)
         return User(*(rows[0])) if rows else None
     
+    # update user email unless a user with that email already exists
     @staticmethod
     def update_email(id, email):
-        rows = app.db.execute("""
-UPDATE Users
-SET email = :email
-WHERE id= :id
-""",
-                              email=email,
-                              id=id)
+        try:
+            rows = app.db.execute("""
+    UPDATE Users
+    SET email = :email
+    WHERE id= :id
+    """,
+                                email=email,
+                                id=id)
+        except Exception as e:
+            print(str(e))
+            return None
         
+    # update user password
     @staticmethod
     def update_password(id, password):
         rows = app.db.execute("""
@@ -93,6 +97,7 @@ WHERE id= :id
                               password=generate_password_hash(password),
                               id=id)
         
+    # update user first name
     @staticmethod
     def update_firstname(id, firstname):
         rows = app.db.execute("""
@@ -103,6 +108,7 @@ WHERE id= :id
                               firstname=firstname,
                               id=id)
         
+    # update user last name
     @staticmethod
     def update_lastname(id, lastname):
         rows = app.db.execute("""
@@ -113,6 +119,7 @@ WHERE id= :id
                               lastname=lastname,
                               id=id)
         
+    # update user address
     @staticmethod
     def update_address(id, address):
         rows = app.db.execute("""
@@ -123,6 +130,7 @@ WHERE id= :id
                               address=address,
                               id=id)
         
+    # update user balance: users can either withdraw full balance or add to balance
     @staticmethod
     def update_balance(id, balance):
         rows = app.db.execute("""

@@ -33,7 +33,7 @@ ORDER BY time_purchased DESC
                               since=since)
         return [Purchase(*row) for row in rows]
 
-    # API: Given a user id, find all purchases of that user.
+    # Given a user id, get all purchases of that user.
     @staticmethod
     def get_all_user_purchases(uid):
         rows = app.db.execute("""
@@ -50,7 +50,7 @@ ORDER BY time_purchased DESC
                               uid = uid)
         return [Purchase(*row) for row in rows]
     
-    #!melannie testing!
+    # Get most recent purchase ID
     @staticmethod
     def get_most_recent_purchase_id():
         rows = app.db.execute('''
@@ -61,6 +61,7 @@ ORDER BY time_purchased DESC
         id = rows[0][0]
         return id
     
+    # After submitting an order, insert purchased items into purchase history
     @staticmethod
     def add_purchase_history(id, uid, pid, time_purchased):
         rows = app.db.execute('''
@@ -73,8 +74,10 @@ ORDER BY time_purchased DESC
                             time_purchased =time_purchased,
                             fulfillment_status = False)
         
+    # Given a user ID, return total price, total quantity, fulfillment status, 
+    # and time purchased of each order within their purchase history 
     @staticmethod
-    def get_order_history_information(uid):
+    def get_purchase_history(uid):
         rows = app.db.execute("""
                               SELECT SUM(Products.price) as total_price, 
                               COUNT(*) as total_quantity,
@@ -88,6 +91,9 @@ ORDER BY time_purchased DESC
                               uid = uid)
         return rows
     
+    # Given a user's order, return the specific order information, such as
+    # product names, total price of each product, quantity of each product, 
+    # fulfillment status, and time purchased
     @staticmethod
     def get_detailed_order_page(uid, time_purchased):
         rows = app.db.execute("""
