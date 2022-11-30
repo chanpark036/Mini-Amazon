@@ -42,11 +42,11 @@
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
       </p>
-      <p>
-        {{ form.isseller.label }}
+      <p style = "text-align: center;">
+        {{ form.isseller.label() }}
         {{ form.isseller }}
       </p>
-      <p>{{ form.submit() }}</p>
+      <p style = "text-align: center;">{{ form.submit(class = "submit-register") }}</p>
     </form>
   </div>
 </body>
