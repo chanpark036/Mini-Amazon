@@ -36,7 +36,8 @@ CREATE TABLE Feedback (
    sid INT REFERENCES Users(id),
    submitted_timestamp timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
    review VARCHAR(1024) NOT NULL,
-   rating INT NOT NULL
+   rating INT NOT NULL,
+   upvotes INT
 );
 
 CREATE TABLE Carts (

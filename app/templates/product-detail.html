@@ -8,75 +8,57 @@
 <h4>Category: {{ product_details.category }}</h4>
 <h4>Description: {{ product_details.description }}</h4>
 
-<br>
-<br>
-
-<a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Review this Product</a>
 
 <br>
 
+<h2>Reviews</h2>
+<h4>Average Rating: {{stats[0][1]}}</h4>
+<h4>{{stats[0][2]}} customer reviews</h4>
+<div>
+  <img src="/static/images/5stars.png", style="width:8em; height:auto;"/>
+  {{ratings.five}}
+</div>
+<div>
+  <img src="/static/images/4stars.png", style="width:8em; height:auto;"/>
+  {{ratings.four}}
+</div>
+<div>
+  <img src="/static/images/3stars.png", style="width:8em; height:auto;"/>
+  {{ratings.three}}
+</div>
+<div>
+  <img src="/static/images/2stars.png", style="width:8em; height:auto;"/>
+  {{ratings.two}}
+</div>
+<div>
+  <img src="/static/images/1star.png", style="width:8em; height:auto;"/>
+  {{ratings.one}}
+</div>
 
-<h3>Stats</h3>
+<br>
+
+<a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Write a Review</a>
+
+<br>
+
+<br>
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Average Rating</th>
-      <th scope="col">Number of Ratings</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for stat in stats%}
-      <tr>
-        <th scope="row">{{stat[1]}}</th>
-        <th scope="row">{{stat[2]}}</th>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-<br>
-
-
-<h3>Rating Counts</h3>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">1</th>
-      <th scope="col">2</th>
-      <th scope="col">3</th>
-      <th scope="col">4</th>
-      <th scope="col">5</th>
-
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <th scope="row">{{ratings.one}}</th>
-        <th scope="row">{{ratings.two}}</th>
-        <th scope="row">{{ratings.three}}</th>
-        <th scope="row">{{ratings.four}}</th>
-        <th scope="row">{{ratings.five}}</th>
-      </tr>
-  </tbody>
-</table>
-
-<br>
-
-<h3>Reviews</h3>
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
-    <tr>
+      <th scope="col">User</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
-      <th scope="col">PID</th>
+      <th scope="col">Was this helpful?</th>
     </tr>
   </thead>
   <tbody>
     {% for feedback in reviews%}
       <tr>
+        <td>{{feedback.firstname}} {{feedback.lastname}}</td>
         <td>{{feedback.review}}</td>
         <td>{{feedback.rating}}        
-        <td>{{feedback.pid}}</td>
+        <td> {{feedback.upvotes}} people found this helpful!
+          <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
       </tr>
     {% endfor %}
   </tbody>

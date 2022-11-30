@@ -88,7 +88,8 @@ def gen_reviews(num_reviews, available_pids):
             time_submitted = fake.date_time()
             review = fake.sentence()
             rating = fake.random_int(min=1, max=5)
-            writer.writerow([id, uid, pid, sid, time_submitted, review, rating])
+            upvotes = fake.random_int()
+            writer.writerow([id, uid, pid, sid, time_submitted, review, rating, upvotes])
         print(f'{num_reviews} generated')
     return
 

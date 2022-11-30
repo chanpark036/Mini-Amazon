@@ -2,7 +2,7 @@ from flask import current_app as app
 
 
 class Feedback:
-    def __init__(self, id, uid, pid, sid, submitted_timestamp, review, rating):
+    def __init__(self, id, uid, pid, sid, submitted_timestamp, review, rating, upvotes, pname= " ", firstname = " ", lastname = "last", email= " "):
         self.id = id
         self.uid = uid
         self.pid = pid
@@ -10,11 +10,16 @@ class Feedback:
         self.submitted_timestamp = submitted_timestamp
         self.review = review
         self.rating = rating
+        self.upvotes = upvotes
+        self.pname = pname
+        self.firstname = firstname
+        self.lastname = lastname
+        self.email = email
 
     @staticmethod
     def get_all():
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 '''
                               )
@@ -23,7 +28,7 @@ FROM Feedback
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE id = :id
 ''',
@@ -33,7 +38,7 @@ WHERE id = :id
     @staticmethod
     def get_all_by_uid_since(uid, since):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE uid = :uid
 AND submitted_timestamp >= :since
@@ -46,7 +51,7 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_recent_k(uid, k):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
+SELECT id, uid, pid, sid, submitted_timestamp, review, rating, upvotes
 FROM Feedback
 WHERE uid = :uid
 ORDER BY submitted_timestamp DESC
@@ -59,12 +64,37 @@ ORDER BY submitted_timestamp DESC
             return [Feedback(*row) for row in rows]
     
     @staticmethod
-    def get_all_by_uid(uid):
+    def get_all_by_uid_help(uid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
-FROM Feedback
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
+FROM Feedback F, Products P
 WHERE uid = :uid
+AND F.pid = P.id
+ORDER BY upvotes DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_all_by_uid_recent(uid):
+        rows = app.db.execute('''
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
+FROM Feedback F, Products P
+WHERE uid = :uid
+AND F.pid = P.id
 ORDER BY submitted_timestamp DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_all_by_uid_rating(uid):
+        rows = app.db.execute('''
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
+FROM Feedback F, Products P
+WHERE uid = :uid
+AND F.pid = P.id
+ORDER BY rating DESC
 ''',
                               uid=uid)
         return [Feedback(*row) for row in rows]
@@ -72,10 +102,11 @@ ORDER BY submitted_timestamp DESC
     @staticmethod
     def get_all_by_pid(pid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
-FROM Feedback
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, U.email, U.firstname, U.lastname
+FROM Feedback F, Users U
 WHERE pid = :pid
-ORDER BY rating DESC
+AND F.uid = U.id
+ORDER BY upvotes DESC
 ''',
                               pid=pid)
         return [Feedback(*row) for row in rows]
@@ -83,10 +114,11 @@ ORDER BY rating DESC
     @staticmethod
     def get_all_by_sid(sid):
         rows = app.db.execute('''
-SELECT id, uid, pid, sid, submitted_timestamp, review, rating
-FROM Feedback
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, U.email, U.firstname, U.lastname
+FROM Feedback F, Users U
 WHERE sid = :sid
-ORDER BY rating DESC
+AND F.uid = U.id
+ORDER BY upvotes DESC
 ''',
                               sid=sid)
         return [Feedback(*row) for row in rows]
@@ -136,17 +168,18 @@ GROUP BY rating
         return rows
 
     @staticmethod
-    def add_p_review(uid, pid, review, rating):
+    def add_p_review(uid, pid, review, rating, upvotes):
         try:
             rows = app.db.execute('''
-INSERT INTO Feedback(uid, pid, review, rating)
-VALUES(:uid, :pid, :review,:rating)
+INSERT INTO Feedback(uid, pid, review, rating, upvotes)
+VALUES(:uid, :pid, :review,:rating,:upvotes)
 RETURNING id
 ''',
                             uid=uid,
                             pid=pid,
                             review=review,
-                            rating=rating)
+                            rating=rating,
+                            upvotes=upvotes)
             id = rows[0][0]
             return feedback.get(id)
         except Exception as e:
@@ -154,17 +187,18 @@ RETURNING id
             return None
     
     @staticmethod
-    def add_s_review(uid, sid, review, rating):
+    def add_s_review(uid, sid, review, rating, upvotes):
         try:
             rows = app.db.execute('''
-INSERT INTO Feedback(uid, sid, review, rating)
-VALUES(:uid, :sid, :review,:rating)
+INSERT INTO Feedback(uid, sid, review, rating, upvotes)
+VALUES(:uid, :sid, :review,:rating,:upvotes
 RETURNING id
 ''',
                             uid=uid,
                             sid=sid,
                             review=review,
-                            rating=rating)
+                            rating=rating,
+                            upvotes=upvotes)
             id = rows[0][0]
             return feedback.get(id)
         except Exception as e:
@@ -198,6 +232,17 @@ DELETE FROM Feedback
 WHERE id= :id
 ''',
                               id=id) 
+    
+    @staticmethod
+    def update_votes(id, upvotes):
+        rows = app.db.execute('''
+UPDATE Feedback
+SET upvotes = :upvotes
+WHERE id= :id
+''',
+                              upvotes=upvotes,
+                              id=id)
+
 
 
         
