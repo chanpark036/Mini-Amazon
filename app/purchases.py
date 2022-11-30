@@ -25,9 +25,11 @@ def user_purchases():
     
 @bp.route('/purchasehistory', methods=['GET'])
 def purchase_history():
-    purchase_history = Purchase.get_purchase_history(current_user.id)
-    return render_template('purchase_history.html',
-                            purchase_history=purchase_history)
+    if current_user.is_authenticated:
+        purchase_history = Purchase.get_purchase_history(current_user.id)
+        return render_template('purchase_history.html',
+                                purchase_history=purchase_history)
+    return redirect(url_for('users.login'))
     
 # get total cost of a list of products
 def get_total_price(productList):
@@ -38,9 +40,11 @@ def get_total_price(productList):
 
 @bp.route('/detailedOrderPage/<user_id>/<time_purchased>', methods = ['GET','POST','DELETE'])
 def detailed_order_page(user_id, time_purchased):
-    orderDetails = Purchase.get_detailed_order_page(current_user.id, time_purchased)
-    total_cost = get_total_price(orderDetails)
-    return render_template('detailed-order-page.html',
-                           orderDetails=orderDetails,
-                           time_purchased=time_purchased,
-                           total=total_cost)
+    if current_user.is_authenticated:
+        orderDetails = Purchase.get_detailed_order_page(current_user.id, time_purchased)
+        total_cost = get_total_price(orderDetails)
+        return render_template('detailed-order-page.html',
+                            orderDetails=orderDetails,
+                            time_purchased=time_purchased,
+                            total=total_cost)
+    return redirect(url_for('users.login'))
