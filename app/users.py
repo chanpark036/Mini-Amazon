@@ -82,7 +82,7 @@ def get_account_info():
         user_id = User.get(current_user.id)
         return render_template('user/user_info.html', 
                                user_id=user_id)
-    return redirect(url_for('user/users.login'))
+    return redirect(url_for('users.login'))
 
 
 class UserPublicView(FlaskForm):

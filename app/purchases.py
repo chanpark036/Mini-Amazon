@@ -29,7 +29,7 @@ def purchase_history():
         purchase_history = Purchase.get_purchase_history(current_user.id)
         return render_template('user/purchase_history.html',
                                 purchase_history=purchase_history)
-    return redirect(url_for('user/users.login'))
+    return redirect(url_for('users.login'))
     
 # get total cost of a list of products
 def get_total_price(productList):
@@ -47,4 +47,4 @@ def detailed_order_page(user_id, time_purchased):
                             orderDetails=orderDetails,
                             time_purchased=time_purchased,
                             total=total_cost)
-    return redirect(url_for('user/users.login'))
+    return redirect(url_for('users.login'))
