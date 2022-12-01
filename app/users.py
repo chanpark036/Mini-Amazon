@@ -135,6 +135,7 @@ def get_user_public_view():
     sid = form.user_id.data
     cur_user = current_user.id
     hasReview = len(Feedback.get_s_u_ratings(sid, cur_user)) > 0
+    hasPurchased = len(Feedback.check_s_u(sid,cur_user)) > 0
     reviews = Feedback.get_all_by_sid(sid)
     stat = Feedback.get_s_stats(sid)
     stats = create_stats(stat)
@@ -143,7 +144,7 @@ def get_user_public_view():
     return render_template('user/public_view.html',
                            user_id=user,
                            form=form,
-                           reviews=reviews, stats=stats, ratings=ratings, seller_id = sid, hasReview=hasReview)
+                           reviews=reviews, stats=stats, ratings=ratings, seller_id = sid, hasReview=hasReview, hasPurchased=hasPurchased)
 
 
 class UpdateEmail(FlaskForm):

@@ -48,10 +48,21 @@
 {%if hasReview %}
 <h5>You have already reviewed this seller.</h5>
 {% else %}
+
+{%if hasPurchased %}
 <a href="{{ url_for('feedback.review_seller', seller_id = seller_id) }}" type="button" class="btn btn-light">Write a Review</a>
+
+{% else %}
+<h5>You have not purchased anything from this seller.</h5>
 
 <br>
 {% endif %}
+
+
+<br>
+{% endif %}
+
+
 
 
 <br>
