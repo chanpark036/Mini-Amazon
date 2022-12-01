@@ -1,18 +1,19 @@
 from flask import current_app as app
 
 class Product:
-    def __init__(self, id, name, category, description, price, available):
+    def __init__(self, id, name, category, description, price, available, image):
         self.id = id
         self.name = name
         self.category = category
         self.price = price
         self.available = available
         self.description = description
+        self.image = image
 
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, name, category, description, price, available
+SELECT id, name, category, description, price, available, image
 FROM Products
 WHERE id = :id
 ''',
@@ -22,7 +23,7 @@ WHERE id = :id
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-SELECT id, name, category, description, price, available
+SELECT id, name, category, description, price, available, image
 FROM Products
 WHERE available = :available
 ''',
@@ -35,7 +36,7 @@ WHERE available = :available
     @staticmethod
     def get_top_K_expensive(available=True, k = 0):
         rows = app.db.execute('''
-SELECT id, name, description, price, available
+SELECT id, name, description, price, available, 
 FROM Products
 ORDER BY price DESC
 ''',
