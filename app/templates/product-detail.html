@@ -37,6 +37,9 @@
 
 <br>
 
+
+{%if loggedIn %}
+
 {%if hasReview %}
 <h5>You have already reviewed this product.</h5>
 {% else %}
@@ -45,6 +48,12 @@
 <br>
 {% endif %}
 
+{% else %}
+
+<h5>Please log in to write a review.</h5>
+<a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
+
+{% endif %}
 
 <br>
 <table class='styled-table table-hover container'>
