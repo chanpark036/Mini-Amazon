@@ -127,17 +127,11 @@ def get_account_info():
         return render_template('user/user_info.html', 
                                user_id=user_id, product_feedback=product_feedback, seller_feedback=seller_feedback, uid = uid, p_reviews=p_rev, s_reviews=s_rev)
     return redirect(url_for('users.login'))
-
-
-class UserPublicView(FlaskForm):
-    user_id = IntegerField('User id')
-    search = SubmitField('Search')
-    
-@bp.route('/userpublicview', methods=['GET', 'POST'])
-def get_user_public_view():
-    form = UserPublicView()
-    user = User.get(form.user_id.data)
-    sid = form.user_id.data
+ 
+@bp.route('/userpublicview/<uid>', methods=['GET', 'POST'])
+def get_user_public_view(uid):
+    user = User.get(uid)
+    sid = uid
     cur_user = current_user.id
     hasReview = len(Feedback.get_s_u_ratings(sid, cur_user)) > 0
     hasPurchased = len(Feedback.check_s_u(sid,cur_user)) > 0
@@ -147,8 +141,7 @@ def get_user_public_view():
     rating = Feedback.get_s_ratings(sid)
     ratings = create_rating(rating)
     return render_template('user/public_view.html',
-                           user_id=user,
-                           form=form,
+                           user=user,
                            reviews=reviews, stats=stats, ratings=ratings, seller_id = sid, hasReview=hasReview, hasPurchased=hasPurchased)
 
 

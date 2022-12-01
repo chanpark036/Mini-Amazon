@@ -3,22 +3,13 @@
 {% block content %}
 
 <br><br>
-<form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.user_id.label }}<br/>
-    {{ form.user_id(size=32) }}<br/>
-  </p>
-  {{ form.search(class_="btn btn-black") }}
-</form>
-
 <h1>User Information</h1>
-<h2>Account ID: {{user_id.id}} </h2>
-<h2>Name: {{user_id.firstname}} {{user_id.lastname}}</h2>
+<h2>Account ID: {{user.id}} </h2>
+<h2>Name: {{user.firstname}} {{user.lastname}}</h2>
 
-{% if user_id.seller %}
-    <h2>Email: {{user_id.email}} </h2>
-    <h2>Address: {{user_id.address}} </h2>
+{% if user.seller %}
+    <h2>Email: {{user.email}} </h2>
+    <h2>Address: {{user.address}} </h2>
     <h2>Reviews </h2>
     <h4>Average Rating: {{stats.avg}}</h4>
 <h4>{{stats.count}} customer reviews</h4>
