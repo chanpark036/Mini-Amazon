@@ -58,5 +58,3 @@ class Inventory:
             SET quantity = quantity-:change
             WHERE pid = :pid
         ''', change = change, pid=pid)
-        return Inventory.get(sid)
-
