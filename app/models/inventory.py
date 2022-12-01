@@ -1,11 +1,13 @@
 from flask import current_app as app
 
 class Inventory:
-    def __init__(self, sid, pid, quantity, price):
+    def __init__(self, sid, pid, quantity, price, firstname = " ", lastname = " "):
         self.sid = sid 
         self.pid = pid
         self.price = price
         self.quantity = quantity
+        self.firstname = firstname
+        self.lastname = lastname
 
     @staticmethod
     def get(sid):
@@ -58,3 +60,25 @@ class Inventory:
             SET quantity = quantity-:change
             WHERE pid = :pid
         ''', change = change, pid=pid)
+
+    @staticmethod
+    def get_from_pid(pid):
+        rows = app.db.execute('''
+            SELECT I.sid, I.pid, I.quantity, I.u_price, U.firstname, U.lastname
+            FROM Inventory I, Users U
+            WHERE I.pid = :pid AND I.sid = U.id
+            ORDER BY I.sid
+            ''',
+                              pid=pid)
+        return [Inventory(*row) for row in rows]
+
+    # @staticmethod
+    # def get_name_from_pid(pid):
+    #     rows = app.db.execute('''
+    #         SELECT *
+    #         FROM Inventory
+    #         WHERE pid = :pid
+    #         ORDER BY sid
+    #         ''',
+    #                           pid=pid)
+    #     return [Inventory(*row) for row in rows]

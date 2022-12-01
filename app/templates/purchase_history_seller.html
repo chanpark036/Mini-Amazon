@@ -19,7 +19,9 @@
         <td> {{purchase.time_purchased}} </td>
         <td>{{purchase.quantity}}</td>
         <td> {{purchase.fulfillment_status}}
-        <a href="{{ url_for('purchases.change_fulfillment', sid = seller_id, uid = purchase.uid, pid = purchase.pid, fulfillment_status = not purchase.fulfillment_status) }}" type="button" class="btn btn-light">SWITCH</a> 
+          {%if purchase.fulfillment_status == "Not Fulfilled"%}
+        <a href="{{ url_for('purchases.change_fulfillment', sid = seller_id, uid = purchase.uid, pid = purchase.pid) }}" type="button" class="btn btn-light">Fulfill</a> 
+        {% endif %}
         </td>
       </tr>
     {% endfor %}

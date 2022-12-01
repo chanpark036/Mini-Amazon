@@ -11,6 +11,28 @@
   <img src="{{product_details.image}}"/>
 </div>
 
+<br><br>
+
+<h4><center>Sellers selling this product</center></h4>
+<table class='styled-table table-hover container' id="products-table">
+  <thead>
+    <tr>
+      <th scope="col">Seller</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for inventory in sellers_of_product%}
+      <tr>
+        <td>{{inventory.firstname}}  {{inventory.lastname}}</td>
+        <td>{{inventory.quantity}}</td>
+        <td>{{inventory.price}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 
 
 <br>
@@ -66,6 +88,7 @@
       <th scope="col">User</th>
       <th scope="col">Review</th>
       <th scope="col">Rating</th>
+      <th scope="col"> Image</th>
       <th scope="col">Was this helpful?</th>
     </tr>
   </thead>
@@ -74,7 +97,8 @@
       <tr>
         <td>{{feedback.firstname}} {{feedback.lastname}}</td>
         <td>{{feedback.review}}</td>
-        <td>{{feedback.rating}}        
+        <td>{{feedback.rating}} </td>  
+        <td> <img src="{{feedback.image}}" width="100" height = "100"/> </td>  
         <td> {{feedback.upvotes}} people found this helpful!
           <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
       </tr>

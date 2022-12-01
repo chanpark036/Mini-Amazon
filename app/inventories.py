@@ -60,9 +60,7 @@ def addProduct(): #ensure that pid is not already in database and if is then giv
     quantity = form.quantity.data
     u_price = form.price.data
     products = Inventory.add(uid, pid, quantity,u_price)
-    return render_template('inventory.html',
-                           sid = uid,
-                           inventory_products = products, form=form, available = True)
+    return redirect(url_for('inventories.inventory'))
     
 
 

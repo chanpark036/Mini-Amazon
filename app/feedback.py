@@ -28,12 +28,14 @@ class PostFeedback(FlaskForm):
     rating = SelectField('Rating', choices=[1,2,3,4,5])
     product_id = IntegerField('Product ID')
     seller_id = IntegerField('Seller ID')
+    image = TextAreaField('Image URL')
     submit = SubmitField('Submit')
 
 class UpdateFeedback(FlaskForm):
     review_id = IntegerField('Review ID')
     review = TextAreaField('New Text')
     rating = SelectField('Rating', choices=[1,2,3,4,5])
+    image = TextAreaField('Image URL')
     submit = SubmitField('Submit')
 
 class orderBy(FlaskForm):
@@ -60,11 +62,16 @@ def review_product(product_id):
     form = PostFeedback()
     user = current_user.id
     if request.method == "POST":
+        if len(form.image.data) == 0:
+            image = "NA"
+        else:
+            image = form.image.data
         Feedback.add_p_review( user,
                             product_id,
                     form.review.data,
                     form.rating.data,
-                    0)
+                    0,
+                    image)
         return redirect(url_for('products.detail_product', product_id=product_id))
     return render_template('feedback/review-product.html', title='Review Product', form=form)
 
@@ -73,12 +80,17 @@ def review_seller(seller_id):
     form = PostFeedback()
     user = current_user.id
     if request.method == "POST":
+        if len(form.image.data) == 0:
+            image = "NA"
+        else:
+            image = form.image.data
         Feedback.add_s_review( user,
                             seller_id,
                          form.review.data,
                          form.rating.data,
-                         0)
-        return redirect(url_for('users.get_user_public_view'))
+                         0,
+                    image)
+        return redirect(url_for('users.get_user_public_view', uid=seller_id))
     return render_template('feedback/review-seller.html', title='Review Seller', form=form)
 
 @bp.route('/update-review/<review_id>', methods=['GET', 'POST'])
@@ -100,6 +112,16 @@ def update_rating(review_id):
         return redirect(url_for('users.get_account_info'))
     rating = Feedback.get(review_id)
     return render_template('feedback/update-rating.html', title='Update Rating', form=form, review_id=review_id, rating=rating)
+
+@bp.route('/update-image/<review_id>', methods=['GET', 'POST'])
+def update_image(review_id):
+    form = UpdateFeedback()
+    if request.method == "POST":
+        Feedback.update_image(review_id,
+                         form.image.data)
+        return redirect(url_for('users.get_account_info'))
+    image = Feedback.get(review_id)
+    return render_template('feedback/update-image.html', title='Update Image', form=form, review_id=review_id, image=image)
 
 @bp.route('/feedback/<review_id>', methods=['GET','DELETE'])
 def delete_review(review_id):
