@@ -28,6 +28,8 @@
         <td>{{inventory.firstname}}  {{inventory.lastname}}</td>
         <td>{{inventory.quantity}}</td>
         <td>{{inventory.price}}</td>
+        <td><a href="{{ url_for('products.addToCart', sid = inventory.sid, pid = inventory.pid, price = inventory.price) }}" type="button" class="btn btn-light">Add</a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>

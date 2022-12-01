@@ -124,12 +124,12 @@ def detail_product(product_id):
                              product_details = product_details, sellers_of_product = sellers_of_product, hasReview = hasReview, loggedIn=loggedIn)
 
 
-@bp.route('/products/<pid>,<price>', methods = ['GET','POST'])
-def addToCart(pid, price):
+@bp.route('/products/<sid>,<pid>,<price>', methods = ['GET','POST'])
+def addToCart(sid,pid, price):
     form1 = ProductsKInput()
     form2 = FilterProductCategory()
     products = Product.get_all(True)
     uid = current_user.id
-    Cart.addProduct(uid, pid, price)
+    Cart.addProduct(uid, pid, price, sid)
     return render_template('products.html',
-                           avail_products=products, form1 = form1, form2 = form2)
+                           avail_products=products, form1 = form1, form2 = form2,)
