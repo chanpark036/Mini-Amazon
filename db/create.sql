@@ -18,7 +18,8 @@ CREATE TABLE Products (
    category VARCHAR(255) NOT NULL,
    description VARCHAR(1024),
    price DECIMAL(12,2) NOT NULL,
-   available BOOLEAN DEFAULT FALSE
+   available BOOLEAN DEFAULT FALSE,
+   image VARCHAR(1024)
 );
  
 CREATE TABLE Purchases (
