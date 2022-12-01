@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Purchase History for seller {{seller_id}}:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Buyer Address</th>
+      <th scope="col">Date Order Placed</th>
+      <th scope="col">Total Number of Items</th>
+      <th scope="col">Fulfillment Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in purchase_history%}
+      <tr>
+        <td> {{purchase.address}} </td>
+        <td> {{purchase.time_purchased}} </td>
+        <td>{{purchase.quantity}}</td>
+        <td> {{purchase.fulfillment_status}}
+        <a href="{{ url_for('purchases.change_fulfillment', sid = seller_id, uid = purchase.uid, pid = purchase.pid, fulfillment_status = not purchase.fulfillment_status) }}" type="button" class="btn btn-light">SWITCH</a> 
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

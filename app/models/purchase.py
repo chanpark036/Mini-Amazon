@@ -2,13 +2,16 @@ from flask import current_app as app
 
 
 class Purchase:
-    def __init__(self, id, uid, pid, name, time_purchased, fulfillment_status):
+    def __init__(self, id, uid, sid, pid, quantity, name, time_purchased, fulfillment_status, address):
         self.id = id
         self.uid = uid
+        self.sid = sid
         self.pid = pid
+        self.quantity = quantity
         self.name = name
         self.time_purchased = time_purchased
         self.fulfillment_status = fulfillment_status
+        self.address = address
 
     @staticmethod
     def get(id):
@@ -63,14 +66,16 @@ ORDER BY time_purchased DESC
     
     # After submitting an order, insert purchased items into purchase history
     @staticmethod
-    def add_purchase_history(id, uid, pid, time_purchased):
+    def add_purchase_history(id, uid, sid, pid, quantity, time_purchased):
         rows = app.db.execute('''
-                                INSERT INTO Purchases (id, uid, pid, time_purchased, fulfillment_status)
-                                VALUES(:id, :uid, :pid, :time_purchased, :fulfillment_status)
+                                INSERT INTO Purchases (id, uid, sid, pid, quantity, time_purchased, fulfillment_status)
+                                VALUES(:id, :uid, :sid, :pid, :quantity, :time_purchased, :fulfillment_status)
                                 ''',
                             id = id,
                             uid=uid,
+                            sid=sid,
                             pid=pid,
+                            quantity = quantity,
                             time_purchased =time_purchased,
                             fulfillment_status = False)
         
@@ -109,3 +114,42 @@ ORDER BY time_purchased DESC
                               uid = uid,
                               time_purchased = time_purchased)
         return rows
+
+
+    @staticmethod
+    def get_address(uid):
+        address = app.db.execute("""
+                              SELECT address 
+                              FROM Users
+                              WHERE :uid = Users.id
+                              """,
+                              uid = uid)
+        return address[0][0]
+
+
+    #given a seller find all purchases from that seller
+    @staticmethod
+    def get_all_seller_purchases(sid):
+        rows = app.db.execute("""
+                              SELECT Purchases.id as id, 
+                              Purchases.uid as uid,
+                              Purchases.sid as sid,
+                              Purchases.pid as pid,
+                              Purchases.quantity as quantity,
+                              Purchases.time_purchased as time_purchased,
+                              Purchases.fulfillment_status as fulfillment_status
+                              FROM Purchases
+                              WHERE sid = :sid
+                              ORDER BY time_purchased DESC
+                              """,
+                              sid = sid)
+        return [Purchase(id,uid,sid,pid,quantity,"",time_purchased,fulfillment_status, "") for id,uid,sid,pid,quantity,time_purchased,fulfillment_status in rows]
+
+    @staticmethod
+    def change_fulfillment(sid, uid, pid, new_status):
+        app.db.execute('''
+            UPDATE Purchases
+            SET fulfillment_status = :new_status
+            WHERE sid = :sid AND pid = :pid AND uid=:uid
+        ''', new_status = new_status, sid = sid, pid=pid, uid=uid)
+        return Purchase.get_all_seller_purchases(sid)
