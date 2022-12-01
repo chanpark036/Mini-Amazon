@@ -5,22 +5,9 @@
 <br><br>
 
 
-
-<a href="{{ url_for('feedback.review_product', product_id = 2) }}" type="button" class="btn btn-light">Write a Product Review</a>
-<a href="{{ url_for('feedback.review_seller', seller_id = 2) }}" type="button" class="btn btn-light">Write a Seller Review</a>
-
-<!-- <form1 action="" method="post">
-  {{ form1.hidden_tag() }}
-  
-  <p>
-   Sort by: {{ form1.order }}<br/>
-  </p>
-  <p>{{ form1.submit() }}</p>
-</form1>  -->
-
-<h2>Your Reviews:</h2>
+<h2>Your Product Reviews</h2>
 <table class='styled-table table-hover container'>
-  <thead>
+  <thead class="thead-dark">
     <tr>
       <th scope="col">Product</th>
       <th scope="col">Review</th>
@@ -30,10 +17,40 @@
     </tr>
   </thead>
   <tbody>
-    {% for feedback in user_feedback%}
+    {% for feedback in product_feedback%}
       <tr>
         <td>
           <a href="{{ url_for('products.detail_product', product_id = feedback.pid) }}" type="button" class="btn btn-light">{{feedback.pname}}</a>
+        </td>
+        <td>{{feedback.review}}
+          <a href="{{ url_for('feedback.update_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
+        </td>
+        <td>{{feedback.rating}}
+          <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
+        </td>
+        <td>{{feedback.upvotes}} people found this helpful!</td>
+        <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>     
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Your Seller Reviews</h2>
+<table class='styled-table table-hover container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Seller</th>
+      <th scope="col">Review</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Was this helpful?</th>
+      <th scope="col">Delete</th>   
+    </tr>
+  </thead>
+  <tbody>
+    {% for feedback in seller_feedback%}
+      <tr>
+        <td>
+          {{feedback.firstname}} {{feedback.lastname}}
         </td>
         <td>{{feedback.review}}
           <a href="{{ url_for('feedback.update_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>

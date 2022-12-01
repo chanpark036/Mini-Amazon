@@ -10,7 +10,63 @@
 {% if user.seller %}
     <h2>Email: {{user.email}} </h2>
     <h2>Address: {{user.address}} </h2>
-    <h2>Reviews: </h2>
+    <h2>Reviews </h2>
+    <h4>Average Rating: {{stats.avg}}</h4>
+<h4>{{stats.count}} customer reviews</h4>
+<div>
+  <img src="/static/images/5stars.png", style="width:8em; height:auto;"/>
+  {{ratings.five}}
+</div>
+<div>
+  <img src="/static/images/4stars.png", style="width:8em; height:auto;"/>
+  {{ratings.four}}
+</div>
+<div>
+  <img src="/static/images/3stars.png", style="width:8em; height:auto;"/>
+  {{ratings.three}}
+</div>
+<div>
+  <img src="/static/images/2stars.png", style="width:8em; height:auto;"/>
+  {{ratings.two}}
+</div>
+<div>
+  <img src="/static/images/1star.png", style="width:8em; height:auto;"/>
+  {{ratings.one}}
+</div>
+
+<br>
+
+{%if hasReview %}
+<h5>You have already reviewed this seller.</h5>
+{% else %}
+<a href="{{ url_for('feedback.review_seller', seller_id = seller_id) }}" type="button" class="btn btn-light">Write a Review</a>
+
+<br>
+{% endif %}
+
+
+<br>
+<table class='styled-table table-hover container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User</th>
+      <th scope="col">Review</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Was this helpful?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for feedback in reviews%}
+      <tr>
+        <td>{{feedback.firstname}} {{feedback.lastname}}</td>
+        <td>{{feedback.review}}</td>
+        <td>{{feedback.rating}}        
+        <td> {{feedback.upvotes}} people found this helpful!
+          <a href="{{ url_for('feedback.update_s_votes', seller_id=seller_id, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endif %}
 
 {% endblock %}
