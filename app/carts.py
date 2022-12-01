@@ -73,7 +73,7 @@ def submitOrder():
     #decrease inventory
     orderProducts = list(Cart.get(current_user.id))
     for prod in orderProducts:
-        Inventory.decreaseInventory(prod.pid, prod.quantity)
+        Inventory.decreaseInventory(prod.pid, prod.quantity) #change later to depend on sid as well --------chan
     
     #decrease buyer balance
     curr_balance = current_user.balance
@@ -86,11 +86,12 @@ def submitOrder():
         #@TODO: display message on frontend about insufficient funds
     #@TODO increment seller funds for each product
     
+    seller_id = 2 #temporary seller_id value -------chan
     #write order to purchase history
     purchase_id = Purchase.get_most_recent_purchase_id() + 1
     x = datetime.datetime.now()
     for prod in orderProducts:
-        Purchase.add_purchase_history(purchase_id, current_user.id, prod.pid, x)
+        Purchase.add_purchase_history(purchase_id, current_user.id, seller_id, prod.pid, prod.quantity, x)
         purchase_id+=1
     #empty cart
     Cart.emptyCart(current_user.id)

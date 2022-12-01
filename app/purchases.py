@@ -28,3 +28,19 @@ def purchase_history():
     purchases = Purchase.get_all_user_purchases(current_user.id)
     return render_template('purchase_history.html',
                             purchase_history=purchases)
+
+
+@bp.route('/purchase_history_seller')
+def purchase_history_seller():
+    seller_id = 2 #change ---------chan
+    purchases = Purchase.get_all_seller_purchases(seller_id)
+    for purchase in purchases:
+        purchase.address = Purchase.get_address(purchase.uid)
+    return render_template('purchase_history_seller.html', purchase_history = purchases, seller_id = seller_id)
+
+@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>,<fulfillment_status>')
+def change_fulfillment(sid,uid,pid,fulfillment_status):
+    seller_id = 2 #change ---------chan
+    purchases = Purchase.change_fulfillment(sid,uid,pid,fulfillment_status)
+    return redirect(url_for('purchases.purchase_history_seller'))
+

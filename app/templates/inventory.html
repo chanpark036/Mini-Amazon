@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<h2>Products in Inventory for User {{sid}}:</h2>
+<a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style = "float: right" class="btn btn-black">ORDER HISTORY</a>
+<h2 style = "margin-top: 0.3em">Products in Inventory for User {{sid}}:</h2>
 {% if available%}
 <table class='table table-hover table-bordered container'>
   <thead class="thead-dark">

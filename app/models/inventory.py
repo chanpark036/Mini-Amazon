@@ -50,6 +50,7 @@ class Inventory:
         ''', quantity = quantity, sid = sid, pid=pid)
         return Inventory.get(sid)
 
+    #change later to include seller_id
     @staticmethod
     def decreaseInventory(pid, change):
         app.db.execute('''

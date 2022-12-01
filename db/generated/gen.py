@@ -68,10 +68,12 @@ def gen_purchases(num_purchases, available_pids):
             if id % 100 == 0:
                 print(f'{id}', end=' ', flush=True)
             uid = fake.random_int(min=0, max=num_users-1)
+            sid = fake.random_int(min=0, max=num_users-1)
             pid = fake.random_element(elements=available_pids)
+            quantity = fake.random_int(min=1)
             time_purchased = fake.date_time()
             fulfillment_status = fake.pybool()
-            writer.writerow([id, uid, pid, time_purchased, fulfillment_status])
+            writer.writerow([id, uid, sid, pid, quantity, time_purchased, fulfillment_status])
         print(f'{num_purchases} generated')
     return
 
