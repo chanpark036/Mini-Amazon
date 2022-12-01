@@ -2,18 +2,19 @@ from flask import current_app as app
 
 
 class Cart:
-    def __init__(self, uid, pid, quantity, u_price, name):
+    def __init__(self, uid, pid, quantity, u_price, name, sid):
         self.uid = uid
         self.pid = pid
         self.quantity = quantity
         self.u_price = u_price
         self.name = name
+        self.sid = sid
 
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
 SELECT Carts.uid as uid, Carts.pid as pid, Carts.quantity as quantity, Products.price as price,
-Products.name as name
+Products.name as name, Carts.sid as sid
 FROM Carts, Products
 WHERE uid = :uid and Products.id = Carts.pid
 ''',
@@ -55,12 +56,13 @@ RETURNING uid
        id = rows[0][0]
        return Cart.get(id) 
    
-    def addProduct(uid, pid, price):
+    def addProduct(uid, pid, price, sid):
         rows = app.db.execute('''
-INSERT INTO Carts(uid, pid, quantity, u_price)
-VALUES(:uid, :pid, :quantity, :price)
+INSERT INTO Carts(uid, pid, quantity, u_price, sid)
+VALUES(:uid, :pid, :quantity, :price, :sid)
 ''',
                             uid=uid,
                             pid=pid,
                             quantity = 1,
-                            price=price)
+                            price=price,
+                            sid = sid)

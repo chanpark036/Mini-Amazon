@@ -48,7 +48,8 @@ CREATE TABLE Carts (
     uid INT NOT NULL REFERENCES Users(id),
     pid INT NOT NULL REFERENCES Products(id),
     quantity INT NOT NULL,
-    u_price FLOAT NOT NULL
+    u_price FLOAT NOT NULL,
+    sid INT NOT NULL
 );
 
 CREATE TABLE Inventory( 

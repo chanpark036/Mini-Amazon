@@ -54,12 +54,12 @@ class Inventory:
 
     #change later to include seller_id
     @staticmethod
-    def decreaseInventory(pid, change):
+    def decreaseInventory(pid, change, sid):
         app.db.execute('''
             UPDATE Inventory
             SET quantity = quantity-:change
-            WHERE pid = :pid
-        ''', change = change, pid=pid)
+            WHERE pid = :pid AND sid = :sid
+        ''', change = change, pid=pid, sid = sid)
 
     @staticmethod
     def get_from_pid(pid):
