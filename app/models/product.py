@@ -8,12 +8,12 @@ class Product:
         self.price = price
         self.available = available
         self.description = description
-        self.image
+        self.image = image
 
     @staticmethod
     def get(id):
         rows = app.db.execute('''
-SELECT id, name, category, description, price, available
+SELECT id, name, category, description, price, available, image
 FROM Products
 WHERE id = :id
 ''',
@@ -23,7 +23,7 @@ WHERE id = :id
     @staticmethod
     def get_all(available=True):
         rows = app.db.execute('''
-SELECT id, name, category, description, price, available
+SELECT id, name, category, description, price, available, image
 FROM Products
 WHERE available = :available
 ''',
@@ -36,7 +36,7 @@ WHERE available = :available
     @staticmethod
     def get_top_K_expensive(available=True, k = 0):
         rows = app.db.execute('''
-SELECT id, name, description, price, available
+SELECT id, name, description, price, available, 
 FROM Products
 ORDER BY price DESC
 ''',

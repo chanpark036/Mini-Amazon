@@ -56,7 +56,7 @@ def gen_products(num_products):
             image = fake.image_url()
             if available:
                 available_pids.append(pid)
-            writer.writerow([pid, name, category, description, price, available])
+            writer.writerow([pid, name, category, description, price, available, image])
         print(f'{num_products} generated; {len(available_pids)} available')
     return available_pids
 
