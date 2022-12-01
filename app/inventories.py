@@ -12,7 +12,6 @@ from flask import Blueprint
 
 bp = Blueprint('inventories', __name__)
 
-seller_id = 2
 class InventorySearch(FlaskForm):
     inventory_id = IntegerField('Product id: ')
     product_id = IntegerField('Product id: ')
@@ -22,13 +21,12 @@ class InventorySearch(FlaskForm):
 
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
     form = InventorySearch()
+    seller_id = current_user.id
     available = True
-    #seller_id = current_user.id
-    seller_id = 2 #change
     inv = Inventory.get(seller_id)
-    if len(inv) == 0:
-        available = False
     return render_template('inventory.html',
                             sid = seller_id,
                            inventory_products=inv, form=form, available = available) 
@@ -55,7 +53,8 @@ def removeProduct(uid, pid):
 @bp.route('/inventory/add', methods=['GET','POST'])
 def addProduct(): #ensure that pid is not already in database and if is then give error
     #pid could be in database already but under a different seller
-    uid = 2 #change
+    seller_id = current_user.id
+    uid = seller_id #change
     form = InventorySearch()
     pid = form.product_id.data
     quantity = form.quantity.data

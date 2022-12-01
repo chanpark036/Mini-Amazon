@@ -6,8 +6,8 @@
 <a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style = "float: right; margin-top: 10px" class="btn btn-black">ORDER HISTORY</a>
 <br><br>
 
-<h2 class = "login" style = "text-align: center; margin-top: -35px">Products in Inventory for User {{sid}}:</h2>
 {% if available%}
+<h2 class = "login" style = "text-align: center; margin-top: -35px">Products in Inventory for Seller {{sid}}:</h2>
 <table class='styled-table table-hover container'>
   <thead>
     <tr>
@@ -54,7 +54,8 @@
   </tbody>
 </table>
 {% else %}
-<p style='text-align: center; color:red;'> Not a seller </p>
+<h2 class = "login" style = "text-align: center; margin-top: -35px; color:red">You are not a seller.</h2>
+<h2 href="{{ url_for('inventories.inventories')}}" type="button" class="btn btn-black">Become a Seller</h2>
 {% endif %}
 
 {% endblock %}

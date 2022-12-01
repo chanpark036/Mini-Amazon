@@ -52,7 +52,7 @@ def detailed_order_page(user_id, time_purchased):
 
 @bp.route('/purchase_history_seller')
 def purchase_history_seller():
-    seller_id = 2 #change ---------chan
+    seller_id = current_user.id
     purchases = Purchase.get_all_seller_purchases(seller_id)
     for purchase in purchases:
         purchase.address = Purchase.get_address(purchase.uid)
@@ -60,7 +60,6 @@ def purchase_history_seller():
 
 @bp.route('/purchase_history_seller/<sid>,<uid>,<pid>,<fulfillment_status>')
 def change_fulfillment(sid,uid,pid,fulfillment_status):
-    seller_id = 2 #change ---------chan
     purchases = Purchase.change_fulfillment(sid,uid,pid,fulfillment_status)
     return redirect(url_for('purchases.purchase_history_seller'))
 
