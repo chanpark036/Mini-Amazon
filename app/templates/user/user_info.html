@@ -84,7 +84,7 @@
     {% for feedback in seller_feedback%}
       <tr>
         <td>
-          {{feedback.firstname}} {{feedback.lastname}}
+          <a href="{{ url_for('users.get_user_public_view', uid = feedback.sid) }}" type="button" class="btn btn-light"> {{feedback.firstname}} {{feedback.lastname}} </a>
         </td>
         <td>{{feedback.review}}
           <a href="{{ url_for('feedback.update_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
