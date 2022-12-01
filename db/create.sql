@@ -28,7 +28,7 @@ CREATE TABLE Purchases (
    pid INT NOT NULL REFERENCES Products(id), 
    quantity INT NOT NULL, --keep in mind users can add more than available items to cart, but purchase will not be fulfilled
    time_purchased timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-   fulfillment_status BOOLEAN DEFAULT FALSE
+   fulfillment_status VARCHAR(255) NOT NULL
 );
  
 CREATE TABLE Feedback (

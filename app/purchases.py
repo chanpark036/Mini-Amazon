@@ -4,6 +4,8 @@ from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+import datetime
+
 
 from .models.purchase import Purchase
 
@@ -58,8 +60,9 @@ def purchase_history_seller():
         purchase.address = Purchase.get_address(purchase.uid)
     return render_template('purchase_history_seller.html', purchase_history = purchases, seller_id = seller_id)
 
-@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>,<fulfillment_status>')
-def change_fulfillment(sid,uid,pid,fulfillment_status):
-    purchases = Purchase.change_fulfillment(sid,uid,pid,fulfillment_status)
+@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>')
+def change_fulfillment(sid,uid,pid):
+    x = datetime.datetime.now()
+    fulfillment_status = "Fulfilled " + str(x.month)+"-"+str(x.day)+"-"+str(x.year)+" at "+str(x.hour)+":"+str(x.minute)
+    purchases = Purchase.change_fulfillment(sid,uid,pid,fulfillment_status) 
     return redirect(url_for('purchases.purchase_history_seller'))
-
