@@ -92,7 +92,8 @@ def gen_reviews(num_reviews, available_pids):
             review = fake.sentence()
             rating = fake.random_int(min=1, max=5)
             upvotes = fake.random_int()
-            writer.writerow([id, uid, pid, sid, time_submitted, review, rating, upvotes])
+            image = fake.image_url()
+            writer.writerow([id, uid, pid, sid, time_submitted, review, rating, upvotes, image])
         print(f'{num_reviews} generated')
     return
 
