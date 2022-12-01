@@ -104,8 +104,14 @@ def detail_product(product_id):
 
 
     # Reviews
-    user = current_user.id
-    hasReview = len(Feedback.get_p_u_ratings(product_id, user)) > 0
+    loggedIn = current_user.is_authenticated
+    print(loggedIn)
+    if loggedIn:
+        user = current_user.id
+        hasReview = len(Feedback.get_p_u_ratings(product_id, user)) > 0
+    else:
+        user = 0
+        hasReview = False
     reviews = Feedback.get_all_by_pid(product_id)
     stat = Feedback.get_p_stats(product_id)
     stats = create_stats(stat)
@@ -113,7 +119,7 @@ def detail_product(product_id):
     ratings = create_rating(rating)
     return render_template('product-detail.html',
                              form1 = form1, form2 = form2, product_id=product_id, reviews=reviews, stats=stats, ratings=ratings, 
-                             product_details = product_details, hasReview = hasReview)
+                             product_details = product_details, hasReview = hasReview, loggedIn=loggedIn)
 
 
 @bp.route('/products/<pid>,<price>', methods = ['GET','POST'])
