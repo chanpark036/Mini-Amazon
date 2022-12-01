@@ -49,8 +49,10 @@ def feedback():
         user_id = current_user.id
         product_feedback = Feedback.get_all_by_uid_pid_recent(user_id)
         seller_feedback = Feedback.get_all_by_uid_sid_recent(user_id)
+        p_rev = len(product_feedback) > 0
+        s_rev = len(seller_feedback) > 0
         return render_template('feedback/feedback.html', 
-                           product_feedback=product_feedback, seller_feedback=seller_feedback, form = form, uid = user_id, form1 = form1)
+                           product_feedback=product_feedback, seller_feedback=seller_feedback, form = form, uid = user_id, form1 = form1, p_reviews=p_rev, s_reviews=s_rev)
     return redirect(url_for('users.login'))
 
 @bp.route('/review-product/<product_id>', methods=['GET', 'POST'])
