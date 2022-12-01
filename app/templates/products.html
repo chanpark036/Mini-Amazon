@@ -9,7 +9,7 @@
 <table class='styled-table table-hover container' id="products-table">
   <thead>
     <tr>
-      <th scope="col">Product ID</th>
+      <!-- <th scope="col">Product ID</th> -->
       <th scope="col">Category</th>
       <th scope="col">Product Name</th>
       <th scope="col">Price</th>
@@ -20,7 +20,7 @@
   <tbody>
     {% for product in avail_products%}
       <tr>
-        <th scope="row">{{product.id}}</th>
+        <!-- <th scope="row">{{product.id}}</th> -->
         <td>{{product.category}}</td>
         <!-- <td>{{product.name}}{{product.detail}}
           <a href="{{ url_for('products.detail_product', product_id = product.id) }}" type="button" class="btn btn-light">Detail View</a></td> -->
