@@ -10,20 +10,20 @@ from .models.purchase import Purchase
 from flask import Blueprint
 bp = Blueprint('purchases', __name__)
 
-class SearchUserPurchases(FlaskForm):
-    user_id = IntegerField('User id')
-    search = SubmitField('Search')
+# class SearchUserPurchases(FlaskForm):
+#     user_id = IntegerField('User id')
+#     search = SubmitField('Search')
 
-@bp.route('/searchuserpurchases', methods=['GET'])
-def user_purchases():
-    form = SearchUserPurchases()
-    uid = form.user_id.data
-    purchases = Purchase.get_all_user_purchases(uid)
-    return render_template('user/user_purchases.html', 
-                            purchase_history=purchases,
-                            form=form)
+# @bp.route('/searchuserpurchases', methods=['GET', 'POST'])
+# def user_purchases():
+#     form = SearchUserPurchases()
+#     uid = form.user_id.data
+#     purchases = Purchase.get_all_user_purchases(uid)
+#     return render_template('user/user_purchases.html', 
+#                             purchase_history=purchases,
+#                             form=form)
     
-@bp.route('/purchasehistory', methods=['GET'])
+@bp.route('/purchasehistory', methods=['GET', 'POST'])
 def purchase_history():
     if current_user.is_authenticated:
         purchase_history = Purchase.get_purchase_history(current_user.id)
