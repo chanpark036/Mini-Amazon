@@ -6,6 +6,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Integ
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
+from .models.feedback import Feedback
 
 from flask import Blueprint
 bp = Blueprint('users', __name__)
@@ -16,6 +17,44 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
+
+# Reviews
+
+def create_rating(lst):
+    one,two,three,four,five = 0, 0, 0, 0, 0
+    for row in lst:
+        if row[0] == 1:
+            one = row[1]
+        if row[0] == 2:
+            two = row[1]
+        if row[0] == 3:
+            three = row[1]
+        if row[0] == 4:
+            four = row[1]
+        if row[0] == 5:
+            five = row[1]
+    return Ratings(one,two,three,four,five)
+
+
+class Ratings:
+    def __init__(self, one, two, three, four, five):
+        self.one = one
+        self.two = two
+        self.three = three
+        self.four = four
+        self.five = five
+
+class Stats:
+    def __init__(self, avg, count):
+        self.avg = avg
+        self.count = count
+
+def create_stats(lst):
+    if len(lst) == 0:
+        return Stats("N/A", 0)
+    else:
+        avg = round(lst[0][1],1)
+        return Stats(avg,lst[0][2])
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -93,9 +132,18 @@ class UserPublicView(FlaskForm):
 def get_user_public_view():
     form = UserPublicView()
     user = User.get(form.user_id.data)
+    sid = form.user_id.data
+    cur_user = current_user.id
+    hasReview = len(Feedback.get_s_u_ratings(sid, cur_user)) > 0
+    reviews = Feedback.get_all_by_sid(sid)
+    stat = Feedback.get_s_stats(sid)
+    stats = create_stats(stat)
+    rating = Feedback.get_s_ratings(sid)
+    ratings = create_rating(rating)
     return render_template('user/public_view.html',
                            user_id=user,
-                           form=form)
+                           form=form,
+                           reviews=reviews, stats=stats, ratings=ratings, seller_id = sid, hasReview=hasReview)
 
 
 class UpdateEmail(FlaskForm):

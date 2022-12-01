@@ -47,19 +47,10 @@ def feedback():
         form = FeedbackSearch()
         form1 = orderBy()
         user_id = current_user.id
-        feedback = Feedback.get_all_by_uid_help(user_id)
-        """ if request.method == "POST":
-            if form1.order.data == 'upvotes':
-                feedback = Feedback.get_all_by_uid_help(user_id) 
-                return redirect(url_for('feedback.feedback'))
-            if form1.order.data == "submitted_timestamp":
-                feedback = Feedback.get_all_by_uid_recent(user_id)
-                return redirect(url_for('feedback.feedback'))
-            else:
-                feedback = Feedback.get_all_by_uid_rating(user_id)
-                return redirect(url_for('feedback.feedback'))"""
+        product_feedback = Feedback.get_all_by_uid_pid_help(user_id)
+        seller_feedback = Feedback.get_all_by_uid_sid_help(user_id)
         return render_template('feedback/feedback.html', 
-                           user_feedback=feedback, form = form, uid = user_id, form1 = form1)
+                           product_feedback=product_feedback, seller_feedback=seller_feedback, form = form, uid = user_id, form1 = form1)
     return redirect(url_for('users.login'))
 
 @bp.route('/review-product/<product_id>', methods=['GET', 'POST'])
@@ -117,3 +108,8 @@ def delete_review(review_id):
 def update_votes(review_id, upvotes, product_id):
     Feedback.update_votes(review_id, upvotes)
     return redirect(url_for('products.detail_product', product_id=product_id))
+
+@bp.route('/userpublicview/<seller_id>/<review_id>/<upvotes>', methods=['GET', 'POST'])
+def update_s_votes(review_id, upvotes, seller_id):
+    Feedback.update_votes(review_id, upvotes)
+    return redirect(url_for('users.get_user_public_view'))
