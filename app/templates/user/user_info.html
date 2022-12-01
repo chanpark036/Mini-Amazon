@@ -22,6 +22,84 @@
     <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-dark">Edit Balance</a> 
 </h2>
 
+<br>
+
+
+<h2>Your Product Reviews</h2>
+
+{%if p_reviews  %}
+<table class='styled-table table-hover container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">Review</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Was this helpful?</th>
+      <th scope="col">Delete</th>   
+    </tr>
+  </thead>
+  <tbody>
+    {% for feedback in product_feedback%}
+      <tr>
+        <td>
+          <a href="{{ url_for('products.detail_product', product_id = feedback.pid) }}" type="button" class="btn btn-light">{{feedback.pname}}</a>
+        </td>
+        <td>{{feedback.review}}
+          <a href="{{ url_for('feedback.update_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
+        </td>
+        <td>{{feedback.rating}}
+          <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
+        </td>
+        <td>{{feedback.upvotes}} people found this helpful!</td>
+        <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>     
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+
+<p>You don't have any product reviews.</p>
+{% endif %}
+
+<h2>Your Seller Reviews</h2>
+{%if s_reviews  %}
+<table class='styled-table table-hover container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Seller</th>
+      <th scope="col">Review</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Was this helpful?</th>
+      <th scope="col">Delete</th>   
+    </tr>
+  </thead>
+  <tbody>
+    {% for feedback in seller_feedback%}
+      <tr>
+        <td>
+          {{feedback.firstname}} {{feedback.lastname}}
+        </td>
+        <td>{{feedback.review}}
+          <a href="{{ url_for('feedback.update_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
+        </td>
+        <td>{{feedback.rating}}
+          <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
+        </td>
+        <td>{{feedback.upvotes}} people found this helpful!</td>
+        <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>     
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+
+<p>You don't have any seller reviews.</p>
+{% endif %}
+
+<br><br>
+
 
 
 

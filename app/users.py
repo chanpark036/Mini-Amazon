@@ -118,9 +118,14 @@ def logout():
 @bp.route('/account')
 def get_account_info():
     if current_user.is_authenticated:
+        uid = current_user.id
+        product_feedback = Feedback.get_all_by_uid_pid_recent(uid)
+        seller_feedback = Feedback.get_all_by_uid_sid_recent(uid)
+        p_rev = len(product_feedback) > 0
+        s_rev = len(seller_feedback) > 0
         user_id = User.get(current_user.id)
         return render_template('user/user_info.html', 
-                               user_id=user_id)
+                               user_id=user_id, product_feedback=product_feedback, seller_feedback=seller_feedback, uid = uid, p_reviews=p_rev, s_reviews=s_rev)
     return redirect(url_for('users.login'))
 
 
