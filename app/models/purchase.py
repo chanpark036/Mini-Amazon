@@ -107,10 +107,12 @@ ORDER BY time_purchased DESC
                               SUM(Purchases.quantity) as total_quantity,
                               Purchases.fulfillment_status as fulfillment_status,
                               Purchases.time_purchased as time_purchased,
-                              Purchases.sid as sid
-                              FROM Purchases, Products
-                              WHERE Purchases.uid = :uid and Purchases.time_purchased = :time_purchased and Purchases.pid = Products.id 
-                              GROUP BY name, time_purchased, fulfillment_status, quantity, sid
+                              Purchases.sid as sid,
+                              Users.firstname as firstname,
+                              Users.lastname as lastname
+                              FROM Purchases, Products, Users
+                              WHERE Purchases.uid = :uid and Purchases.time_purchased = :time_purchased and Purchases.pid = Products.id and Users.id = Purchases.sid
+                              GROUP BY name, time_purchased, fulfillment_status, quantity, sid, firstname, lastname
                               """,
                               uid = uid,
                               time_purchased = time_purchased)

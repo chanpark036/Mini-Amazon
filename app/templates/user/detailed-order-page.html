@@ -11,7 +11,7 @@
       <th>Item Quantity</th>
       <th>Item Total</th>
       <th>Fulfillment Status</th>
-      <th>Seller ID</th>
+      <th>Seller</th>
     </tr>
     <tbody>
         {% for item in orderDetails%}
@@ -29,7 +29,7 @@
         {{item.fulfillment_status}}
       </td>
       <td>
-        <a href="{{ url_for('users.get_user_public_view', uid=item.sid) }}" type="button" class="btn btn-light">{{item.sid}}</a>
+        <a href="{{ url_for('users.get_user_public_view', uid=item.sid) }}" type="button" class="btn btn-light">{{item.firstname}} {{item.lastname}}</a>
       </td>
     </tr>
     {% endfor %}
