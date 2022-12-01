@@ -14,6 +14,7 @@ bp = Blueprint('inventories', __name__)
 
 seller_id = 2
 class InventorySearch(FlaskForm):
+    inventory_id = IntegerField('Product id: ')
     product_id = IntegerField('Product id: ')
     quantity = IntegerField('Quantity: ')
     price = FloatField('Price: ')
