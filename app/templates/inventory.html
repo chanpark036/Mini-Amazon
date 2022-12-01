@@ -2,36 +2,19 @@
 
 {% block content %}
 
+
+<a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style = "float: right; margin-top: 10px" class="btn btn-black">ORDER HISTORY</a>
 <br><br>
-<form action="" method="post" novalidate>
-  {{ form.hidden_tag() }}
-  <p>
-    {{ form.inventory_id.label }}<br/>
-    {{ form.inventory_id(size=32) }}<br/>
 
-    {{ form.product_id.label }}<br/>
-    {{ form.product_id(size=32) }}<br/>
-
-    {{ form.quantity.label }}<br/>
-    {{ form.quantity(size=32) }}<br/>
-
-    {{ form.price.label }}<br/>
-    {{ form.price(size=32) }}<br/>
-
-    {{ form.action.label }} <br/>
-    {{ form.action(size=32) }}<br/>
-  </p>
-  {{ form.search(class_="btn btn-black") }}
-</form>
-
-<h2>Products in Inventory for User {{sid}}:</h2>
 {% if available%}
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
+<h2 class = "login" style = "text-align: center; margin-top: -35px">Products in Inventory for Seller {{sid}}:</h2>
+<table class='styled-table table-hover container'>
+  <thead>
     <tr>
       <th scope="col">Product ID</th>
       <th scope="col">Product Price</th>
       <th scope="col">Quantity</th>
+      <th scope="col">Remove/Add</th>
     </tr>
   </thead>
   <tbody>
@@ -39,13 +22,40 @@
       <tr>
         <th scope="row">{{product.pid}}</th>
         <td>{{product.price}}</td>
-        <td>{{product.quantity}}</td>
+        <td>{{product.quantity}}
+        <a href="{{ url_for('inventories.modifyQuantity', uid = product.sid, pid = product.pid, new_q = product.quantity+1) }}" type="button" class="btn btn-light">+</a> 
+        <a href="{{ url_for('inventories.modifyQuantity', uid = product.sid, pid = product.pid, new_q = product.quantity-1) }}" type="button" class="btn btn-light">-</a>
+        </td>   
+        <td>
+          <a href="{{ url_for('inventories.removeProduct', uid = product.sid, pid = product.pid) }}" type="button" class="btn btn-black; box-text">REMOVE</a>
+        </td>
       </tr>
     {% endfor %}
+    <form action = "{{url_for('inventories.addProduct')}}" method = "post" novalidate>
+      <th>
+      <!--{{ form.product_id.label }}-->
+      {{ form.product_id(size=8, class_="box-text") }}
+      </th>
+
+      <td>
+      <!--{{ form.price.label }}-->
+      {{ form.price(size=8, class_="box-text") }}
+      </td>
+
+      <td>
+      <!--{{ form.quantity.label }}-->
+      {{ form.quantity(size=8, class_="box-text") }}
+      </td>
+
+      <td>
+      {{form.submit(class_="btn btn-black; box-text")}}
+      </td>
+    </form>
   </tbody>
 </table>
 {% else %}
-<b style='color:red;'> Not a seller </b>
+<h2 class = "login" style = "text-align: center; margin-top: -35px; color:red">You are not a seller.</h2>
+<h2 href="{{ url_for('inventories.inventories')}}" type="button" class="btn btn-black">Become a Seller</h2>
 {% endif %}
 
 {% endblock %}
