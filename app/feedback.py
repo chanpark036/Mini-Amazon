@@ -47,8 +47,8 @@ def feedback():
         form = FeedbackSearch()
         form1 = orderBy()
         user_id = current_user.id
-        product_feedback = Feedback.get_all_by_uid_pid_help(user_id)
-        seller_feedback = Feedback.get_all_by_uid_sid_help(user_id)
+        product_feedback = Feedback.get_all_by_uid_pid_recent(user_id)
+        seller_feedback = Feedback.get_all_by_uid_sid_recent(user_id)
         return render_template('feedback/feedback.html', 
                            product_feedback=product_feedback, seller_feedback=seller_feedback, form = form, uid = user_id, form1 = form1)
     return redirect(url_for('users.login'))
