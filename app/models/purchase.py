@@ -104,12 +104,13 @@ ORDER BY time_purchased DESC
         rows = app.db.execute("""
                               SELECT Products.name as name,
                               SUM(Products.price) as total_price, 
-                              SUMs(Purchases.quantity) as total_quantity,
+                              SUM(Purchases.quantity) as total_quantity,
                               Purchases.fulfillment_status as fulfillment_status,
-                              Purchases.time_purchased as time_purchased
+                              Purchases.time_purchased as time_purchased,
+                              Purchases.sid as sid
                               FROM Purchases, Products
                               WHERE Purchases.uid = :uid and Purchases.time_purchased = :time_purchased and Purchases.pid = Products.id 
-                              GROUP BY name, time_purchased, fulfillment_status, quantity
+                              GROUP BY name, time_purchased, fulfillment_status, quantity, sid
                               """,
                               uid = uid,
                               time_purchased = time_purchased)
