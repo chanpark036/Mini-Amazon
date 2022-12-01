@@ -28,14 +28,14 @@ class PostFeedback(FlaskForm):
     rating = SelectField('Rating', choices=[1,2,3,4,5])
     product_id = IntegerField('Product ID')
     seller_id = IntegerField('Seller ID')
-    image = TextAreaField('Image URL')
+    image = TextAreaField('Image URL (optional)')
     submit = SubmitField('Submit')
 
 class UpdateFeedback(FlaskForm):
     review_id = IntegerField('Review ID')
     review = TextAreaField('New Text')
     rating = SelectField('Rating', choices=[1,2,3,4,5])
-    image = TextAreaField('Image URL')
+    image = TextAreaField('Image URL (optional)')
     submit = SubmitField('Submit')
 
 class orderBy(FlaskForm):

@@ -4,8 +4,11 @@
 
 {% for feedback in image%}
 
+{%if feedback.image == 'NA'  %}
+<h3>This review currently has no photo</h3>
+{% else %}
 <h3>Current Image:</h3> <img src="{{feedback.image}}" width="100" height = "100"/> 
-
+{% endif %} 
 {% endfor %}
 
 <h1>New Image URL</h1>
