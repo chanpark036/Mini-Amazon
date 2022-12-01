@@ -12,8 +12,8 @@
 <br>
 
 <h2>Reviews</h2>
-<h4>Average Rating: {{stats[0][1]}}</h4>
-<h4>{{stats[0][2]}} customer reviews</h4>
+<h4>Average Rating: {{stats.avg}}</h4>
+<h4>{{stats.count}} customer reviews</h4>
 <div>
   <img src="/static/images/5stars.png", style="width:8em; height:auto;"/>
   {{ratings.five}}
@@ -37,33 +37,14 @@
 
 <br>
 
+{%if hasReview %}
+<h5>You have already reviewed this product.</h5>
+{% else %}
 <a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Write a Review</a>
 
 <br>
+{% endif %}
 
-
-<h3>Rating Counts</h3>
-<table class='styled-table table-hover container'>
-  <thead>
-    <tr>
-      <th scope="col">1</th>
-      <th scope="col">2</th>
-      <th scope="col">3</th>
-      <th scope="col">4</th>
-      <th scope="col">5</th>
-
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <th scope="row">{{ratings.one}}</th>
-        <th scope="row">{{ratings.two}}</th>
-        <th scope="row">{{ratings.three}}</th>
-        <th scope="row">{{ratings.four}}</th>
-        <th scope="row">{{ratings.five}}</th>
-      </tr>
-  </tbody>
-</table>
 
 <br>
 <table class='styled-table table-hover container'>

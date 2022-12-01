@@ -64,7 +64,7 @@ ORDER BY submitted_timestamp DESC
             return [Feedback(*row) for row in rows]
     
     @staticmethod
-    def get_all_by_uid_help(uid):
+    def get_all_by_uid_pid_help(uid):
         rows = app.db.execute('''
 SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
 FROM Feedback F, Products P
@@ -76,7 +76,19 @@ ORDER BY upvotes DESC
         return [Feedback(*row) for row in rows]
 
     @staticmethod
-    def get_all_by_uid_recent(uid):
+    def get_all_by_uid_sid_help(uid):
+        rows = app.db.execute('''
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, U.email, U.firstname, U.lastname
+FROM Feedback F, Users U
+WHERE uid = :uid
+AND F.sid = U.id
+ORDER BY upvotes DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_all_by_uid_pid_recent(uid):
         rows = app.db.execute('''
 SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
 FROM Feedback F, Products P
@@ -88,16 +100,17 @@ ORDER BY submitted_timestamp DESC
         return [Feedback(*row) for row in rows]
 
     @staticmethod
-    def get_all_by_uid_rating(uid):
+    def get_all_by_uid_sid_recent(uid):
         rows = app.db.execute('''
-SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, P.name
-FROM Feedback F, Products P
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, U.email, U.firstname, U.lastname
+FROM Feedback F, Users U
 WHERE uid = :uid
-AND F.pid = P.id
-ORDER BY rating DESC
+AND F.sid = U.id
+ORDER BY submitted_timestamp DESC
 ''',
                               uid=uid)
         return [Feedback(*row) for row in rows]
+
     
     @staticmethod
     def get_all_by_pid(pid):
@@ -168,6 +181,42 @@ GROUP BY rating
         return rows
 
     @staticmethod
+    def get_p_u_ratings(pid, uid):
+        rows = app.db.execute('''
+SELECT review
+FROM Feedback
+WHERE pid = :pid
+AND uid = :uid
+''',
+                              pid=pid,
+                              uid=uid)
+        return rows
+
+    @staticmethod
+    def get_s_u_ratings(sid, uid):
+        rows = app.db.execute('''
+SELECT review
+FROM Feedback
+WHERE sid = :sid
+AND uid = :uid
+''',
+                              sid=sid,
+                              uid=uid)
+        return rows
+    
+    @staticmethod
+    def check_s_u(sid, uid):
+        rows = app.db.execute('''
+SELECT id
+FROM Purchases
+WHERE sid = :sid
+AND uid = :uid
+''',
+                              sid=sid,
+                              uid=uid)
+        return rows
+    
+    @staticmethod
     def add_p_review(uid, pid, review, rating, upvotes):
         try:
             rows = app.db.execute('''
@@ -191,7 +240,7 @@ RETURNING id
         try:
             rows = app.db.execute('''
 INSERT INTO Feedback(uid, sid, review, rating, upvotes)
-VALUES(:uid, :sid, :review,:rating,:upvotes
+VALUES(:uid, :sid, :review,:rating,:upvotes)
 RETURNING id
 ''',
                             uid=uid,
