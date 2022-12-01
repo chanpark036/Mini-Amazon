@@ -84,19 +84,11 @@ def get_account_info():
                                user_id=user_id)
     return redirect(url_for('users.login'))
 
-
-class UserPublicView(FlaskForm):
-    user_id = IntegerField('User id')
-    search = SubmitField('Search')
-    
-@bp.route('/userpublicview', methods=['GET', 'POST'])
-def get_user_public_view():
-    form = UserPublicView()
-    user = User.get(form.user_id.data)
+@bp.route('/userpublicview/<uid>', methods=['GET', 'POST'])
+def get_user_public_view(uid):
+    user = User.get(uid)
     return render_template('user/public_view.html',
-                           user_id=user,
-                           form=form)
-
+                           user=user)
 
 class UpdateEmail(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
