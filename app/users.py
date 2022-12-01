@@ -118,9 +118,14 @@ def logout():
 @bp.route('/account')
 def get_account_info():
     if current_user.is_authenticated:
+        uid = current_user.id
+        product_feedback = Feedback.get_all_by_uid_pid_recent(uid)
+        seller_feedback = Feedback.get_all_by_uid_sid_recent(uid)
+        p_rev = len(product_feedback) > 0
+        s_rev = len(seller_feedback) > 0
         user_id = User.get(current_user.id)
         return render_template('user/user_info.html', 
-                               user_id=user_id)
+                               user_id=user_id, product_feedback=product_feedback, seller_feedback=seller_feedback, uid = uid, p_reviews=p_rev, s_reviews=s_rev)
     return redirect(url_for('users.login'))
  
 @bp.route('/userpublicview/<uid>', methods=['GET', 'POST'])
@@ -129,6 +134,7 @@ def get_user_public_view(uid):
     sid = uid
     cur_user = current_user.id
     hasReview = len(Feedback.get_s_u_ratings(sid, cur_user)) > 0
+    hasPurchased = len(Feedback.check_s_u(sid,cur_user)) > 0
     reviews = Feedback.get_all_by_sid(sid)
     stat = Feedback.get_s_stats(sid)
     stats = create_stats(stat)
@@ -136,11 +142,7 @@ def get_user_public_view(uid):
     ratings = create_rating(rating)
     return render_template('user/public_view.html',
                            user=user,
-                           reviews=reviews, 
-                           stats=stats, 
-                           ratings=ratings, 
-                           seller_id = sid, 
-                           hasReview=hasReview)
+                           reviews=reviews, stats=stats, ratings=ratings, seller_id = sid, hasReview=hasReview, hasPurchased=hasPurchased)
 
 
 class UpdateEmail(FlaskForm):

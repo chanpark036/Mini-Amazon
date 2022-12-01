@@ -49,8 +49,10 @@ def feedback():
         user_id = current_user.id
         product_feedback = Feedback.get_all_by_uid_pid_recent(user_id)
         seller_feedback = Feedback.get_all_by_uid_sid_recent(user_id)
+        p_rev = len(product_feedback) > 0
+        s_rev = len(seller_feedback) > 0
         return render_template('feedback/feedback.html', 
-                           product_feedback=product_feedback, seller_feedback=seller_feedback, form = form, uid = user_id, form1 = form1)
+                           product_feedback=product_feedback, seller_feedback=seller_feedback, form = form, uid = user_id, form1 = form1, p_reviews=p_rev, s_reviews=s_rev)
     return redirect(url_for('users.login'))
 
 @bp.route('/review-product/<product_id>', methods=['GET', 'POST'])
@@ -85,7 +87,7 @@ def update_review(review_id):
     if request.method == "POST":
         Feedback.update_review(review_id,
                          form.review.data)
-        return redirect(url_for('feedback.feedback'))
+        return redirect(url_for('users.get_account_info'))
     review = Feedback.get(review_id)
     return render_template('feedback/update-review.html', title='Update Review', form=form, review_id=review_id, review=review)
 
@@ -95,14 +97,14 @@ def update_rating(review_id):
     if request.method == "POST":
         Feedback.update_rating(review_id,
                          form.rating.data)
-        return redirect(url_for('feedback.feedback'))
+        return redirect(url_for('users.get_account_info'))
     rating = Feedback.get(review_id)
     return render_template('feedback/update-rating.html', title='Update Rating', form=form, review_id=review_id, rating=rating)
 
 @bp.route('/feedback/<review_id>', methods=['GET','DELETE'])
 def delete_review(review_id):
     Feedback.delete_review(review_id)
-    return redirect(url_for('feedback.feedback'))
+    return redirect(url_for('users.get_account_info'))
 
 @bp.route('/product-detail/<product_id>/<review_id>/<upvotes>', methods=['GET', 'POST'])
 def update_votes(review_id, upvotes, product_id):

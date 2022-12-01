@@ -6,6 +6,8 @@
 
 
 <h2>Your Product Reviews</h2>
+
+{%if p_reviews  %}
 <table class='styled-table table-hover container'>
   <thead class="thead-dark">
     <tr>
@@ -35,7 +37,13 @@
   </tbody>
 </table>
 
+{% else %}
+
+<p>You don't have any product reviews.</p>
+{% endif %}
+
 <h2>Your Seller Reviews</h2>
+{%if s_reviews  %}
 <table class='styled-table table-hover container'>
   <thead class="thead-dark">
     <tr>
@@ -64,6 +72,11 @@
     {% endfor %}
   </tbody>
 </table>
+
+{% else %}
+
+<p>You don't have any seller reviews.</p>
+{% endif %}
 
 <br><br>
 
