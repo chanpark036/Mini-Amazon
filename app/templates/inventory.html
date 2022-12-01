@@ -3,31 +3,32 @@
 {% block content %}
 
 <br><br>
-<form action="" method="post" novalidate>
+<div class = "register-menu">
+  <p class = "login" style = "text-align: center;">Edit Inventory</p>
+<form class = "form1" action="" method="post" novalidate>
   {{ form.hidden_tag() }}
   <p>
-    {{ form.inventory_id.label }}<br/>
-    {{ form.inventory_id(size=32) }}<br/>
+    {{ form.inventory_id(size=32, class_ = "register-text", placeholder = "Inventory ID") }}
+    <br/>
+    {{ form.product_id(size=32, class_ = "register-text", placeholder = "Product ID") }}<br/>
 
-    {{ form.product_id.label }}<br/>
-    {{ form.product_id(size=32) }}<br/>
+    {{ form.quantity(size=32, class_ = "register-text", placeholder = "Quantity") }}<br/>
 
-    {{ form.quantity.label }}<br/>
-    {{ form.quantity(size=32) }}<br/>
+    {{ form.price(size=32, class_ = "register-text", placeholder = "Price") }}<br/>
 
-    {{ form.price.label }}<br/>
-    {{ form.price(size=32) }}<br/>
-
-    {{ form.action.label }} <br/>
-    {{ form.action(size=32) }}<br/>
+    {{ form.action(size=32, class_ = "register-text", placeholder = "Action") }}<br/>
   </p>
+  <p style = "text-align: center;">
   {{ form.search(class_="btn btn-black") }}
+  </p>
+  <br>
 </form>
+</div>
 
-<h2>Products in Inventory for User {{sid}}:</h2>
+<h2 class = "login" style = "text-align: center;">Products in Inventory for User {{sid}}:</h2>
 {% if available%}
-<table class='table table-hover table-bordered container'>
-  <thead class="thead-dark">
+<table class='styled-table table-hover container'>
+  <thead>
     <tr>
       <th scope="col">Product ID</th>
       <th scope="col">Product Price</th>
@@ -45,7 +46,7 @@
   </tbody>
 </table>
 {% else %}
-<b style='color:red;'> Not a seller </b>
+<p style='text-align: center; color:red;'> Not a seller </p>
 {% endif %}
 
 {% endblock %}
