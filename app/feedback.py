@@ -76,7 +76,7 @@ def review_seller(seller_id):
                          form.review.data,
                          form.rating.data,
                          0)
-        return redirect(url_for('feedback.feedback'))
+        return redirect(url_for('users.get_user_public_view'))
     return render_template('feedback/review-seller.html', title='Review Seller', form=form)
 
 @bp.route('/update-review/<review_id>', methods=['GET', 'POST'])
