@@ -53,6 +53,7 @@ def gen_products(num_products):
             category = available_categories[category_index]
             description = fake.sentence(nb_words=50)[:-1]
             available = fake.pybool()
+            image = fake.image_url()
             if available:
                 available_pids.append(pid)
             writer.writerow([pid, name, category, description, price, available])
