@@ -15,6 +15,7 @@ from .models.product import Product
 from .models.purchase import Purchase
 from .models.cart import Cart
 from .models.feedback import Feedback
+from .models.inventory import Inventory
 
 
 class ProductsKInput(FlaskForm):
@@ -97,11 +98,13 @@ def detail_product(product_id):
     #Product Details
     product_details = Product.get(product_id)
 
+    sellers_of_product = Inventory.get_from_pid(product_id)
+    
+
     # product_name = product_details[1]
     # product_category = product_details[2]
     # product_description = product_details[3]
     # product_price = product_details[4]
-
 
     # Reviews
     loggedIn = current_user.is_authenticated
@@ -118,7 +121,7 @@ def detail_product(product_id):
     ratings = create_rating(rating)
     return render_template('product-detail.html',
                              form1 = form1, form2 = form2, product_id=product_id, reviews=reviews, stats=stats, ratings=ratings, 
-                             product_details = product_details, hasReview = hasReview, loggedIn=loggedIn)
+                             product_details = product_details, sellers_of_product = sellers_of_product, hasReview = hasReview, loggedIn=loggedIn)
 
 
 @bp.route('/products/<pid>,<price>', methods = ['GET','POST'])

@@ -58,3 +58,14 @@ class Inventory:
             SET quantity = quantity-:change
             WHERE pid = :pid
         ''', change = change, pid=pid)
+
+    @staticmethod
+    def get_from_pid(pid):
+        rows = app.db.execute('''
+            SELECT *
+            FROM Inventory
+            WHERE pid = :pid
+            ORDER BY sid
+            ''',
+                              pid=pid)
+        return [Inventory(*row) for row in rows]

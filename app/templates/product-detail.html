@@ -11,6 +11,28 @@
   <img src="{{product_details.image}}"/>
 </div>
 
+<br><br>
+
+<h4><center>Sellers selling this product</center></h4>
+<table class='styled-table table-hover container' id="products-table">
+  <thead>
+    <tr>
+      <th scope="col">Seller</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for inventory in sellers_of_product%}
+      <tr>
+        <td>{{inventory.sid}}</td>
+        <td>{{inventory.quantity}}</td>
+        <td>{{inventory.price}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 
 
 <br>
