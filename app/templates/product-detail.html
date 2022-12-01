@@ -81,7 +81,10 @@
 
 {% endif %}
 
-<br>
+<br> 
+{%if stats.count == 0  %}
+
+{% else %}
 <table class='styled-table table-hover container'>
   <thead>
     <tr>
@@ -111,6 +114,7 @@
     {% endfor %}
   </tbody>
 </table>
+{% endif %} 
 
 {% endblock %}
 
