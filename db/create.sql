@@ -40,7 +40,8 @@ CREATE TABLE Feedback (
    submitted_timestamp timestamp without time zone NOT NULL DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
    review VARCHAR(1024) NOT NULL,
    rating INT NOT NULL,
-   upvotes INT
+   upvotes INT,
+   image VARCHAR(1024)
 );
 
 CREATE TABLE Carts (
