@@ -73,7 +73,7 @@ def gen_purchases(num_purchases, available_pids):
             pid = fake.random_element(elements=available_pids)
             quantity = fake.random_int(min=1)
             time_purchased = fake.date_time()
-            fulfillment_status = fake.pybool()
+            fulfillment_status = "Not Fulfilled"
             writer.writerow([id, uid, sid, pid, quantity, time_purchased, fulfillment_status])
         print(f'{num_purchases} generated')
     return
@@ -92,7 +92,8 @@ def gen_reviews(num_reviews, available_pids):
             review = fake.sentence()
             rating = fake.random_int(min=1, max=5)
             upvotes = fake.random_int()
-            writer.writerow([id, uid, pid, sid, time_submitted, review, rating, upvotes])
+            image = fake.image_url()
+            writer.writerow([id, uid, pid, sid, time_submitted, review, rating, upvotes, image])
         print(f'{num_reviews} generated')
     return
 
