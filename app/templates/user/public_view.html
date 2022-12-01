@@ -74,14 +74,9 @@
         <td>{{feedback.review}}</td>
         <td>{{feedback.rating}}  </td>   
         <td> 
-          {%if {{feedback.image}} == "NA" %}
-<p>No images</p>
-
-{% else %}
+          
 <img src="{{feedback.image}}" width="100" height = "100"/>
 
-<br>
-{% endif %}
            </td>  
         <td> {{feedback.upvotes}} people found this helpful!
           <a href="{{ url_for('feedback.update_s_votes', seller_id=seller_id, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
