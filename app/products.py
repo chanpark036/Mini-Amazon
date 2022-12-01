@@ -105,7 +105,6 @@ def detail_product(product_id):
 
     # Reviews
     loggedIn = current_user.is_authenticated
-    print(loggedIn)
     if loggedIn:
         user = current_user.id
         hasReview = len(Feedback.get_p_u_ratings(product_id, user)) > 0
