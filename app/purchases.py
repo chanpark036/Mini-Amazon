@@ -11,19 +11,6 @@ from .models.purchase import Purchase
 
 from flask import Blueprint
 bp = Blueprint('purchases', __name__)
-
-# class SearchUserPurchases(FlaskForm):
-#     user_id = IntegerField('User id')
-#     search = SubmitField('Search')
-
-# @bp.route('/searchuserpurchases', methods=['GET', 'POST'])
-# def user_purchases():
-#     form = SearchUserPurchases()
-#     uid = form.user_id.data
-#     purchases = Purchase.get_all_user_purchases(uid)
-#     return render_template('user/user_purchases.html', 
-#                             purchase_history=purchases,
-#                             form=form)
     
 @bp.route('/purchasehistory', methods=['GET', 'POST'])
 def purchase_history():
@@ -51,16 +38,17 @@ def detailed_order_page(user_id, time_purchased):
                             total=total_cost)
     return redirect(url_for('users.login'))
 
-
-@bp.route('/purchase_history_seller')
+@bp.route('/purchase_history_seller', methods = ['GET','POST'])
 def purchase_history_seller():
     seller_id = current_user.id
     purchases = Purchase.get_all_seller_purchases(seller_id)
     for purchase in purchases:
         purchase.address = Purchase.get_address(purchase.uid)
-    return render_template('purchase_history_seller.html', purchase_history = purchases, seller_id = seller_id)
+    return render_template('purchase_history_seller.html', 
+                           purchase_history=purchases, 
+                           seller_id=seller_id)
 
-@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>')
+@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>', methods = ['GET','POST'])
 def change_fulfillment(sid,uid,pid):
     x = datetime.datetime.now()
     fulfillment_status = "Fulfilled " + str(x.month)+"-"+str(x.day)+"-"+str(x.year)+" at "+str(x.hour)+":"+str(x.minute)

@@ -33,7 +33,9 @@
 
 <script>
   $(document).ready( function () {
-      $('#purchase-history-table').DataTable();
+      $('#purchase-history-table').DataTable({
+        "order":[[ 3, 'desc' ]]
+      });
   } );
 </script>
 

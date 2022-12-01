@@ -108,11 +108,12 @@ ORDER BY time_purchased DESC
                               Purchases.fulfillment_status as fulfillment_status,
                               Purchases.time_purchased as time_purchased,
                               Purchases.sid as sid,
-                              Users.firstname as firstname,
-                              Users.lastname as lastname
+                              Users.firstname as seller_firstname,
+                              Users.lastname as seller_lastname
                               FROM Purchases, Products, Users
-                              WHERE Purchases.uid = :uid and Purchases.time_purchased = :time_purchased and Purchases.pid = Products.id and Users.id = Purchases.sid
-                              GROUP BY name, time_purchased, fulfillment_status, quantity, sid, firstname, lastname
+                              WHERE Purchases.uid = :uid and Purchases.time_purchased = :time_purchased and Purchases.pid = Products.id 
+                              and Users.id = sid
+                              GROUP BY name, time_purchased, fulfillment_status, quantity, sid, seller_firstname, seller_lastname
                               """,
                               uid = uid,
                               time_purchased = time_purchased)
