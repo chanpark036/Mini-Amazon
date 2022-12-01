@@ -4,26 +4,28 @@ from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+import datetime
+
 
 from .models.purchase import Purchase
 
 from flask import Blueprint
 bp = Blueprint('purchases', __name__)
 
-class SearchUserPurchases(FlaskForm):
-    user_id = IntegerField('User id')
-    search = SubmitField('Search')
+# class SearchUserPurchases(FlaskForm):
+#     user_id = IntegerField('User id')
+#     search = SubmitField('Search')
 
-@bp.route('/searchuserpurchases', methods=['GET'])
-def user_purchases():
-    form = SearchUserPurchases()
-    uid = form.user_id.data
-    purchases = Purchase.get_all_user_purchases(uid)
-    return render_template('user/user_purchases.html', 
-                            purchase_history=purchases,
-                            form=form)
+# @bp.route('/searchuserpurchases', methods=['GET', 'POST'])
+# def user_purchases():
+#     form = SearchUserPurchases()
+#     uid = form.user_id.data
+#     purchases = Purchase.get_all_user_purchases(uid)
+#     return render_template('user/user_purchases.html', 
+#                             purchase_history=purchases,
+#                             form=form)
     
-@bp.route('/purchasehistory', methods=['GET'])
+@bp.route('/purchasehistory', methods=['GET', 'POST'])
 def purchase_history():
     if current_user.is_authenticated:
         purchase_history = Purchase.get_purchase_history(current_user.id)
@@ -58,8 +60,9 @@ def purchase_history_seller():
         purchase.address = Purchase.get_address(purchase.uid)
     return render_template('purchase_history_seller.html', purchase_history = purchases, seller_id = seller_id)
 
-@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>,<fulfillment_status>')
-def change_fulfillment(sid,uid,pid,fulfillment_status):
-    purchases = Purchase.change_fulfillment(sid,uid,pid,fulfillment_status)
+@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>')
+def change_fulfillment(sid,uid,pid):
+    x = datetime.datetime.now()
+    fulfillment_status = "Fulfilled " + str(x.month)+"-"+str(x.day)+"-"+str(x.year)+" at "+str(x.hour)+":"+str(x.minute)
+    purchases = Purchase.change_fulfillment(sid,uid,pid,fulfillment_status) 
     return redirect(url_for('purchases.purchase_history_seller'))
-
