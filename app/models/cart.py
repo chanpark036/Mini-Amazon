@@ -13,11 +13,11 @@ class Cart:
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
-SELECT Carts.uid as uid, Carts.pid as pid, Carts.quantity as quantity, Products.price as price,
-Products.name as name, Carts.sid as sid
-FROM Carts, Products
-WHERE uid = :uid and Products.id = Carts.pid
-''',
+            SELECT Carts.uid as uid, Carts.pid as pid, Carts.quantity as quantity, Products.price as price,
+            Products.name as name, Carts.sid as sid
+            FROM Carts, Products
+            WHERE Carts.uid = :uid and Products.id = Carts.pid
+            ''',
                               uid=uid)
         return [Cart(*row) for row in rows]
     @staticmethod

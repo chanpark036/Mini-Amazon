@@ -140,3 +140,13 @@ WHERE id= :id
 """,
                               balance=balance,
                               id=id)
+        
+    def change_balance(id, changeVal):
+        rows = app.db.execute("""
+            UPDATE Users
+            SET balance = :balance
+            WHERE id= :id
+            """,
+            balance=User.get(id).balance+float(changeVal),
+            id=id)        
+        

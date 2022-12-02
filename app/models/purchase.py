@@ -77,7 +77,7 @@ ORDER BY time_purchased DESC
                             pid=pid,
                             quantity = quantity,
                             time_purchased =time_purchased,
-                            fulfillment_status = False)
+                            fulfillment_status = "Not Fulfilled")
         
     # Given a user ID, return total price, total quantity, fulfillment status, 
     # and time purchased of each order within their purchase history 

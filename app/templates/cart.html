@@ -10,7 +10,6 @@
   <thead>
     <tr>
       <th scope="col">Product Name</th>
-      <th scope="col">Product ID</th>
       <th scope = "col">Purchase Quantity</th>
       <th scope = "col">Unit Price</th>
       <th scope = "col">Total Price</th>
@@ -21,7 +20,6 @@
     {% for purchase in printprods%}
       <tr>
         <td>{{purchase.name}}</td>
-        <td>{{purchase.pid}}</td>
         <td>{{purchase.quantity}}
           <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity+1) }}" type="button" class="btn btn-light">+</a> 
           <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity-1) }}" type="button" class="btn btn-light">-</a>        
