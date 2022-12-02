@@ -2,6 +2,7 @@
 
 {% block content %}
 
-<h1>That email is already associated with an account. Please try a different email. </h1>
+<h2>That email is already associated with an account.</h2>
+<h2>Please try a different email. <a href="{{ url_for('users.update_email') }}" type="button" class="btn btn-dark">Edit Email</a> </h2>
 
 {% endblock %}

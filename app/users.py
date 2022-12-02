@@ -244,6 +244,8 @@ def update_balance():
         new_balance = curr_balance + float(transaction)
         if new_balance >= 0:
             User.update_balance(user_id, new_balance)
+        else: 
+            return render_template('user/update-balance-error.html')
     if request.method == "POST":
         return redirect(url_for('users.get_account_info'))
     return render_template('user/update-balance.html', 
