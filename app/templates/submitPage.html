@@ -10,9 +10,9 @@
 <table class = "styled-table center table-bordered">
     <tr>
       <th>Item</th>
-      <th>Seller ID</th>
       <th>Item Quantity</th>
       <th>Item Total</th>
+      <th>Fulfillment Status</th>
     </tr>
     <tbody>
     {% for product in orderInfo %}
@@ -21,13 +21,13 @@
         {{product.name}}
       </td>
       <td>
-        {{product.sid}}
-      </td>
-      <td>
         {{product.quantity}}
       </td>
       <td>
         {{product.u_price*product.quantity}}
+      </td>
+      <td>
+        {{product.fulfillment_status}}
       </td>
     </tr>
     {% endfor %}

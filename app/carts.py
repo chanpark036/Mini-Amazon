@@ -78,9 +78,11 @@ def delete_product(user_id, purchase_id):
 def submitOrder(user_id, time):
     #decrease inventory
     orderProducts = list(Cart.get(current_user.id))
+    full_orderProducts = []
     for prod in orderProducts:
         Inventory.decreaseInventory(prod.pid, prod.quantity, prod.sid)
-    
+        User.change_balance(prod.sid, prod.quantity*prod.u_price)
+    full_orderProducts=Cart.get_with_status(current_user.id)
     #decrease buyer balance
     curr_balance = current_user.balance
     cost = getTotalPrice(orderProducts)
@@ -89,10 +91,7 @@ def submitOrder(user_id, time):
         User.update_balance(current_user.id, new_balance)
     else:
         print("invalid transaction")
-        #@TODO: display message on frontend about insufficient funds
-    #@TODO increment seller funds for each product
-    
-    
+        #@TODO: display message on frontend about insufficient funds    
     #write order to purchase history
     purchase_id = Purchase.get_most_recent_purchase_id() + 1
     for prod in orderProducts:
@@ -101,8 +100,9 @@ def submitOrder(user_id, time):
         purchase_id+=1
     #empty cart
     Cart.emptyCart(current_user.id)
+    print(full_orderProducts)
     return render_template('submitPage.html',
-                           orderInfo = orderProducts,
+                           orderInfo = full_orderProducts,
                            totalPrice = cost,
                            time = time)
     
