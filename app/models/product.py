@@ -68,3 +68,5 @@ WHERE name = :name
 ''',
                             name = name)
         return [Product(*row) for row in rows]
+
+

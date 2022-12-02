@@ -132,3 +132,6 @@ def addToCart(sid,pid, price):
     Cart.addProduct(uid, pid, price, sid)
     return render_template('products.html',
                            avail_products=products, form1 = form1, form2 = form2,)
+
+
+

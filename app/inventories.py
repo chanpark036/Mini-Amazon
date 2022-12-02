@@ -29,6 +29,11 @@ class AddNewProductForm(FlaskForm):
     price = FloatField('Price: ')
     submit = SubmitField('ADD NEW PRODUCT')
 
+class UpdateProductName(FlaskForm):
+    name = StringField('New Name: ')
+    submit = SubmitField('ADD NEW PRODUCT')
+
+
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():
     if not current_user.is_authenticated:
@@ -102,3 +107,36 @@ def editProduct(sid,pid):
     product_details = Product.get(pid)
     return render_template('edit-product.html', sid = sid, pid = pid, product_details = product_details)
                            #if available not true then how to become a seller?
+
+
+@bp.route('/inventory/editProduct/<sid>,<pid>/update-name', methods=['GET', 'POST'])
+def update_name(sid, pid):
+    
+    form = UpdateProductName()
+    user_id = current_user.id
+    new_name = form.name.data
+    
+    Product.update_name(pid, new_name)      
+
+    # User.update_email(user_id,
+    #                             form.email.data)
+    #         if request.method == "POST":
+    #             return redirect(url_for('users.get_account_info'))
+    #         return render_template('user/update-email.html', 
+    #                             title='Update Email', 
+    #                             form=form)
+
+    # if form.validate_on_submit():
+        # if User.email_exists(email):
+        #     return render_template('user/update-email-error.html')
+        # else:
+            # User.update_email(user_id,
+            #                     form.email.data)
+            # if request.method == "POST":
+            #     return redirect(url_for('users.get_account_info'))
+            # return render_template('user/update-email.html', 
+            #                     title='Update Email', 
+            #                     form=form)
+    return render_template('user/update-email.html', sid = sid, pid = pid,
+                                title='Update Email', 
+                                form=form)

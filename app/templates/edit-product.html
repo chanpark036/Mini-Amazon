@@ -2,16 +2,20 @@
 
 {% block content %}
 
-<h1>EDIT PRODUCT</h1>
-<h1>{{ product_details.name }}</h1>
-<h4>Price: ${{ product_details.price }}</h4>
-<h4>Category: {{ product_details.category }}</h4>
-<h4>Description: {{ product_details.description }}</h4>
+<h1>Edit details for: </h1>
+<h1>{{ product_details.name }} 
+  <a href="{{ url_for('inventories.update_name') }}" type="button" class="btn btn-dark"> Edit Name </a> </h1>
+<h4>Category: {{ product_details.category }}
+  <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Price</a> 
+</h4>
+<h4>Description: {{ product_details.description }}
+  <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Description</a> 
+</h4>
 <div>
-  <img src="{{product_details.image}}"/>
+  <img src="{{product_details.image}}" />
+  <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Image</a> 
 </div>
 
 <br><br>
 
 {% endblock %}
-
