@@ -78,6 +78,11 @@ def delete_product(user_id, purchase_id):
 def submitOrder(user_id, time):
     #decrease inventory
     orderProducts = list(Cart.get(current_user.id))
+    # for prod in orderProducts:
+    #     availableQuant = Inventory.get_from_pid(prod.pid).quantity
+    #     if prod.quantity>availableQuant:
+    #         print("Your seller does not have enough inventory. Please adjust your order")
+    #         return
     for prod in orderProducts:
         Inventory.decreaseInventory(prod.pid, prod.quantity, prod.sid)
         User.change_balance(prod.sid, prod.quantity*prod.u_price)
