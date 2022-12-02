@@ -71,6 +71,16 @@ class Inventory:
             ''',
                               pid=pid)
         return [Inventory(*row) for row in rows]
+    def get_from_pid_specific(pid, sid):
+        rows = app.db.execute('''
+            SELECT I.sid, I.pid, I.quantity, I.u_price, U.firstname, U.lastname
+            FROM Inventory I, Users U
+            WHERE I.pid = :pid AND I.sid = :sid
+            ORDER BY I.sid
+            ''',
+                              pid=pid,
+                              sid = sid)
+        return rows[0]
 
     # @staticmethod
     # def get_name_from_pid(pid):
