@@ -21,10 +21,10 @@
         {{product.name}}
       </td>
       <td>
-        {{product.quantity}}
+        {{product.total_quantity}}
       </td>
       <td>
-        {{product.u_price*product.quantity}}
+        ${{product.total_price}}
       </td>
       <td>
         {{product.fulfillment_status}}
@@ -37,7 +37,6 @@
 <table class = "styled-table center table-bordered">
     <tr>
         <th>Order Total</th>
-        <th>Fulfillment Status</th>
     </tr>
     <tr>
         <td>

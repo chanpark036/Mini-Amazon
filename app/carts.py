@@ -78,11 +78,9 @@ def delete_product(user_id, purchase_id):
 def submitOrder(user_id, time):
     #decrease inventory
     orderProducts = list(Cart.get(current_user.id))
-    full_orderProducts = []
     for prod in orderProducts:
         Inventory.decreaseInventory(prod.pid, prod.quantity, prod.sid)
         User.change_balance(prod.sid, prod.quantity*prod.u_price)
-    full_orderProducts=Cart.get_with_status(current_user.id)
     #decrease buyer balance
     curr_balance = current_user.balance
     cost = getTotalPrice(orderProducts)
@@ -100,9 +98,9 @@ def submitOrder(user_id, time):
         purchase_id+=1
     #empty cart
     Cart.emptyCart(current_user.id)
-    print(full_orderProducts)
+    allProds = Purchase.get_detailed_order_page(current_user.id, time)
     return render_template('submitPage.html',
-                           orderInfo = full_orderProducts,
+                           orderInfo = allProds,
                            totalPrice = cost,
                            time = time)
     

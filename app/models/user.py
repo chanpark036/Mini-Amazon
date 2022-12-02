@@ -148,6 +148,5 @@ WHERE id= :id
             WHERE id= :id
             """,
             balance=User.get(id).balance+float(changeVal),
-            id=id)
-        
+            id=id)        
         
