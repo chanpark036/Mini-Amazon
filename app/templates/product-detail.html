@@ -3,17 +3,21 @@
 {% block content %}
 
 <!-- <h3>% product_details.name %</h3> -->
+
+
 <h1>{{ product_details.name }}</h1>
-<h4>Price: ${{ product_details.price }}</h4>
+<h4>Price: ${{ product_details.price }} </h4>
 <h4>Category: {{ product_details.category }}</h4>
 <h4>Description: {{ product_details.description }}</h4>
 <div>
-  <img src="{{product_details.image}}"/>
+  <img src="{{product_details.image}}" />
 </div>
 
 <br><br>
 
-<h4><center>Sellers selling this product</center></h4>
+<h4>
+  <center>Sellers selling this product</center>
+</h4>
 <table class='styled-table table-hover container' id="products-table">
   <thead>
     <tr>
@@ -24,13 +28,15 @@
   </thead>
   <tbody>
     {% for inventory in sellers_of_product%}
-      <tr>
-        <td>{{inventory.firstname}}  {{inventory.lastname}}</td>
-        <td>{{inventory.quantity}}</td>
-        <td>{{inventory.price}}</td>
-        <td><a href="{{ url_for('products.addToCart', sid = inventory.sid, pid = inventory.pid, price = inventory.price) }}" type="button" class="btn btn-light">Add</a>
-        </td>
-      </tr>
+    <tr>
+      <td>{{inventory.firstname}} {{inventory.lastname}}</td>
+      <td>{{inventory.quantity}}</td>
+      <td>{{inventory.price}}</td>
+      <td><a
+          href="{{ url_for('products.addToCart', sid = inventory.sid, pid = inventory.pid, price = inventory.price) }}"
+          type="button" class="btn btn-light">Add</a>
+      </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
@@ -43,23 +49,23 @@
 <h4>Average Rating: {{stats.avg}}</h4>
 <h4>{{stats.count}} customer reviews</h4>
 <div>
-  <img src="/static/images/5stars.png", style="width:8em; height:auto;"/>
+  <img src="/static/images/5stars.png" , style="width:8em; height:auto;" />
   {{ratings.five}}
 </div>
 <div>
-  <img src="/static/images/4stars.png", style="width:8em; height:auto;"/>
+  <img src="/static/images/4stars.png" , style="width:8em; height:auto;" />
   {{ratings.four}}
 </div>
 <div>
-  <img src="/static/images/3stars.png", style="width:8em; height:auto;"/>
+  <img src="/static/images/3stars.png" , style="width:8em; height:auto;" />
   {{ratings.three}}
 </div>
 <div>
-  <img src="/static/images/2stars.png", style="width:8em; height:auto;"/>
+  <img src="/static/images/2stars.png" , style="width:8em; height:auto;" />
   {{ratings.two}}
 </div>
 <div>
-  <img src="/static/images/1star.png", style="width:8em; height:auto;"/>
+  <img src="/static/images/1star.png" , style="width:8em; height:auto;" />
   {{ratings.one}}
 </div>
 
@@ -71,7 +77,8 @@
 {%if hasReview %}
 <h5>You have already reviewed this product.</h5>
 {% else %}
-<a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Write a Review</a>
+<a href="{{ url_for('feedback.review_product', product_id = product_id) }}" type="button" class="btn btn-light">Write a
+  Review</a>
 
 <br>
 {% endif %}
@@ -96,17 +103,18 @@
   </thead>
   <tbody>
     {% for feedback in reviews%}
-      <tr>
-        <td>{{feedback.firstname}} {{feedback.lastname}}</td>
-        <td>{{feedback.review}}</td>
-        <td>{{feedback.rating}} </td>  
-        <td> <img src="{{feedback.image}}" width="100" height = "100"/> </td>  
-        <td> {{feedback.upvotes}} people found this helpful!
-          <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
-      </tr>
+    <tr>
+      <td>{{feedback.firstname}} {{feedback.lastname}}</td>
+      <td>{{feedback.review}}</td>
+      <td>{{feedback.rating}} </td>
+      <td> <img src="{{feedback.image}}" width="100" height="100" /> </td>
+      <td> {{feedback.upvotes}} people found this helpful!
+        <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}"
+          type="button" class="btn btn-light">Helpful</a>
+      </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
 
 {% endblock %}
-

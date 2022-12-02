@@ -100,7 +100,6 @@ def detail_product(product_id):
 
     sellers_of_product = Inventory.get_from_pid(product_id)
     
-
     # product_name = product_details[1]
     # product_category = product_details[2]
     # product_description = product_details[3]

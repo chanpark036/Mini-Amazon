@@ -7,6 +7,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 import datetime
 
 from .models.inventory import Inventory
+from .models.product import Product
 
 from flask import Blueprint
 
@@ -93,4 +94,11 @@ def addNewProduct():
     Inventory.add_new_product(seller_id, name,description,price,quantity,image,category)
 
     return redirect(url_for('inventories.inventory'))
+                           #if available not true then how to become a seller?
+
+
+@bp.route('/inventory/editProduct/<sid>,<pid>', methods=['GET', 'POST'])
+def editProduct(sid,pid):
+    product_details = Product.get(pid)
+    return render_template('edit-product.html', sid = sid, pid = pid, product_details = product_details)
                            #if available not true then how to become a seller?

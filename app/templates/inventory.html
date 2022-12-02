@@ -17,6 +17,7 @@
       <th scope="col">Product Price</th>
       <th scope="col">Quantity</th>
       <th scope="col">Remove/Add</th>
+      <th scope="col">Edit Product</th>
     </tr>
   </thead>
   <tbody>
@@ -33,6 +34,10 @@
       <td>
         <a href="{{ url_for('inventories.removeProduct', uid = product.sid, pid = product.pid) }}" type="button"
           class="btn btn-black; box-text">REMOVE</a>
+      </td>
+      <td>
+        <a href="{{ url_for('inventories.editProduct', sid = product.sid, pid = product.pid) }}" type="button"
+          class="btn btn-black; box-text">Edit</a>
       </td>
     </tr>
     {% endfor %}
