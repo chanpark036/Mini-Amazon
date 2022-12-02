@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if current_user.is_authenticated %}
-
+<br>
 <h1>Your Account Information</h1>
 <h2>Account ID: {{user_id.id}} </h2>
 <h2>Email: {{user_id.email}} 
@@ -52,9 +52,14 @@
           <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
         </td>
         <td> 
+          {%if feedback.image == 'NA'  %}
+          No image
+          <a href="{{ url_for('feedback.update_image', review_id = feedback.id) }}" type="button" class="btn btn-light">Add</a>
+          {% else %}
           <img src="{{feedback.image}}" width="100" height = "100"/>
           <a href="{{ url_for('feedback.update_image', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
-         </td> 
+        {% endif %}  
+         </td>  
         <td>{{feedback.upvotes}} people found this helpful!</td>
         <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>     
       </tr>
@@ -93,9 +98,14 @@
           <a href="{{ url_for('feedback.update_rating', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
         </td>
         <td> 
+          {%if feedback.image == 'NA'  %}
+          No image
+          <a href="{{ url_for('feedback.update_image', review_id = feedback.id) }}" type="button" class="btn btn-light">Add</a>
+          {% else %}
           <img src="{{feedback.image}}" width="100" height = "100"/>
           <a href="{{ url_for('feedback.update_image', review_id = feedback.id) }}" type="button" class="btn btn-light">Edit</a>
-         </td> 
+        {% endif %}  
+         </td>  
         <td>{{feedback.upvotes}} people found this helpful!</td>
         <td><a href="{{ url_for('feedback.delete_review', review_id = feedback.id) }}" type="button" class="btn btn-light">Delete</a></td>     
       </tr>

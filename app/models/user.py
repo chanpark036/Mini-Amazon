@@ -85,7 +85,7 @@ WHERE id = :id
         except Exception as e:
             print(str(e))
             return None
-        
+  
     # update user password
     @staticmethod
     def update_password(id, password):

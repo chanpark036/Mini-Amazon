@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>You can not withdraw more money than you have in your account!</h2>
+<h2>Please try withdrawing a lower number. <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-dark">Edit Balance</a> </h2>
+
+{% endblock %}

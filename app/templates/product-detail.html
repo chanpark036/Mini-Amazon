@@ -90,7 +90,10 @@
 
 {% endif %}
 
-<br>
+<br> 
+{%if stats.count == 0  %}
+
+{% else %}
 <table class='styled-table table-hover container'>
   <thead>
     <tr>
@@ -103,18 +106,23 @@
   </thead>
   <tbody>
     {% for feedback in reviews%}
-    <tr>
-      <td>{{feedback.firstname}} {{feedback.lastname}}</td>
-      <td>{{feedback.review}}</td>
-      <td>{{feedback.rating}} </td>
-      <td> <img src="{{feedback.image}}" width="100" height="100" /> </td>
-      <td> {{feedback.upvotes}} people found this helpful!
-        <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}"
-          type="button" class="btn btn-light">Helpful</a>
-      </td>
-    </tr>
+      <tr>
+        <td>{{feedback.firstname}} {{feedback.lastname}}</td>
+        <td>{{feedback.review}}</td>
+        <td>{{feedback.rating}} </td>  
+        <td> 
+          {%if feedback.image == 'NA'  %}
+          No image
+          {% else %}
+          <img src="{{feedback.image}}" width="100" height = "100"/>
+        {% endif %}  
+         </td>   
+        <td> {{feedback.upvotes}} people found this helpful!
+          <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
+      </tr>
     {% endfor %}
   </tbody>
 </table>
+{% endif %} 
 
 {% endblock %}
