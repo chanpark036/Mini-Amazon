@@ -87,19 +87,23 @@ class Inventory:
     @staticmethod
     def add_new_product(seller_id, name,description,price,quantity,image,category):
         available = True
-        max_pid = app.db.execute(' SELECT MAX(id) FROM Products')
-        new_pid = int(max_pid[0][0])+1
-        app.db.execute('''
-        DO
-        $do$
-        BEGIN
-            IF NOT EXISTS (SELECT FROM Products WHERE name = :name ) THEN
-            INSERT INTO Products (id, name, category, description, price, available, image) 
-            VALUES (:new_pid, :name, :category, :description, :price, :available, :image);
-            END IF;
-        END
-        $do$
-        ''', new_pid = new_pid, name=name, category = category, description=description, price = price, quantity = quantity, image = image, available = available)
+        product_in_db = app.db.execute('SELECT * FROM Products WHERE name=:name AND description=:description',name=name,description=description)
+        if not product_in_db:
+            max_pid = app.db.execute(' SELECT MAX(id) FROM Products')
+            new_pid = int(max_pid[0][0])+1
+            app.db.execute('''
+            DO
+            $do$
+            BEGIN
+                IF NOT EXISTS (SELECT FROM Products WHERE name = :name ) THEN
+                INSERT INTO Products (id, name, category, description, price, available, image) 
+                VALUES (:new_pid, :name, :category, :description, :price, :available, :image);
+                END IF;
+            END
+            $do$
+            ''', new_pid = new_pid, name=name, category = category, description=description, price = price, quantity = quantity, image = image, available = available)
+        else:
+            new_pid = product_in_db[0][0]
         Inventory.add(seller_id, new_pid, quantity, price)
         
         
