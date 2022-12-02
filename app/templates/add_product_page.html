@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="login" style="text-align: center">ADD NEW PRODUCT</h2>
+<form action="{{url_for('inventories.addNewProduct')}}" method="post" novalidate>
+    <center>
+    <th>
+         {{ form.name.label }}
+        {{ form.name(size=8, class_="box-text") }}
+    </th>
+
+    <br>
+
+    <td>
+        {{ form.description.label }}
+        {{ form.description(size=8, class_="box-text") }}
+    </td>
+    
+    <br>
+
+    <td>
+        {{ form.category.label }}
+        {{ form.category(size=8, class_="box-text") }}
+    </td>
+
+    <br>
+
+    <td>
+        {{ form.image.label }}
+        {{ form.image(size=8, class_="box-text") }}
+    </td>
+
+    <br>
+
+    <td>
+        {{ form.quantity.label }}
+        {{ form.quantity(size=8, class_="box-text") }}
+    </td>
+
+    <br>
+
+    <td>
+        {{ form.price.label }}
+        {{ form.price(size=8, class_="box-text") }}
+    </td>
+
+    <br>
+
+    <td>
+        {{form.submit(class_="btn btn-black; box-text")}}
+    </td>
+</center>
+</form>
+
+
+{% endblock %}

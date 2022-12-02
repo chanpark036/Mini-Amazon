@@ -19,6 +19,15 @@ class InventorySearch(FlaskForm):
     price = FloatField('Price: ')
     submit = SubmitField('ADD')
 
+class AddNewProductForm(FlaskForm):
+    name = StringField('Name: ')
+    description = StringField('Description: ')
+    image = StringField('Photo: ')
+    category = StringField('Category: ')
+    quantity = IntegerField('Quantity: ')
+    price = FloatField('Price: ')
+    submit = SubmitField('ADD NEW PRODUCT')
+
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():
     if not current_user.is_authenticated:
@@ -64,3 +73,24 @@ def addProduct(): #ensure that pid is not already in database and if is then giv
     
 
 
+@bp.route('/inventory/addNewProductPage', methods=['GET', 'POST'])
+def addNewProductPage():
+    form = AddNewProductForm()
+    return render_template('add_product_page.html',
+                            form = form) 
+
+@bp.route('/inventory/addNewProduct', methods=['GET', 'POST'])
+def addNewProduct():
+    seller_id = current_user.id
+    form = AddNewProductForm()
+    name = form.name.data
+    description = form.description.data
+    price = form.price.data
+    quantity = form.quantity.data
+    image = form.image.data
+    category = form.category.data
+    
+    Inventory.add_new_product(seller_id, name,description,price,quantity,image,category)
+
+    return redirect(url_for('inventories.inventory'))
+                           #if available not true then how to become a seller?
