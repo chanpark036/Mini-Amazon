@@ -2,10 +2,9 @@
 
 {% block content %}
 
-<br><br>
-
-<h2>Products for sale:</h2>
-<table class='styled-table table-hover container'>
+<h1><center>Welcome to BaeMazon!</center></h1>
+<h2><center>Products for sale:</center></h2>
+<table class='styled-table table-hover container' id="products-table">
   <thead>
     <tr>
       <th scope="col">Product Name</th>
@@ -16,15 +15,18 @@
   <tbody>
     {% for product in avail_products%}
       <tr>
-        <th scope="row">{{product.name}}</th>
+        <th scope="row"><a href="{{ url_for('products.detail_product', product_id = product.id) }}" type="button" class="btn btn-light">{{product.name}}</a></th>
         <td>${{product.price}}</td>
         <td>{{product.description}}</td>
-        
       </tr>
     {% endfor %}
   </tbody>
 </table>
 
-<br><br>
+<script>
+  $(document).ready( function () {
+      $('#products-table').DataTable();
+  } );
+</script>
 
 {% endblock %}
