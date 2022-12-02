@@ -153,14 +153,21 @@ class UpdateEmail(FlaskForm):
 def update_email():
     form = UpdateEmail()
     user_id = current_user.id
+    email = form.email.data
     if form.validate_on_submit():
-        User.update_email(user_id,
-                          form.email.data)
-    if request.method == "POST":
-        return redirect(url_for('users.get_account_info'))
+        if User.email_exists(email):
+            return render_template('user/update-email-error.html')
+        else:
+            User.update_email(user_id,
+                                form.email.data)
+            if request.method == "POST":
+                return redirect(url_for('users.get_account_info'))
+            return render_template('user/update-email.html', 
+                                title='Update Email', 
+                                form=form)
     return render_template('user/update-email.html', 
-                           title='Update Email', 
-                           form=form)
+                                title='Update Email', 
+                                form=form)
 
 
 class UpdatePassword(FlaskForm):
