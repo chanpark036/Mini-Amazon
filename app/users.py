@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
@@ -55,6 +55,10 @@ def create_stats(lst):
     else:
         avg = round(lst[0][1],1)
         return Stats(avg,lst[0][2])
+
+class orderBy(FlaskForm):
+    order = SelectField('Order' , choices=[('submitted_timestamp','Most Recent'), ('upvotes', 'Most Helpful'), ('rating', 'Rating')])
+    submit = SubmitField('Sort')
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -115,17 +119,25 @@ def logout():
     logout_user()
     return redirect(url_for('index.index'))
 
-@bp.route('/account')
+@bp.route('/account', methods=['GET', 'POST'])
 def get_account_info():
     if current_user.is_authenticated:
         uid = current_user.id
-        product_feedback = Feedback.get_all_by_uid_pid_recent(uid)
-        seller_feedback = Feedback.get_all_by_uid_sid_recent(uid)
+        form = orderBy()
+        if form.order.data == "rating":
+            product_feedback = Feedback.get_all_by_uid_pid_rating(uid)
+            seller_feedback = Feedback.get_all_by_uid_sid_rating(uid)
+        if form.order.data == "upvotes":
+            product_feedback = Feedback.get_all_by_uid_pid_help(uid)
+            seller_feedback = Feedback.get_all_by_uid_sid_help(uid)
+        else:
+            product_feedback = Feedback.get_all_by_uid_pid_recent(uid)
+            seller_feedback = Feedback.get_all_by_uid_sid_recent(uid)
         p_rev = len(product_feedback) > 0
         s_rev = len(seller_feedback) > 0
         user_id = User.get(current_user.id)
         return render_template('user/user_info.html', 
-                               user_id=user_id, product_feedback=product_feedback, seller_feedback=seller_feedback, uid = uid, p_reviews=p_rev, s_reviews=s_rev)
+                               user_id=user_id, product_feedback=product_feedback, seller_feedback=seller_feedback, uid = uid, p_reviews=p_rev, s_reviews=s_rev, form=form)
     return redirect(url_for('users.login'))
  
 @bp.route('/userpublicview/<uid>', methods=['GET', 'POST'])

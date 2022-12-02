@@ -136,4 +136,4 @@ def update_votes(review_id, upvotes, product_id):
 @bp.route('/userpublicview/<seller_id>/<review_id>/<upvotes>', methods=['GET', 'POST'])
 def update_s_votes(review_id, upvotes, seller_id):
     Feedback.update_votes(review_id, upvotes)
-    return redirect(url_for('users.get_user_public_view'))
+    return redirect(url_for('users.get_user_public_view', uid = seller_id))

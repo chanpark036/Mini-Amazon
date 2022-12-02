@@ -112,7 +112,30 @@ ORDER BY submitted_timestamp DESC
                               uid=uid)
         return [Feedback(*row) for row in rows]
 
-    
+    @staticmethod
+    def get_all_by_uid_pid_rating(uid):
+        rows = app.db.execute('''
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, F.image, P.name
+FROM Feedback F, Products P
+WHERE uid = :uid
+AND F.pid = P.id
+ORDER BY rating DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
+
+    @staticmethod
+    def get_all_by_uid_sid_rating(uid):
+        rows = app.db.execute('''
+SELECT F.id, F.uid, F.pid, F.sid, F.submitted_timestamp, F.review, F.rating, F.upvotes, F.image, U.email, U.firstname, U.lastname
+FROM Feedback F, Users U
+WHERE uid = :uid
+AND F.sid = U.id
+ORDER BY rating DESC
+''',
+                              uid=uid)
+        return [Feedback(*row) for row in rows]
+
     @staticmethod
     def get_all_by_pid(pid):
         rows = app.db.execute('''

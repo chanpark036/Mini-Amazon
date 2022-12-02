@@ -24,6 +24,18 @@
 
 <br>
 
+<form action="" method="post">
+  {{ form.hidden_tag() }}
+  <div>
+  <p>
+    {{ form.order }} {{ form.submit() }}<br/>
+    {% for error in form.order.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+</div>
+</form>
+
 
 <h2>Your Product Reviews</h2>
 
