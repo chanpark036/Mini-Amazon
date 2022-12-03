@@ -20,7 +20,7 @@
         <td>{{purchase.quantity}}</td>
         <td> {{purchase.fulfillment_status}}
           {%if purchase.fulfillment_status == "Not Fulfilled"%}
-        <a href="{{ url_for('purchases.change_fulfillment', sid = seller_id, uid = purchase.uid, pid = purchase.pid) }}" type="button" class="btn btn-light">Fulfill</a> 
+        <a href="{{ url_for('purchases.change_fulfillment', sid = seller_id, uid = purchase.uid, pid = purchase.pid, id = purchase.id) }}" type="button" class="btn btn-light">Fulfill</a> 
         {% endif %}
         </td>
       </tr>

@@ -48,9 +48,9 @@ def purchase_history_seller():
                            purchase_history=purchases, 
                            seller_id=seller_id)
 
-@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>', methods = ['GET','POST'])
-def change_fulfillment(sid,uid,pid):
+@bp.route('/purchase_history_seller/<sid>,<uid>,<pid>,<id>', methods = ['GET','POST'])
+def change_fulfillment(sid,uid,pid,id):
     x = datetime.datetime.now()
     fulfillment_status = "Fulfilled " + str(x.month)+"-"+str(x.day)+"-"+str(x.year)+" at "+str(x.hour)+":"+str(x.minute)
-    purchases = Purchase.change_fulfillment(sid,uid,pid,fulfillment_status) 
+    purchases = Purchase.change_fulfillment(sid,uid,pid,id,fulfillment_status) 
     return redirect(url_for('purchases.purchase_history_seller'))

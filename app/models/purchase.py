@@ -2,7 +2,7 @@ from flask import current_app as app
 
 
 class Purchase:
-    def __init__(self, id, uid, sid, pid, quantity, name, time_purchased, fulfillment_status, address):
+    def __init__(self, id, uid, sid, pid, quantity=0, name="", time_purchased="", fulfillment_status=False, address=""):
         self.id = id
         self.uid = uid
         self.sid = sid
@@ -150,10 +150,10 @@ ORDER BY time_purchased DESC
         return [Purchase(id,uid,sid,pid,quantity,"",time_purchased,fulfillment_status, "") for id,uid,sid,pid,quantity,time_purchased,fulfillment_status in rows]
 
     @staticmethod
-    def change_fulfillment(sid, uid, pid, new_status):
+    def change_fulfillment(sid, uid, pid, id, new_status):
         app.db.execute('''
             UPDATE Purchases
             SET fulfillment_status = :new_status
-            WHERE sid = :sid AND pid = :pid AND uid=:uid
-        ''', new_status = new_status, sid = sid, pid=pid, uid=uid)
+            WHERE sid = :sid AND pid = :pid AND uid=:uid AND id = :id
+        ''', new_status = new_status, sid = sid, pid=pid, uid=uid, id=id)
         return Purchase.get_all_seller_purchases(sid)

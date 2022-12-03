@@ -2,18 +2,20 @@
 
 {% block content %}
 
+
+{% if available%}
+
 <a href="{{ url_for('inventories.addNewProductPage')}}" type="button" style="float: right; margin-top: 10px"
   class="btn btn-black">ADD PRODUCT</a>
 <a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style="float: right; margin-right: 10px; margin-top: 10px"
   class="btn btn-black">ORDER HISTORY</a>
 <br><br>
 
-{% if available%}
 <h2 class="login" style="text-align: center; margin-top: -35px">Products in Inventory for Seller {{sid}}:</h2>
 <table class='styled-table table-hover container'>
   <thead>
     <tr>
-      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
       <th scope="col">Product Price</th>
       <th scope="col">Quantity</th>
       <th scope="col">Remove</th>
@@ -23,7 +25,7 @@
   <tbody>
     {% for product in inventory_products%}
     <tr>
-      <th scope="row">{{product.pid}}</th>
+      <th scope="row">{{product.name}}</th>
       <td>{{product.price}}</td>
       <td>{{product.quantity}}
         <a href="{{ url_for('inventories.modifyQuantity', uid = product.sid, pid = product.pid, new_q = product.quantity+1) }}"
@@ -44,8 +46,8 @@
   </tbody>
 </table>
 {% else %}
-<h2 class="login" style="text-align: center; margin-top: -35px; color:red">You are not a seller.</h2>
-<h2 href="{{ url_for('inventories.inventories')}}" type="button" class="btn btn-black">Become a Seller</h2>
+{% include 'not_a_seller_page.html' %}
+<!--<h2 class="login" style="text-align: center; margin-top: -35px; color:red">You are not a seller.</h2>-->
 {% endif %}
 
 {% endblock %}

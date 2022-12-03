@@ -35,8 +35,14 @@ def inventory():
         return redirect(url_for('users.login'))
     form = InventorySearch()
     seller_id = current_user.id
-    available = True
-    inv = Inventory.get(seller_id)
+    if Inventory.verify_seller(seller_id):
+        available = True
+        inv = Inventory.get(seller_id)
+        for p in inv:
+            p.name = Inventory.get_name_from_pid(p.pid)
+    else:
+        available = False
+        inv = []
     return render_template('inventory.html',
                             sid = seller_id,
                            inventory_products=inv, form=form, available = available) 
@@ -48,17 +54,19 @@ def modifyQuantity(uid, pid, new_q):
     form = InventorySearch()
     # find the products current user has bought:
     # render the page by adding information to the index.html file
-    return render_template('inventory.html',
-                            sid = uid,
-                           inventory_products = products, form=form, available = True)
+    return redirect(url_for('inventories.inventory'))
+    # return render_template('inventory.html',
+    #                         sid = uid,
+    #                        inventory_products = products, form=form, available = True)
     
 @bp.route('/inventory/<uid>,<pid>', methods=['GET','DELETE'])
 def removeProduct(uid, pid):
     products = Inventory.remove(uid, pid)
     form = InventorySearch()
-    return render_template('inventory.html',
-                            sid = uid,
-                           inventory_products = products, form=form, available = True)
+    return redirect(url_for('inventories.inventory'))
+    # return render_template('inventory.html',
+    #                         sid = uid,
+    #                        inventory_products = products, form=form, available = True)
 
 @bp.route('/inventory/add', methods=['GET','POST'])
 def addProduct(): #ensure that pid is not already in database and if is then give error
