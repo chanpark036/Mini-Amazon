@@ -4,7 +4,7 @@
 
 <a href="{{ url_for('inventories.addNewProductPage')}}" type="button" style="float: right; margin-top: 10px"
   class="btn btn-black">ADD PRODUCT</a>
-<a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style="float: right; margin-top: 10px"
+<a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style="float: right; margin-right: 10px; margin-top: 10px"
   class="btn btn-black">ORDER HISTORY</a>
 <br><br>
 
@@ -16,7 +16,7 @@
       <th scope="col">Product ID</th>
       <th scope="col">Product Price</th>
       <th scope="col">Quantity</th>
-      <th scope="col">Remove/Add</th>
+      <th scope="col">Remove</th>
       <th scope="col">Edit Product</th>
     </tr>
   </thead>
@@ -41,26 +41,6 @@
       </td>
     </tr>
     {% endfor %}
-    <form action="{{url_for('inventories.addProduct')}}" method="post" novalidate>
-      <th>
-        <!--{{ form.product_id.label }}-->
-        {{ form.product_id(size=8, class_="box-text") }}
-      </th>
-
-      <td>
-        <!--{{ form.price.label }}-->
-        {{ form.price(size=8, class_="box-text") }}
-      </td>
-
-      <td>
-        <!--{{ form.quantity.label }}-->
-        {{ form.quantity(size=8, class_="box-text") }}
-      </td>
-
-      <td>
-        {{form.submit(class_="btn btn-black; box-text")}}
-      </td>
-    </form>
   </tbody>
 </table>
 {% else %}
