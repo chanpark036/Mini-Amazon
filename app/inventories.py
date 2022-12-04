@@ -20,11 +20,13 @@ class InventorySearch(FlaskForm):
     price = FloatField('Price: ')
     submit = SubmitField('ADD')
 
+available_categories = ['Apps', 'Food', 'Books', 'Electronics', 'Health', 'Outdoor', 'Entertainment']
+
 class AddNewProductForm(FlaskForm):
-    name = StringField('Name: ')
+    name = StringField('Name: ', validators=[DataRequired()])
     description = StringField('Description: ')
-    image = StringField('Photo: ')
-    category = StringField('Category: ')
+    image = StringField('Photo: ')    
+    category = SelectField('Category: ', choices = available_categories, validators=[DataRequired()])
     quantity = IntegerField('Quantity: ')
     price = FloatField('Price: ')
     submit = SubmitField('ADD NEW PRODUCT')
@@ -34,7 +36,7 @@ class UpdateProductName(FlaskForm):
     submit = SubmitField('UPDATE NAME')
 
 class UpdateProductCategory(FlaskForm):
-    available_categories = ['Apps', 'Food', 'Books', 'Electronics', 'Health', 'Outdoor', 'Entertainment']
+    # available_categories = ['Apps', 'Food', 'Books', 'Electronics', 'Health', 'Outdoor', 'Entertainment']
     name = SelectField('New Category: ', choices = available_categories, validators=[DataRequired()])
     submit = SubmitField('UPDATE CATEGORY')
 
