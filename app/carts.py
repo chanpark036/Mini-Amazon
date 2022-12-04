@@ -88,7 +88,6 @@ def submitOrder(user_id, time):
                            numItems = getNumItems(orderProducts),
                            totalPrice = getTotalPrice(orderProducts),form3=form3,
                            time = time, message=message)
-            #@TODO display message on frontend about insufficient inventory
     for prod in orderProducts:
         Inventory.decreaseInventory(prod.pid, prod.quantity, prod.sid)
         User.change_balance(prod.sid, prod.quantity*prod.u_price)
@@ -105,7 +104,6 @@ def submitOrder(user_id, time):
                            numItems = getNumItems(orderProducts),
                            totalPrice = getTotalPrice(orderProducts),form3=form3,
                            time = time, message=message)
-        #@TODO: display message on frontend about insufficient funds    
     #write order to purchase history
     purchase_id = Purchase.get_most_recent_purchase_id() + 1
     for prod in orderProducts:
