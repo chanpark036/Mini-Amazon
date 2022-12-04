@@ -70,3 +70,12 @@ WHERE name = :name
         return [Product(*row) for row in rows]
 
 
+    @staticmethod
+    def update_product_name(id, name):
+        rows = app.db.execute("""
+UPDATE Products
+SET name = :name
+WHERE id= :id
+""",
+                              id=id,
+                              name=name)

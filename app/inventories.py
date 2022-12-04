@@ -30,7 +30,7 @@ class AddNewProductForm(FlaskForm):
     submit = SubmitField('ADD NEW PRODUCT')
 
 class UpdateProductName(FlaskForm):
-    name = StringField('New Name: ')
+    name = StringField('New Name: ', validators=[DataRequired()])
     submit = SubmitField('ADD NEW PRODUCT')
 
 
@@ -77,7 +77,7 @@ def addProduct(): #ensure that pid is not already in database and if is then giv
     products = Inventory.add(uid, pid, quantity,u_price)
     return redirect(url_for('inventories.inventory'))
     
-
+ 
 
 @bp.route('/inventory/addNewProductPage', methods=['GET', 'POST'])
 def addNewProductPage():
@@ -102,41 +102,50 @@ def addNewProduct():
                            #if available not true then how to become a seller?
 
 
-@bp.route('/inventory/editProduct/<sid>,<pid>', methods=['GET', 'POST'])
-def editProduct(sid,pid):
+@bp.route('/inventory/editProduct/<pid>', methods=['GET', 'POST'])
+def editProduct(pid):
     product_details = Product.get(pid)
-    return render_template('edit-product.html', sid = sid, pid = pid, product_details = product_details)
+    return render_template('edit-product.html', pid = pid, product_details = product_details)
                            #if available not true then how to become a seller?
+# @bp.route('/inventory/editProduct/<sid>,<pid>', methods=['GET', 'POST'])
+# def editProduct(sid,pid):
+#     product_details = Product.get(pid)
+#     return render_template('edit-product.html', sid = sid, pid = pid, product_details = product_details)
+#                            #if available not true then how to become a seller?
 
 
-@bp.route('/inventory/editProduct/<sid>,<pid>/update-name', methods=['GET', 'POST'])
-def update_name(sid, pid):
+# @bp.route('/inventory/editProduct/<sid>,<pid>/update-name', methods=['GET', 'POST'])
+@bp.route('/inventory/editProduct/updateName/<pid>', methods=['GET', 'POST'])
+def update_name(pid):
     
     form = UpdateProductName()
-    user_id = current_user.id
+    # user_id = current_user.id
     new_name = form.name.data
     
-    Product.update_name(pid, new_name)      
+    # user_id = current_user.id
+    if form.validate_on_submit():
+        Product.update_product_name(pid, new_name)      
 
-    # User.update_email(user_id,
-    #                             form.email.data)
-    #         if request.method == "POST":
-    #             return redirect(url_for('users.get_account_info'))
-    #         return render_template('user/update-email.html', 
-    #                             title='Update Email', 
-    #                             form=form)
+    if request.method == "POST":
+        return redirect(url_for('inventories.inventory'))
 
-    # if form.validate_on_submit():
-        # if User.email_exists(email):
-        #     return render_template('user/update-email-error.html')
-        # else:
-            # User.update_email(user_id,
-            #                     form.email.data)
-            # if request.method == "POST":
-            #     return redirect(url_for('users.get_account_info'))
-            # return render_template('user/update-email.html', 
-            #                     title='Update Email', 
-            #                     form=form)
-    return render_template('user/update-email.html', sid = sid, pid = pid,
-                                title='Update Email', 
+
+    return render_template('update-product-name.html', pid = pid, 
                                 form=form)
+
+    # if request.method == "POST":
+    #     return redirect(url_for('users.get_account_info'))
+
+    # return render_template('user/update-name.html', 
+    #                        title='Update Name', 
+    #                        form=form)
+
+
+
+
+
+    # return render_template('update-product-name.html', sid = sid, pid = pid,
+    #                             title='Update Product Name', 
+    #                             form1=form1)
+
+
