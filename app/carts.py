@@ -82,7 +82,7 @@ def submitOrder(user_id, time):
     for prod in orderProducts:
         availableQuant = Inventory.get_from_pid_specific(prod.pid, prod.sid).quantity
         if prod.quantity>availableQuant:
-            message = "Your seller does not have enough inventory. Please adjust your order."
+            message = "Your seller does not have enough inventory. Please adjust your order." + str(prod.sid) + str(prod.u_price)
             return render_template('cart.html',
                            printprods = orderProducts,
                            numItems = getNumItems(orderProducts),
@@ -94,7 +94,7 @@ def submitOrder(user_id, time):
     #decrease buyer balance
     curr_balance = current_user.balance
     cost = getTotalPrice(orderProducts)
-    new_balance = curr_balance - float(cost)
+    new_balance = curr_balance - cost
     if new_balance>=0:
         User.update_balance(current_user.id, new_balance)
     else:
