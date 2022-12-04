@@ -1,56 +1,63 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+        label {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+        margin-right: -200px;
+      }
+</style>
 
 <h2 class="login" style="text-align: center">ADD NEW PRODUCT</h2>
+<div style="margin-top: 30px"></div>
 <form action="{{url_for('inventories.addNewProduct')}}" method="post" novalidate>
-    <center>
-    <th>
-         {{ form.name.label }}
-        {{ form.name(size=8, class_="box-text") }}
-    </th>
+    <div>
+        <label>{{ form.name.label }} </label>  
+        <div style="text-align: center; margin-top: -50px">{{ form.name(size=8, class_="box-text") }}</div>
+    </div>
 
     <br>
 
-    <td>
-        {{ form.description.label }}
-        {{ form.description(size=8, class_="box-text") }}
-    </td>
+    <div>
+        <label>{{ form.description.label }} </label>  
+        <div style="text-align: center; margin-top: -50px">{{ form.description(size=8, class_="box-text") }}</div>
+    </div>
     
     <br>
 
-    <td>
-        {{ form.category.label }}
-        {{ form.category(size=8, class_="box-text") }}
-    </td>
+    <div>
+        <label>{{ form.category.label }} </label>  
+        <div style="text-align: center; margin-top: -50px">{{ form.category(size=8, class_="box-text") }}</div>
+    </div>
 
     <br>
 
-    <td>
-        {{ form.image.label }}
-        {{ form.image(size=8, class_="box-text") }}
-    </td>
+    <div>
+        <label>{{ form.image.label }} </label>  
+        <div style="text-align: center; margin-top: -50px">{{ form.image(size=8, class_="box-text") }}</div>
+    </div>
 
     <br>
 
-    <td>
-        {{ form.quantity.label }}
-        {{ form.quantity(size=8, class_="box-text") }}
-    </td>
+    <div>
+        <label>{{ form.quantity.label }} </label>  
+        <div style="text-align: center; margin-top: -50px">{{ form.quantity(size=8, class_="box-text") }}</div>
+    </div>
 
     <br>
 
-    <td>
-        {{ form.price.label }}
-        {{ form.price(size=8, class_="box-text") }}
-    </td>
+    <div>
+        <label>{{ form.price.label }} </label>  
+        <div style="text-align: center; margin-top: -50px">{{ form.price(size=8, class_="box-text") }}</div>
+    </div>
 
     <br>
 
-    <td>
+    <div style="text-align: center">
         {{form.submit(class_="btn btn-black; box-text")}}
-    </td>
-</center>
+    </div>
 </form>
 
 

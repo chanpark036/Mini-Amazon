@@ -2,28 +2,32 @@
 
 {% block content %}
 
-<a href="{{ url_for('inventories.addNewProductPage')}}" type="button" style="float: right; margin-top: 10px"
+
+{% if available%}
+
+<a href="{{ url_for('inventories.charts')}}" type="button" style="float: right; margin-top: 10px"
+  class="btn btn-black">STATISTICS</a>
+<a href="{{ url_for('inventories.addNewProductPage')}}" type="button" style="float: right; margin-right: 10px; margin-top: 10px"
   class="btn btn-black">ADD PRODUCT</a>
-<a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style="float: right; margin-top: 10px"
+<a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style="float: right; margin-right: 10px; margin-top: 10px"
   class="btn btn-black">ORDER HISTORY</a>
 <br><br>
 
-{% if available%}
 <h2 class="login" style="text-align: center; margin-top: -35px">Products in Inventory for Seller {{sid}}:</h2>
 <table class='styled-table table-hover container'>
   <thead>
     <tr>
-      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
       <th scope="col">Product Price</th>
       <th scope="col">Quantity</th>
-      <th scope="col">Remove/Add</th>
+      <th scope="col">Remove</th>
       <th scope="col">Edit Product</th>
     </tr>
   </thead>
   <tbody>
     {% for product in inventory_products%}
     <tr>
-      <th scope="row">{{product.pid}}</th>
+      <th scope="row">{{product.name}}</th>
       <td>{{product.price}}</td>
       <td>{{product.quantity}}
         <a href="{{ url_for('inventories.modifyQuantity', uid = product.sid, pid = product.pid, new_q = product.quantity+1) }}"
@@ -43,31 +47,11 @@
       </td>
     </tr>
     {% endfor %}
-    <form action="{{url_for('inventories.addProduct')}}" method="post" novalidate>
-      <th>
-        <!--{{ form.product_id.label }}-->
-        {{ form.product_id(size=8, class_="box-text") }}
-      </th>
-
-      <td>
-        <!--{{ form.price.label }}-->
-        {{ form.price(size=8, class_="box-text") }}
-      </td>
-
-      <td>
-        <!--{{ form.quantity.label }}-->
-        {{ form.quantity(size=8, class_="box-text") }}
-      </td>
-
-      <td>
-        {{form.submit(class_="btn btn-black; box-text")}}
-      </td>
-    </form>
   </tbody>
 </table>
 {% else %}
-<h2 class="login" style="text-align: center; margin-top: -35px; color:red">You are not a seller.</h2>
-<h2 href="{{ url_for('inventories.inventories')}}" type="button" class="btn btn-black">Become a Seller</h2>
+{% include 'not_a_seller_page.html' %}
+<!--<h2 class="login" style="text-align: center; margin-top: -35px; color:red">You are not a seller.</h2>-->
 {% endif %}
 
 {% endblock %}

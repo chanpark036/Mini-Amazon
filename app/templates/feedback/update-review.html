@@ -3,27 +3,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<br><br>
 {% for feedback in review%}
 
+<div style = "text-align: center;">
 <h3>Current Review:</h3> {{feedback.review}}
-
+</div>
 {% endfor %}
-
-<h1>New Review</h1>
   
-<form action="" method="post">
-  {{ form.hidden_tag() }}
-  
-  <p>
-    {{ form.review.label }}<br/>
-    {{ form.review(size=32) }}<br/>
-    {% for error in form.review.errors %}
-    <span style="color: red;">[{{ error }}]</span>
-    {% endfor %}
-  </p>
-  <p>{{ form.submit() }}</p>
-</form>
+<div class = "login-menu">
+  <p class = "login" style = "text-align: center;">New Review</p>  
+    <form class = "form1" action="" method="post">
+      {{ form.hidden_tag() }}
+      <p style = "text-align: center;">
+        {{ form.review.label }}<br/>
+        {{ form.review(size=32) }}<br/>
+        {% for error in form.review.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+      <p style = "text-align: center;">{{ form.submit() }}</p>
+      <br><br>
+    </form>
 
 {% endblock %}
 

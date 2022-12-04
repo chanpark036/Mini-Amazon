@@ -53,8 +53,14 @@ def inventory():
         return redirect(url_for('users.login'))
     form = InventorySearch()
     seller_id = current_user.id
-    available = True
-    inv = Inventory.get(seller_id)
+    if Inventory.verify_seller(seller_id):
+        available = True
+        inv = Inventory.get(seller_id)
+        for p in inv:
+            p.name = Inventory.get_name_from_pid(p.pid)
+    else:
+        available = False
+        inv = []
     return render_template('inventory.html',
                             sid = seller_id,
                            inventory_products=inv, form=form, available = available) 
@@ -66,17 +72,19 @@ def modifyQuantity(uid, pid, new_q):
     form = InventorySearch()
     # find the products current user has bought:
     # render the page by adding information to the index.html file
-    return render_template('inventory.html',
-                            sid = uid,
-                           inventory_products = products, form=form, available = True)
+    return redirect(url_for('inventories.inventory'))
+    # return render_template('inventory.html',
+    #                         sid = uid,
+    #                        inventory_products = products, form=form, available = True)
     
 @bp.route('/inventory/<uid>,<pid>', methods=['GET','DELETE'])
 def removeProduct(uid, pid):
     products = Inventory.remove(uid, pid)
     form = InventorySearch()
-    return render_template('inventory.html',
-                            sid = uid,
-                           inventory_products = products, form=form, available = True)
+    return redirect(url_for('inventories.inventory'))
+    # return render_template('inventory.html',
+    #                         sid = uid,
+    #                        inventory_products = products, form=form, available = True)
 
 @bp.route('/inventory/add', methods=['GET','POST'])
 def addProduct(): #ensure that pid is not already in database and if is then give error
@@ -199,3 +207,42 @@ def update_image(pid):
 
     return render_template('update-product-name.html', pid = pid, 
                                 form=form)
+
+@bp.route('/inventory/line',methods=['GET'])
+def charts():
+    seller_id = current_user.id
+
+    #line_graph
+    line_labels = [
+        'JAN', 'FEB', 'MAR', 'APR',
+        'MAY', 'JUN', 'JUL', 'AUG',
+        'SEP', 'OCT', 'NOV', 'DEC'
+    ]
+    times = Inventory.times_bought_from_seller(seller_id)
+    line_values = [0 for i in range(12)]
+    for time in times:
+        line_values[time[0].month-1]+=1
+
+    #pie_graphs
+    users = Inventory.users_buying_from_seller(seller_id)
+    user_freqs = {}
+    colors = [
+    "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
+    "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
+    "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
+    for firstname,lastname in users:
+        user = firstname + " " + lastname
+        user_freqs[user] = user_freqs.get(user,0)+1
+    keys, values = zip(*user_freqs.items())
+
+    #bar_graphs
+    p_names = Inventory.product_popularity(seller_id)
+    p_freqs={}
+    for name in p_names:
+        p_freqs[name[0]] = p_freqs.get(name[0],0)+1
+    p_keys, p_values = zip(*p_freqs.items())
+
+    return render_template('inventory_charts.html', 
+                    line_max=max(line_values), line_labels=line_labels, line_values=line_values,
+                    chart_max = min(12,len(keys)), chart_set=zip(values[:min(12,len(keys))], keys[:min(12,len(keys))], colors[:min(12,len(keys))]),
+                    bar_max = max(p_values), bar_labels = p_keys, bar_values = p_values)

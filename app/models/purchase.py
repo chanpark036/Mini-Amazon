@@ -2,7 +2,7 @@ from flask import current_app as app
 
 
 class Purchase:
-    def __init__(self, id, uid, sid, pid, quantity, name, time_purchased, fulfillment_status, address):
+    def __init__(self, id, uid, sid, pid, quantity=0, name="", time_purchased="", fulfillment_status=False, address=""):
         self.id = id
         self.uid = uid
         self.sid = sid
@@ -77,20 +77,21 @@ ORDER BY time_purchased DESC
                             pid=pid,
                             quantity = quantity,
                             time_purchased =time_purchased,
-                            fulfillment_status = False)
+                            fulfillment_status = "Not Fulfilled")
         
     # Given a user ID, return total price, total quantity, fulfillment status, 
     # and time purchased of each order within their purchase history 
     @staticmethod
     def get_purchase_history(uid):
         rows = app.db.execute("""
-                              SELECT SUM(Products.price) as total_price, 
-                              SUM(quantity) as total_quantity,
+                              SELECT SUM(Inventory.u_price*Purchases.quantity) as total_price, 
+                              SUM(Purchases.quantity) as total_quantity,
                               Purchases.fulfillment_status as fulfillment_status,
                               Purchases.time_purchased as time_purchased
-                              FROM Purchases, Products
-                              WHERE Purchases.uid = :uid and Purchases.pid = Products.id
-                              GROUP BY time_purchased, fulfillment_status
+                              FROM Purchases, Products, Inventory
+                              WHERE Purchases.uid = :uid and Purchases.pid = Products.id and 
+                              Products.id = Inventory.pid and Inventory.sid = Purchases.sid
+                              GROUP BY Purchases.id, time_purchased, fulfillment_status
                               ORDER BY time_purchased DESC
                               """,
                               uid = uid)
@@ -103,17 +104,17 @@ ORDER BY time_purchased DESC
     def get_detailed_order_page(uid, time_purchased):
         rows = app.db.execute("""
                               SELECT Products.name as name,
-                              SUM(Products.price) as total_price, 
+                              SUM(Inventory.u_price) as total_price, 
                               SUM(Purchases.quantity) as total_quantity,
                               Purchases.fulfillment_status as fulfillment_status,
                               Purchases.time_purchased as time_purchased,
                               Purchases.sid as sid,
                               Users.firstname as seller_firstname,
                               Users.lastname as seller_lastname
-                              FROM Purchases, Products, Users
+                              FROM Purchases, Products, Users, Inventory
                               WHERE Purchases.uid = :uid and Purchases.time_purchased = :time_purchased and Purchases.pid = Products.id 
-                              and Users.id = sid
-                              GROUP BY name, time_purchased, fulfillment_status, quantity, sid, seller_firstname, seller_lastname
+                              and Users.id = Purchases.sid and Products.id = Inventory.pid and Inventory.sid = Purchases.sid
+                              GROUP BY name, time_purchased, fulfillment_status, Purchases.quantity, Purchases.sid, seller_firstname, seller_lastname
                               """,
                               uid = uid,
                               time_purchased = time_purchased)
@@ -150,10 +151,10 @@ ORDER BY time_purchased DESC
         return [Purchase(id,uid,sid,pid,quantity,"",time_purchased,fulfillment_status, "") for id,uid,sid,pid,quantity,time_purchased,fulfillment_status in rows]
 
     @staticmethod
-    def change_fulfillment(sid, uid, pid, new_status):
+    def change_fulfillment(sid, uid, pid, id, new_status):
         app.db.execute('''
             UPDATE Purchases
             SET fulfillment_status = :new_status
-            WHERE sid = :sid AND pid = :pid AND uid=:uid
-        ''', new_status = new_status, sid = sid, pid=pid, uid=uid)
+            WHERE sid = :sid AND pid = :pid AND uid=:uid AND id = :id
+        ''', new_status = new_status, sid = sid, pid=pid, uid=uid, id=id)
         return Purchase.get_all_seller_purchases(sid)

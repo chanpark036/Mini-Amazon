@@ -1,13 +1,21 @@
 from flask import current_app as app
 
 class Inventory:
-    def __init__(self, sid, pid, quantity, price, firstname = " ", lastname = " "):
+    def __init__(self, sid, pid, quantity, price, firstname = " ", lastname = " ", p_name = ""):
         self.sid = sid 
         self.pid = pid
         self.price = price
         self.quantity = quantity
         self.firstname = firstname
         self.lastname = lastname
+        self.p_name = ""
+    
+    @staticmethod
+    def verify_seller(sid):
+        val = app.db.execute('''
+        SELECT seller FROM Users WHERE id = :sid
+        ''',sid=sid)[0][0]
+        return val
 
     @staticmethod
     def get(sid):
@@ -72,16 +80,26 @@ class Inventory:
                               pid=pid)
         return [Inventory(*row) for row in rows]
 
-    # @staticmethod
-    # def get_name_from_pid(pid):
-    #     rows = app.db.execute('''
-    #         SELECT *
-    #         FROM Inventory
-    #         WHERE pid = :pid
-    #         ORDER BY sid
-    #         ''',
-    #                           pid=pid)
-    #     return [Inventory(*row) for row in rows]
+    def get_from_pid_specific(pid, sid):
+        rows = app.db.execute('''
+            SELECT I.sid, I.pid, I.quantity, I.u_price, U.firstname, U.lastname
+            FROM Inventory I, Users U
+            WHERE I.pid = :pid AND I.sid = :sid
+            ORDER BY I.sid
+            ''',
+                              pid=pid,
+                              sid = sid)
+        return rows[0]
+
+    @staticmethod
+    def get_name_from_pid(pid):
+        val = app.db.execute('''
+            SELECT name
+            FROM Products
+            WHERE id = :pid
+            ''',
+                              pid=pid)
+        return val[0][0]
 
 
     @staticmethod
@@ -107,4 +125,17 @@ class Inventory:
         Inventory.add(seller_id, new_pid, quantity, price)
         
         
+    @staticmethod
+    def times_bought_from_seller(sid):
+        times = app.db.execute('SELECT time_purchased FROM Purchases where sid=:sid',sid=sid)
+        return times
 
+    @staticmethod
+    def users_buying_from_seller(sid):
+        users = app.db.execute('SELECT U.firstname,U.lastname FROM Purchases P,Users U where P.sid=:sid AND U.id=P.uid',sid=sid)
+        return users
+
+    @staticmethod
+    def product_popularity(sid):
+        name = app.db.execute('SELECT P.name FROM Purchases Pu, Products P WHERE Pu.pid=P.id AND Pu.sid = :sid',sid=sid)
+        return name
