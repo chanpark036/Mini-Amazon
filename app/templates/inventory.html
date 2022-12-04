@@ -40,7 +40,9 @@
           class="btn btn-black; box-text">REMOVE</a>
       </td>
       <td>
-        <a href="{{ url_for('inventories.editProduct', sid = product.sid, pid = product.pid) }}" type="button"
+        <!-- <a href="{{ url_for('inventories.editProduct', sid = product.sid, pid = product.pid) }}" type="button"
+          class="btn btn-black; box-text">Edit</a> -->
+          <a href="{{ url_for('inventories.editProduct', pid = product.pid) }}" type="button"
           class="btn btn-black; box-text">Edit</a>
       </td>
     </tr>

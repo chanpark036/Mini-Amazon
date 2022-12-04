@@ -29,6 +29,24 @@ class AddNewProductForm(FlaskForm):
     price = FloatField('Price: ')
     submit = SubmitField('ADD NEW PRODUCT')
 
+class UpdateProductName(FlaskForm):
+    name = StringField('New Name: ', validators=[DataRequired()])
+    submit = SubmitField('UPDATE NAME')
+
+class UpdateProductCategory(FlaskForm):
+    name = StringField('New Category: ', validators=[DataRequired()])
+    submit = SubmitField('UPDATE CATEGORY')
+
+class UpdateProductDescription(FlaskForm):
+    name = StringField('New Description: ', validators=[DataRequired()])
+    submit = SubmitField('UPDATE DESCRIPTION')
+
+class UpdateProductImage(FlaskForm):
+    name = StringField('New Image URL: ', validators=[DataRequired()])
+    submit = SubmitField('UPDATE IMAGE')
+
+
+
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():
     if not current_user.is_authenticated:
@@ -80,7 +98,7 @@ def addProduct(): #ensure that pid is not already in database and if is then giv
     products = Inventory.add(uid, pid, quantity,u_price)
     return redirect(url_for('inventories.inventory'))
     
-
+ 
 
 @bp.route('/inventory/addNewProductPage', methods=['GET', 'POST'])
 def addNewProductPage():
@@ -105,11 +123,90 @@ def addNewProduct():
                            #if available not true then how to become a seller?
 
 
-@bp.route('/inventory/editProduct/<sid>,<pid>', methods=['GET', 'POST'])
-def editProduct(sid,pid):
+@bp.route('/inventory/editProduct/<pid>', methods=['GET', 'POST'])
+def editProduct(pid):
     product_details = Product.get(pid)
-    return render_template('edit-product.html', sid = sid, pid = pid, product_details = product_details)
+    return render_template('edit-product.html', pid = pid, product_details = product_details)
                            #if available not true then how to become a seller?
+# @bp.route('/inventory/editProduct/<sid>,<pid>', methods=['GET', 'POST'])
+# def editProduct(sid,pid):
+#     product_details = Product.get(pid)
+#     return render_template('edit-product.html', sid = sid, pid = pid, product_details = product_details)
+#                            #if available not true then how to become a seller?
+
+
+# @bp.route('/inventory/editProduct/<sid>,<pid>/update-name', methods=['GET', 'POST'])
+@bp.route('/inventory/editProduct/updateName/<pid>', methods=['GET', 'POST'])
+def update_name(pid):
+    
+    form = UpdateProductName()
+    # user_id = current_user.id
+    new_name = form.name.data
+    
+    # user_id = current_user.id
+    if form.validate_on_submit():
+        Product.update_product_name(pid, new_name)      
+
+    if request.method == "POST":
+        return redirect(url_for('inventories.inventory'))
+
+
+    return render_template('update-product-name.html', pid = pid, 
+                                form=form)
+
+@bp.route('/inventory/editProduct/updateDescription/<pid>', methods=['GET', 'POST'])
+def update_description(pid):
+    
+    form = UpdateProductDescription()
+    # user_id = current_user.id
+    new_desc = form.name.data
+    
+    # user_id = current_user.id
+    if form.validate_on_submit():
+        Product.update_product_description(pid, new_desc)      
+
+    if request.method == "POST":
+        return redirect(url_for('inventories.inventory'))
+
+
+    return render_template('update-product-name.html', pid = pid, 
+                                form=form)
+
+@bp.route('/inventory/editProduct/updateCategory/<pid>', methods=['GET', 'POST'])
+def update_category(pid):
+    
+    form = UpdateProductCategory()
+    # user_id = current_user.id
+    new_cat = form.name.data
+    
+    # user_id = current_user.id
+    if form.validate_on_submit():
+        Product.update_product_category(pid, new_cat)      
+
+    if request.method == "POST":
+        return redirect(url_for('inventories.inventory'))
+
+
+    return render_template('update-product-name.html', pid = pid, 
+                                form=form)
+
+@bp.route('/inventory/editProduct/updateImage/<pid>', methods=['GET', 'POST'])
+def update_image(pid):
+    
+    form = UpdateProductImage()
+    # user_id = current_user.id
+    new_imgurl = form.name.data
+    
+    # user_id = current_user.id
+    if form.validate_on_submit():
+        Product.update_product_image(pid, new_imgurl)      
+
+    if request.method == "POST":
+        return redirect(url_for('inventories.inventory'))
+
+
+    return render_template('update-product-name.html', pid = pid, 
+                                form=form)
 
 @bp.route('/inventory/line',methods=['GET'])
 def charts():

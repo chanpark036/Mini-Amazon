@@ -68,3 +68,45 @@ WHERE name = :name
 ''',
                             name = name)
         return [Product(*row) for row in rows]
+
+
+    @staticmethod
+    def update_product_name(id, name):
+        rows = app.db.execute("""
+UPDATE Products
+SET name = :name
+WHERE id= :id
+""",
+                              id=id,
+                              name=name)
+
+
+    @staticmethod
+    def update_product_description(id, description):
+        rows = app.db.execute("""
+UPDATE Products
+SET description = :description
+WHERE id= :id
+""",
+                              id=id,
+                              description=description)
+
+    @staticmethod
+    def update_product_category(id, category):
+        rows = app.db.execute("""
+UPDATE Products
+SET category = :category
+WHERE id= :id
+""",
+                              id=id,
+                              category=category)
+
+    @staticmethod
+    def update_product_image(id, imageurl):
+        rows = app.db.execute("""
+UPDATE Products
+SET image = :imageurl
+WHERE id= :id
+""",
+                              id=id,
+                              category=category)
