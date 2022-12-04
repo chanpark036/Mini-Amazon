@@ -113,6 +113,8 @@ def submitOrder(user_id, time):
     #empty cart
     Cart.emptyCart(current_user.id)
     allProds = Purchase.get_detailed_order_page(current_user.id, time)
+    for prod in allProds:
+        print(prod.total_price)
     return render_template('submitPage.html',
                            orderInfo = allProds,
                            totalPrice = cost,
