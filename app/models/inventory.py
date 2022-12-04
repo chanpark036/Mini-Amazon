@@ -125,4 +125,17 @@ class Inventory:
         Inventory.add(seller_id, new_pid, quantity, price)
         
         
+    @staticmethod
+    def times_bought_from_seller(sid):
+        times = app.db.execute('SELECT time_purchased FROM Purchases where sid=:sid',sid=sid)
+        return times
 
+    @staticmethod
+    def users_buying_from_seller(sid):
+        users = app.db.execute('SELECT U.firstname,U.lastname FROM Purchases P,Users U where P.sid=:sid AND U.id=P.uid',sid=sid)
+        return users
+
+    @staticmethod
+    def product_popularity(sid):
+        name = app.db.execute('SELECT P.name FROM Purchases Pu, Products P WHERE Pu.pid=P.id AND Pu.sid = :sid',sid=sid)
+        return name

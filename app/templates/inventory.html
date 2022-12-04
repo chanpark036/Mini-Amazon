@@ -5,7 +5,9 @@
 
 {% if available%}
 
-<a href="{{ url_for('inventories.addNewProductPage')}}" type="button" style="float: right; margin-top: 10px"
+<a href="{{ url_for('inventories.charts')}}" type="button" style="float: right; margin-top: 10px"
+  class="btn btn-black">STATISTICS</a>
+<a href="{{ url_for('inventories.addNewProductPage')}}" type="button" style="float: right; margin-right: 10px; margin-top: 10px"
   class="btn btn-black">ADD PRODUCT</a>
 <a href="{{ url_for('purchases.purchase_history_seller')}}" type="button" style="float: right; margin-right: 10px; margin-top: 10px"
   class="btn btn-black">ORDER HISTORY</a>
