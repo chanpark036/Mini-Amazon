@@ -2,32 +2,37 @@
 
 {% block content %}
 
-<h1>Review Product</h1>
-
-<form action="" method="post">
+<div class = "login-menu">
+  <p class = "login" style = "text-align: center;">Review Product</p>
+<form class = "form1" action="" method="post" novalidate>
   {{ form.hidden_tag() }}
-  <p>
+  <p style = "text-align: center;">
     {{ form.review.label }}<br/>
-    {{ form.review(size=32) }}<br/>
+  </p>
+  <p>
+    {{ form.review(size=32, class_ = "login-text") }}<br/>
     {% for error in form.review.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-  <p>
+  <p style = "text-align: center;">
     {{ form.rating.label }}<br/>
     {{ form.rating }}<br/>
     {% for error in form.rating.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-  <p>
+  <p style = "text-align: center;">
     {{ form.image.label }}<br/>
-    {{ form.image(size=32) }}<br/>
+  </p>
+  <p>
+    {{ form.image(size=32, class_ = "login-text") }}<br/>
     {% for error in form.image.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-  <p>{{ form.submit() }}</p>
+  <p style = "text-align: center;">{{ form.submit() }}</p>
+  <br><br>
 </form>
-
+</div>
 {% endblock %}
