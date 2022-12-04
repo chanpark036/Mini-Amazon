@@ -2,20 +2,27 @@
 
 {% block content %}
 
-<h1>EDIT PRODUCT PAGE</h1>
-<h1>{{ product_details.name }}
-  <a href="{{ url_for('inventories.update_name', pid = product_details.id) }}" type="button"
-    class="btn btn-dark"> Edit Name </a>
-</h1>
-<!-- <h4>Category: {{ product_details.category }}
-  <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Price</a> 
-</h4>
-<h4>Description: {{ product_details.description }}
-  <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Description</a> 
-</h4>
-<div>
-  <img src="{{product_details.image}}" />
-  <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Image</a>  -->
+<h1>Edit Product</h1>
+<h3>{{ product_details.name }}
+  <a href="{{ url_for('inventories.update_name', pid = product_details.id) }}" type="button" class="btn btn-dark"> Edit
+    Name </a>
+</h3>
+
+<h3>Category: {{ product_details.category }}
+  <a href="{{ url_for('inventories.update_category', pid = product_details.id) }}" type="button" class="btn btn-dark">
+    Edit Category </a>
+</h3>
+
+<h3>Description: {{ product_details.description }}
+  <a href="{{ url_for('inventories.update_description', pid = product_details.id) }}" type="button"
+    class="btn btn-dark"> Edit Description </a>
+</h3>
+
+<h3><img src="{{product_details.image}}" />
+  <a href="{{ url_for('inventories.update_image', pid = product_details.id) }}" type="button" class="btn btn-dark"> Edit
+    Image </a>
+</h3>
+
 </div>
 
 <br><br>

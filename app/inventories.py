@@ -31,7 +31,20 @@ class AddNewProductForm(FlaskForm):
 
 class UpdateProductName(FlaskForm):
     name = StringField('New Name: ', validators=[DataRequired()])
-    submit = SubmitField('ADD NEW PRODUCT')
+    submit = SubmitField('UPDATE NAME')
+
+class UpdateProductCategory(FlaskForm):
+    name = StringField('New Category: ', validators=[DataRequired()])
+    submit = SubmitField('UPDATE CATEGORY')
+
+class UpdateProductDescription(FlaskForm):
+    name = StringField('New Description: ', validators=[DataRequired()])
+    submit = SubmitField('UPDATE DESCRIPTION')
+
+class UpdateProductImage(FlaskForm):
+    name = StringField('New Image URL: ', validators=[DataRequired()])
+    submit = SubmitField('UPDATE IMAGE')
+
 
 
 @bp.route('/inventory', methods=['GET', 'POST'])
@@ -133,19 +146,56 @@ def update_name(pid):
     return render_template('update-product-name.html', pid = pid, 
                                 form=form)
 
-    # if request.method == "POST":
-    #     return redirect(url_for('users.get_account_info'))
+@bp.route('/inventory/editProduct/updateDescription/<pid>', methods=['GET', 'POST'])
+def update_description(pid):
+    
+    form = UpdateProductDescription()
+    # user_id = current_user.id
+    new_desc = form.name.data
+    
+    # user_id = current_user.id
+    if form.validate_on_submit():
+        Product.update_product_description(pid, new_desc)      
 
-    # return render_template('user/update-name.html', 
-    #                        title='Update Name', 
-    #                        form=form)
+    if request.method == "POST":
+        return redirect(url_for('inventories.inventory'))
 
 
+    return render_template('update-product-name.html', pid = pid, 
+                                form=form)
+
+@bp.route('/inventory/editProduct/updateCategory/<pid>', methods=['GET', 'POST'])
+def update_category(pid):
+    
+    form = UpdateProductCategory()
+    # user_id = current_user.id
+    new_cat = form.name.data
+    
+    # user_id = current_user.id
+    if form.validate_on_submit():
+        Product.update_product_category(pid, new_cat)      
+
+    if request.method == "POST":
+        return redirect(url_for('inventories.inventory'))
 
 
+    return render_template('update-product-name.html', pid = pid, 
+                                form=form)
 
-    # return render_template('update-product-name.html', sid = sid, pid = pid,
-    #                             title='Update Product Name', 
-    #                             form1=form1)
+@bp.route('/inventory/editProduct/updateImage/<pid>', methods=['GET', 'POST'])
+def update_image(pid):
+    
+    form = UpdateProductImage()
+    # user_id = current_user.id
+    new_imgurl = form.name.data
+    
+    # user_id = current_user.id
+    if form.validate_on_submit():
+        Product.update_product_image(pid, new_imgurl)      
+
+    if request.method == "POST":
+        return redirect(url_for('inventories.inventory'))
 
 
+    return render_template('update-product-name.html', pid = pid, 
+                                form=form)
