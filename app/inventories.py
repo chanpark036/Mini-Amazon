@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, FloatField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, FloatField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 import datetime
 
@@ -20,11 +20,13 @@ class InventorySearch(FlaskForm):
     price = FloatField('Price: ')
     submit = SubmitField('ADD')
 
+available_categories = ['Apps', 'Food', 'Books', 'Electronics', 'Health', 'Outdoor', 'Entertainment']
+
 class AddNewProductForm(FlaskForm):
-    name = StringField('Name: ')
+    name = StringField('Name: ', validators=[DataRequired()])
     description = StringField('Description: ')
-    image = StringField('Photo: ')
-    category = StringField('Category: ')
+    image = StringField('Photo: ')    
+    category = SelectField('Category: ', choices = available_categories, validators=[DataRequired()])
     quantity = IntegerField('Quantity: ')
     price = FloatField('Price: ')
     submit = SubmitField('ADD NEW PRODUCT')
@@ -34,7 +36,8 @@ class UpdateProductName(FlaskForm):
     submit = SubmitField('UPDATE NAME')
 
 class UpdateProductCategory(FlaskForm):
-    name = StringField('New Category: ', validators=[DataRequired()])
+    # available_categories = ['Apps', 'Food', 'Books', 'Electronics', 'Health', 'Outdoor', 'Entertainment']
+    name = SelectField('New Category: ', choices = available_categories, validators=[DataRequired()])
     submit = SubmitField('UPDATE CATEGORY')
 
 class UpdateProductDescription(FlaskForm):
