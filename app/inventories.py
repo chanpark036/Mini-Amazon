@@ -110,3 +110,42 @@ def editProduct(sid,pid):
     product_details = Product.get(pid)
     return render_template('edit-product.html', sid = sid, pid = pid, product_details = product_details)
                            #if available not true then how to become a seller?
+
+@bp.route('/inventory/line',methods=['GET'])
+def charts():
+    seller_id = current_user.id
+
+    #line_graph
+    line_labels = [
+        'JAN', 'FEB', 'MAR', 'APR',
+        'MAY', 'JUN', 'JUL', 'AUG',
+        'SEP', 'OCT', 'NOV', 'DEC'
+    ]
+    times = Inventory.times_bought_from_seller(seller_id)
+    line_values = [0 for i in range(12)]
+    for time in times:
+        line_values[time[0].month-1]+=1
+
+    #pie_graphs
+    users = Inventory.users_buying_from_seller(seller_id)
+    user_freqs = {}
+    colors = [
+    "#F7464A", "#46BFBD", "#FDB45C", "#FEDCBA",
+    "#ABCDEF", "#DDDDDD", "#ABCABC", "#4169E1",
+    "#C71585", "#FF4500", "#FEDCBA", "#46BFBD"]
+    for firstname,lastname in users:
+        user = firstname + " " + lastname
+        user_freqs[user] = user_freqs.get(user,0)+1
+    keys, values = zip(*user_freqs.items())
+
+    #bar_graphs
+    p_names = Inventory.product_popularity(seller_id)
+    p_freqs={}
+    for name in p_names:
+        p_freqs[name[0]] = p_freqs.get(name[0],0)+1
+    p_keys, p_values = zip(*p_freqs.items())
+
+    return render_template('inventory_charts.html', 
+                    line_max=max(line_values), line_labels=line_labels, line_values=line_values,
+                    chart_max = min(12,len(keys)), chart_set=zip(values[:min(12,len(keys))], keys[:min(12,len(keys))], colors[:min(12,len(keys))]),
+                    bar_max = max(p_values), bar_labels = p_keys, bar_values = p_values)
