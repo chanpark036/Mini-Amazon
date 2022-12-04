@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, Markup
 from flask_login import current_user
 import datetime
 from flask_wtf import FlaskForm
@@ -77,26 +77,33 @@ def delete_product(user_id, purchase_id):
 @bp.route('/submitOrder/<user_id>,<time>', methods = ['GET','POST','DELETE'])
 def submitOrder(user_id, time):
     #decrease inventory
+    form3 = submitOrderForm()
     orderProducts = list(Cart.get(current_user.id))
     for prod in orderProducts:
         availableQuant = Inventory.get_from_pid_specific(prod.pid, prod.sid).quantity
         if prod.quantity>availableQuant:
-            print("Your seller does not have enough inventory. Please adjust your order")
-            return redirect(url_for('carts.carts'))
-            #@TODO display message on frontend about insufficient inventory
+            message = "Your seller does not have enough inventory. Please adjust your order." + str(prod.sid) + str(prod.u_price)
+            return render_template('cart.html',
+                           printprods = orderProducts,
+                           numItems = getNumItems(orderProducts),
+                           totalPrice = getTotalPrice(orderProducts),form3=form3,
+                           time = time, message=message)
     for prod in orderProducts:
         Inventory.decreaseInventory(prod.pid, prod.quantity, prod.sid)
         User.change_balance(prod.sid, prod.quantity*prod.u_price)
     #decrease buyer balance
     curr_balance = current_user.balance
     cost = getTotalPrice(orderProducts)
-    new_balance = curr_balance - float(cost)
+    new_balance = curr_balance - cost
     if new_balance>=0:
         User.update_balance(current_user.id, new_balance)
     else:
-        print("invalid transaction")
-        return redirect(url_for('carts.carts'))
-        #@TODO: display message on frontend about insufficient funds    
+        message = "Insufficient funds. Please add funds to your account."
+        return render_template('cart.html',
+                           printprods = orderProducts,
+                           numItems = getNumItems(orderProducts),
+                           totalPrice = getTotalPrice(orderProducts),form3=form3,
+                           time = time, message=message)
     #write order to purchase history
     purchase_id = Purchase.get_most_recent_purchase_id() + 1
     for prod in orderProducts:
@@ -106,6 +113,8 @@ def submitOrder(user_id, time):
     #empty cart
     Cart.emptyCart(current_user.id)
     allProds = Purchase.get_detailed_order_page(current_user.id, time)
+    for prod in allProds:
+        print(prod.total_price)
     return render_template('submitPage.html',
                            orderInfo = allProds,
                            totalPrice = cost,

@@ -84,13 +84,14 @@ ORDER BY time_purchased DESC
     @staticmethod
     def get_purchase_history(uid):
         rows = app.db.execute("""
-                              SELECT SUM(Products.price) as total_price, 
-                              SUM(quantity) as total_quantity,
+                              SELECT SUM(Inventory.u_price*Purchases.quantity) as total_price, 
+                              SUM(Purchases.quantity) as total_quantity,
                               Purchases.fulfillment_status as fulfillment_status,
                               Purchases.time_purchased as time_purchased
-                              FROM Purchases, Products
-                              WHERE Purchases.uid = :uid and Purchases.pid = Products.id
-                              GROUP BY time_purchased, fulfillment_status
+                              FROM Purchases, Products, Inventory
+                              WHERE Purchases.uid = :uid and Purchases.pid = Products.id and 
+                              Products.id = Inventory.pid and Inventory.sid = Purchases.sid
+                              GROUP BY Purchases.id, time_purchased, fulfillment_status
                               ORDER BY time_purchased DESC
                               """,
                               uid = uid)
@@ -103,17 +104,17 @@ ORDER BY time_purchased DESC
     def get_detailed_order_page(uid, time_purchased):
         rows = app.db.execute("""
                               SELECT Products.name as name,
-                              SUM(Products.price) as total_price, 
+                              SUM(Inventory.u_price) as total_price, 
                               SUM(Purchases.quantity) as total_quantity,
                               Purchases.fulfillment_status as fulfillment_status,
                               Purchases.time_purchased as time_purchased,
                               Purchases.sid as sid,
                               Users.firstname as seller_firstname,
                               Users.lastname as seller_lastname
-                              FROM Purchases, Products, Users
+                              FROM Purchases, Products, Users, Inventory
                               WHERE Purchases.uid = :uid and Purchases.time_purchased = :time_purchased and Purchases.pid = Products.id 
-                              and Users.id = sid
-                              GROUP BY name, time_purchased, fulfillment_status, quantity, sid, seller_firstname, seller_lastname
+                              and Users.id = Purchases.sid and Products.id = Inventory.pid and Inventory.sid = Purchases.sid
+                              GROUP BY name, time_purchased, fulfillment_status, Purchases.quantity, Purchases.sid, seller_firstname, seller_lastname
                               """,
                               uid = uid,
                               time_purchased = time_purchased)

@@ -24,7 +24,7 @@ def purchase_history():
 def get_total_price(productList):
     price = 0
     for prod in productList:
-        price += prod.total_price
+        price += (prod.total_price*prod.total_quantity)
     return price
 
 @bp.route('/detailedOrderPage/<user_id>/<time_purchased>', methods = ['GET','POST','DELETE'])

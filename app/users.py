@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, IntegerField, FloatField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 from .models.user import User
@@ -229,14 +229,14 @@ def update_address():
 
 
 class UpdateBalance(FlaskForm):
-    balance = IntegerField('Balance')
+    balance = FloatField('Balance')
     submit = SubmitField('Submit')
 
 @bp.route('/update-balance', methods=['GET', 'POST'])
 def update_balance():
     form = UpdateBalance()
     user_id = current_user.id
-    curr_balance = current_user.balance
+    curr_balance = float(current_user.balance)
     if form.validate_on_submit():
         transaction = form.balance.data
         new_balance = curr_balance + float(transaction)
