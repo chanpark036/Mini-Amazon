@@ -109,7 +109,7 @@ SET image = :imageurl
 WHERE id= :id
 """,
                               id=id,
-                              category=category)
+                              imageurl=imageurl)
 
 
 
