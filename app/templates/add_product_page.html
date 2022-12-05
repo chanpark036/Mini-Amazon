@@ -1,56 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-        label {
-        display: inline-block;
-        width: 150px;
-        text-align: right;
-        margin-right: -200px;
-      }
-</style>
+
 
 <h2 class="login" style="text-align: center">ADD NEW PRODUCT</h2>
 <div style="margin-top: 30px"></div>
 <form action="{{url_for('inventories.addNewProduct')}}" method="post" novalidate>
     <div>
-        <label>{{ form.name.label }} </label>  
-        <div style="text-align: center; margin-top: -50px">{{ form.name(size=8, class_="box-text") }}</div>
+        <div style="text-align: center;">{{ form.name(size=8, class_="box-text", placeholder = "Name") }}</div>
     </div>
 
     <br>
 
     <div>
-        <label>{{ form.description.label }} </label>  
-        <div style="text-align: center; margin-top: -50px">{{ form.description(size=8, class_="box-text") }}</div>
+        <div style="text-align: center;">{{ form.description(size=8, class_="box-text", placeholder = "Description") }}</div>
     </div>
     
     <br>
 
     <div>
-        <label>{{ form.category.label }} </label>  
-        <div style="text-align: center; margin-top: -50px">{{ form.category(size=8, class_="box-text") }}</div>
+        <p style ="text-align: center;">Category</p>  
+        <div style="text-align: center;">{{ form.category(size=8, class_="box-text") }}</div>
     </div>
 
     <br>
 
     <div>
-        <label>{{ form.image.label }} </label>  
-        <div style="text-align: center; margin-top: -50px">{{ form.image(size=8, class_="box-text") }}</div>
+        <div style="text-align: center;">{{ form.image(size=8, class_="box-text", placeholder = "Image URL") }}</div>
     </div>
 
     <br>
 
     <div>
-        <label>{{ form.quantity.label }} </label>  
-        <div style="text-align: center; margin-top: -50px">{{ form.quantity(size=8, class_="box-text") }}</div>
+        <div style="text-align: center;">{{ form.quantity(size=8, class_="box-text", placeholder = "Quantity") }}</div>
     </div>
 
     <br>
 
     <div>
-        <label>{{ form.price.label }} </label>  
-        <div style="text-align: center; margin-top: -50px">{{ form.price(size=8, class_="box-text") }}</div>
+        <div style="text-align: center;">{{ form.price(size=8, class_="box-text", placeholder = "Price") }}</div>
     </div>
 
     <br>
