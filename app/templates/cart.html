@@ -17,6 +17,7 @@
       <th scope = "col">Unit Price</th>
       <th scope = "col">Total Price</th>
       <th scope = "col">Delete from Cart</th>
+      <th scope = "col">Save for Later</th>
     </tr>
   </thead>
   <tbody>
@@ -32,6 +33,9 @@
         <td>
           <a href="{{ url_for('carts.delete_product', user_id = purchase.uid, purchase_id = purchase.pid) }}" type="button" class="btn btn-light">Delete</a>
         </td>  
+        <td>
+          <a href = "{{url_for('carts.saveItem', uid = purchase.uid, pid = purchase.pid, saved = purchase.saved)}}" type = "button" class = "btn btn-light">Save</a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
@@ -59,5 +63,38 @@
 </div>
 
 <br><br>
+
+<h2 style = "text-align: center;">Saved Items</h2>
+<table class='styled-table table-hover container' style="align-items: center;">
+  <thead>
+    <tr>
+      <th scope="col">Product Name</th>
+      <th scope = "col">Purchase Quantity</th>
+      <th scope = "col">Unit Price</th>
+      <th scope = "col">Total Price</th>
+      <th scope = "col">Delete from Saved</th>
+      <th scope = "col">Move to Cart</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in savedProducts%}
+      <tr>
+        <td>{{purchase.name}}</td>
+        <td>{{purchase.quantity}}
+          <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity+1) }}" type="button" class="btn btn-light">+</a> 
+          <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity-1) }}" type="button" class="btn btn-light">-</a>        
+        </td> 
+        <td>{{purchase.u_price}}</td>
+        <td>{{purchase.u_price*purchase.quantity}}</td>
+        <td>
+          <a href="{{ url_for('carts.delete_product', user_id = purchase.uid, purchase_id = purchase.pid) }}" type="button" class="btn btn-light">Delete</a>
+        </td>  
+        <td>
+          <a href = "{{url_for('carts.moveItem', uid = purchase.uid, pid = purchase.pid, saved = purchase.saved)}}" type = "button" class = "btn btn-light">Move</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}
