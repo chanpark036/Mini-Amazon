@@ -75,7 +75,7 @@ class Inventory:
             SELECT I.sid, I.pid, I.quantity, I.u_price, U.firstname, U.lastname
             FROM Inventory I, Users U
             WHERE I.pid = :pid AND I.sid = U.id
-            ORDER BY I.sid
+            ORDER BY I.u_price
             ''',
                               pid=pid)
         return [Inventory(*row) for row in rows]
