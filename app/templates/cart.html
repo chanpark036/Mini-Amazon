@@ -28,8 +28,8 @@
           <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity+1) }}" type="button" class="btn btn-light">+</a> 
           <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity-1) }}" type="button" class="btn btn-light">-</a>        
         </td> 
-        <td>{{purchase.u_price}}</td>
-        <td>{{purchase.u_price*purchase.quantity}}</td>
+        <td>${{purchase.u_price}}</td>
+        <td>${{purchase.u_price*purchase.quantity}}</td>
         <td>
           <a href="{{ url_for('carts.delete_product', user_id = purchase.uid, purchase_id = purchase.pid) }}" type="button" class="btn btn-light">Delete</a>
         </td>  
@@ -51,7 +51,7 @@
       {{numItems}}
     </td>
     <td>
-      {{totalPrice}}
+      ${{totalPrice}}
     </td>
   </tr>
   </table>
@@ -84,8 +84,8 @@
           <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity+1) }}" type="button" class="btn btn-light">+</a> 
           <a href="{{ url_for('carts.changeCart', uid = purchase.uid, pid = purchase.pid, newValue = purchase.quantity-1) }}" type="button" class="btn btn-light">-</a>        
         </td> 
-        <td>{{purchase.u_price}}</td>
-        <td>{{purchase.u_price*purchase.quantity}}</td>
+        <td>${{purchase.u_price}}</td>
+        <td>${{purchase.u_price*purchase.quantity}}</td>
         <td>
           <a href="{{ url_for('carts.delete_product', user_id = purchase.uid, purchase_id = purchase.pid) }}" type="button" class="btn btn-light">Delete</a>
         </td>  
