@@ -68,6 +68,7 @@ def create_stats(lst):
         avg = round(lst[0][1],1)
         return Stats(avg,lst[0][2])
 
+
 @bp.route('/products', methods = ['GET', 'POST'])
 def index():    
 
@@ -81,9 +82,27 @@ def index():
     # else:
     #     products = Product.get_top_K_expensive(True, k)
 
-    products = Product.get_all(True)    
+    products = Product.get_valid_products(True)    
     return render_template('products.html',
                            avail_products=products, form1 = form1, form2 = form2)
+
+
+# @bp.route('/products', methods = ['GET', 'POST'])
+# def index():    
+
+#     # form corresponds with top K
+#     form1 = ProductsKInput()
+#     form2 = FilterProductCategory()
+#     # k = form1.value.data
+    
+#     # if k is None:
+#     #     products = []
+#     # else:
+#     #     products = Product.get_top_K_expensive(True, k)
+
+#     products = Product.get_all(True)    
+#     return render_template('products.html',
+#                            avail_products=products, form1 = form1, form2 = form2)
 
 @bp.route('/product-detail/<product_id>', methods=['GET', 'POST'])
 def detail_product(product_id):
