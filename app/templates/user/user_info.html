@@ -4,24 +4,57 @@
 
 {% if current_user.is_authenticated %}
 <br>
-<h1>Your Account Information</h1>
-<h2>Account ID: {{user_id.id}} </h2>
-<h2>Email: {{user_id.email}} 
-    <a href="{{ url_for('users.update_email') }}" type="button" class="btn btn-dark">Edit Email</a> 
-</h2>
-<h2> Password: HIDDEN 
-    <a href="{{ url_for('users.update_password') }}" type="button" class="btn btn-dark">Edit Password</a> 
-</h2>
-<h2>Name: {{user_id.firstname}} {{user_id.lastname}} 
-    <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Name</a> 
-</h2>
-<h2>Address: {{user_id.address}} 
-    <a href="{{ url_for('users.update_address') }}" type="button" class="btn btn-dark">Edit Address</a> 
-</h2>
-<h2>Balance: ${{user_id.balance}} 
-    <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-dark">Edit Balance</a> 
-</h2>
-
+<h2 style ="text-align: center;">Your Account Information</h2>
+<table class = "user-table center">
+  <thead>
+    <tr>
+      <th>Account ID</th>
+      <th>Email</th>
+    </tr>
+    </thead>
+    <tr>
+      <td>
+        {{user_id.id}}
+      </td>
+      <td>
+        {{user_id.email}}
+        <br>
+        <a href="{{ url_for('users.update_email') }}" type="button" class="btn btn-dark">Edit Email</a> 
+      </td>
+    </tr>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+    </tr>
+    </thead>
+    <tr>
+      <td>{{user_id.firstname}} {{user_id.lastname}}
+        <br>
+        <a href="{{ url_for('users.update_name') }}" type="button" class="btn btn-dark">Edit Name</a> 
+      </td>
+      <td>{{user_id.address}}
+        <br>
+        <a href="{{ url_for('users.update_address') }}" type="button" class="btn btn-dark">Edit Address</a> 
+      </td>
+    </tr>
+    <thead>
+    <tr>
+      <th>Password</th>
+      <th>Balance</th>
+    </tr>
+    </thead>
+    <tr>
+      <td>
+        <a href="{{ url_for('users.update_password') }}" type="button" class="btn btn-dark">Edit Password</a> 
+      </td>
+      <td>
+        ${{user_id.balance}} 
+        <br>
+        <a href="{{ url_for('users.update_balance') }}" type="button" class="btn btn-dark">Edit Balance</a> 
+      </td>
+    </tr>
+</table>
 <br>
 
 
@@ -29,7 +62,7 @@
 
 {%if p_reviews  %}
 <table class='styled-table table-hover container'>
-  <thead class="thead-dark">
+  <thead>
     <tr>
       <th scope="col">Product</th>
       <th scope="col">Review</th>
@@ -75,7 +108,7 @@
 <h2>Your Seller Reviews</h2>
 {%if s_reviews  %}
 <table class='styled-table table-hover container'>
-  <thead class="thead-dark">
+  <thead>
     <tr>
       <th scope="col">Seller</th>
       <th scope="col">Review</th>

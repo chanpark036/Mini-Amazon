@@ -2,26 +2,25 @@
 
 {% block content %}
 
-<h1>Update Name</h1>
-  
+<div class = "register-menu">
+  <p class ="login" style = "text-align: center;">Update Name</p>
 <form action="" method="post">
   {{ form.hidden_tag() }}
-  
   <p>
-    {{ form.firstname.label }}<br/>
-    {{ form.firstname(size=32) }}<br/>
+    {{ form.firstname(size=32, class_="register-text", placeholder = "First Name") }}<br/>
     {% for error in form.firstname.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
   <p>
-    {{ form.lastname.label }}<br/>
-    {{ form.lastname(size=32) }}<br/>
+    {{ form.lastname(size=32, class_ = "register-text", placeholder="Last Name") }}<br/>
     {% for error in form.lastname.errors %}
     <span style="color: red;">[{{ error }}]</span>
     {% endfor %}
   </p>
-  <p>{{ form.submit() }}</p>
+  <p style = "text-align: center;">{{ form.submit() }}</p>
+  <br><br>
 </form>
+</div>
 
 {% endblock %}

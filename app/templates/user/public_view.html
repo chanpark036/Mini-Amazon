@@ -3,15 +3,28 @@
 {% block content %}
 
 <br><br>
-<h1>User Information</h1>
-<h2>Account ID: {{user.id}} </h2>
-<h2>Name: {{user.firstname}} {{user.lastname}}</h2>
-
+<h4 style = "text-align: center;">User Information</h4>
+<table class = "styled-table center">
+  <thead>
+  <tr>
+  <th>Account ID</th>
+  <th>Name</th> 
 {% if user.seller %}
-    <h2>Email: {{user.email}} </h2>
-    <h2>Address: {{user.address}} </h2>
-    <h2>Reviews </h2>
-    <h4>Average Rating: {{stats.avg}}</h4>
+  <th>Email</th>
+  <th>Address</th>
+  <th>Average Rating</th>
+</thead>
+</tr>
+<tr>
+  <td>{{user.id}}</td>
+  <td>{{user.firstname}} {{user.lastname}}</td>
+  <td>{{user.email}}</td>
+  <td>{{user.address}}</td>
+  <td>{{stats.avg}}</td>
+</tr>
+</table>
+<div style = "text-align: center;">
+  <br><br>
 <h4>{{stats.count}} customer reviews</h4>
 <div>
   <img src="/static/images/5stars.png", style="width:8em; height:auto;"/>
@@ -33,9 +46,9 @@
   <img src="/static/images/1star.png", style="width:8em; height:auto;"/>
   {{ratings.one}}
 </div>
-
+</div>
 <br>
-
+<div style = "text-align: center;">
 {%if hasReview %}
 <h5>You have already reviewed this seller.</h5>
 {% else %}
@@ -48,7 +61,7 @@
 
 <br>
 {% endif %}
-
+</div>
 
 <br>
 {% endif %}
