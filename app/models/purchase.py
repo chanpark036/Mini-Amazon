@@ -91,7 +91,7 @@ ORDER BY time_purchased DESC
                               FROM Purchases, Products, Inventory
                               WHERE Purchases.uid = :uid and Purchases.pid = Products.id and 
                               Products.id = Inventory.pid and Inventory.sid = Purchases.sid
-                              GROUP BY Purchases.id, time_purchased, fulfillment_status
+                              GROUP BY time_purchased, fulfillment_status
                               ORDER BY time_purchased DESC
                               """,
                               uid = uid)

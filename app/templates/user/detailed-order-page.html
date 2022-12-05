@@ -23,7 +23,7 @@
         {{item.total_quantity}}
       </td>
       <td>
-        ${{item.total_price*item.total_quantity}}
+        ${{ (item.total_price*item.total_quantity)|round(2)}}
       </td>
       <td>
         {{item.fulfillment_status}}
@@ -39,7 +39,7 @@
 <br><br>
 <table class = "styled-table center">
   <td>Total Price</td>
-  <td>${{total}}</td>
+  <td>${{total|round(2)}}</td>
 </table>
 
 {% endif%}

@@ -18,7 +18,7 @@
   <tbody>
     {% for purchase in purchase_history%}
       <tr>
-        <th scope="row"> ${{purchase.total_price}} </th>
+        <th scope="row"> ${{ purchase.total_price|round(2) }} </th>
         <td> {{purchase.total_quantity}} </td>
         <td>{{purchase.fulfillment_status}}</td>
         <td> {{purchase.time_purchased}} </td>

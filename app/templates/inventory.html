@@ -28,7 +28,7 @@
     {% for product in inventory_products%}
     <tr>
       <th scope="row">{{product.name}}</th>
-      <td>{{product.price}}</td>
+      <td>${{product.price}}</td>
       <td>{{product.quantity}}
         <a href="{{ url_for('inventories.modifyQuantity', uid = product.sid, pid = product.pid, new_q = product.quantity+1) }}"
           type="button" class="btn btn-light">+</a>
