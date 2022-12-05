@@ -49,7 +49,8 @@ CREATE TABLE Carts (
     pid INT NOT NULL REFERENCES Products(id),
     quantity INT NOT NULL,
     u_price FLOAT NOT NULL,
-    sid INT NOT NULL
+    sid INT NOT NULL,
+    saved BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE Inventory( 

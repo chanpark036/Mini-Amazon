@@ -38,6 +38,7 @@ def carts():
     uid = current_user.id
     products = Cart.get(uid)
     x = datetime.datetime.now()
+    savedProducts = Cart.getSaved(uid)
     # find the products current user has bought:
     # render the page by adding information to the index.html file
     return render_template('cart.html',
@@ -45,7 +46,8 @@ def carts():
                            numItems = getNumItems(products),
                            totalPrice = getTotalPrice(products),
                            form3 = form3,
-                           time = x)
+                           time = x,
+                           savedProducts = savedProducts)
     
 @bp.route('/carts/<uid>,<pid>,<newValue>', methods = ['GET', 'POST'])
 def changeCart(uid, pid, newValue):
@@ -53,6 +55,7 @@ def changeCart(uid, pid, newValue):
     
     submitForm = submitOrderForm()
     x = datetime.datetime.now()
+    savedProducts = Cart.getSaved(uid)
     # find the products current user has bought:
     # render the page by adding information to the index.html file
     return render_template('cart.html',
@@ -60,19 +63,52 @@ def changeCart(uid, pid, newValue):
                            numItems = getNumItems(products),
                            totalPrice = getTotalPrice(products),
                            form3 = submitForm,
-                           time = x)
+                           time = x,
+                           savedProducts = savedProducts)
     
-@bp.route('/carts/<user_id>,<purchase_id>', methods=['GET','DELETE'])
-def delete_product(user_id, purchase_id):
-    products = Cart.delete_product(user_id, purchase_id)
-    
+@bp.route('/carts/saved/<uid>,<pid>,<saved>', methods = ['GET', 'POST'])
+def saveItem(uid, pid, saved):
+    savedProducts = Cart.saveForLater(uid, pid, saved)
+    products = Cart.get(uid)
     submitForm = submitOrderForm()
     x = datetime.datetime.now()
     return render_template('cart.html',
                            printprods = products, 
                            numItems = getNumItems(products),
                            totalPrice = getTotalPrice(products),
-                           form3 = submitForm, time = x)
+                           form3 = submitForm, 
+                           time = x,
+                           savedProducts=savedProducts)
+    
+@bp.route('/carts/move/<uid>,<pid>,<saved>', methods = ['GET', 'POST'])
+def moveItem(uid, pid, saved):
+    savedProducts = Cart.moveItem(uid, pid, saved)
+    products = Cart.get(uid)
+    submitForm = submitOrderForm()
+    x = datetime.datetime.now()
+    return render_template('cart.html',
+                           printprods = products, 
+                           numItems = getNumItems(products),
+                           totalPrice = getTotalPrice(products),
+                           form3 = submitForm, 
+                           time = x,
+                           savedProducts=savedProducts)
+    
+    
+    
+@bp.route('/carts/<user_id>,<purchase_id>', methods=['GET','DELETE'])
+def delete_product(user_id, purchase_id):
+    products = Cart.delete_product(user_id, purchase_id)
+    submitForm = submitOrderForm()
+    x = datetime.datetime.now()
+    savedProducts = Cart.getSaved(user_id)
+    return render_template('cart.html',
+                           printprods = products, 
+                           numItems = getNumItems(products),
+                           totalPrice = getTotalPrice(products),
+                           form3 = submitForm, 
+                           time = x,
+                           savedProducts=savedProducts)
     
 @bp.route('/submitOrder/<user_id>,<time>', methods = ['GET','POST','DELETE'])
 def submitOrder(user_id, time):
