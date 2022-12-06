@@ -136,4 +136,39 @@ GROUP BY P.id
                               available=available)
         return [Product(*row) for row in rows]
 
+    @staticmethod
+    def get_valid_products_under50(available=True):
+        rows = app.db.execute('''
+SELECT P.id, P.name, P.category, P.description, MIN(I.u_price), P.available, P.image
+FROM Products P
+LEFT JOIN Inventory I ON P.id = I.pid 
+WHERE available = :available AND I.quantity > 0 AND I.u_price < 50
+GROUP BY P.id
+''',
+                              available=available)
+        return [Product(*row) for row in rows]
 
+
+    @staticmethod
+    def get_valid_products_from50to100(available=True):
+        rows = app.db.execute('''
+SELECT P.id, P.name, P.category, P.description, MIN(I.u_price), P.available, P.image
+FROM Products P
+LEFT JOIN Inventory I ON P.id = I.pid 
+WHERE available = :available AND I.quantity > 0 AND I.u_price > 50 AND I.u_price < 100
+GROUP BY P.id
+''',
+                              available=available)
+        return [Product(*row) for row in rows]
+
+    @staticmethod
+    def get_valid_products_over100(available=True):
+        rows = app.db.execute('''
+SELECT P.id, P.name, P.category, P.description, MIN(I.u_price), P.available, P.image
+FROM Products P
+LEFT JOIN Inventory I ON P.id = I.pid 
+WHERE available = :available AND I.quantity > 0 AND I.u_price > 100
+GROUP BY P.id
+''',
+                              available=available)
+        return [Product(*row) for row in rows]
