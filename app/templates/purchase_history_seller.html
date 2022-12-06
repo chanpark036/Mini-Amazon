@@ -2,8 +2,9 @@
 
 {% block content %}
 
+{% if current_user.is_authenticated %}
 <h2 class = "login" style = "text-align: center" >Order History from seller {{seller_id}}:</h2>
-<table class='styled-table table-hover table-bordered container'>
+<table class='styled-table table-hover table-bordered container' id=purchase-history-seller>
   <thead class="thead-dark">
     <tr>
       <th scope="col">Buyer Address</th>
@@ -27,5 +28,12 @@
     {% endfor %}
   </tbody>
 </table>
+{% endif%}
+
+<script>
+  $(document).ready( function () {
+      $('#purchase-history-seller').DataTable();
+  } );
+</script>
 
 {% endblock %}
