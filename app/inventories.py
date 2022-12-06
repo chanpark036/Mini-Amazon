@@ -236,16 +236,28 @@ def charts():
     for firstname,lastname in users:
         user = firstname + " " + lastname
         user_freqs[user] = user_freqs.get(user,0)+1
-    keys, values = zip(*user_freqs.items())
+    if user_freqs:
+        keys, values = zip(*user_freqs.items())
+    else:
+        keys=[]
+        values=[]
 
     #bar_graphs
     p_names = Inventory.product_popularity(seller_id)
     p_freqs={}
     for name in p_names:
         p_freqs[name[0]] = p_freqs.get(name[0],0)+1
-    p_keys, p_values = zip(*p_freqs.items())
+    if p_freqs:
+        p_keys, p_values = zip(*p_freqs.items())
+    else:
+        p_keys=[]
+        p_values=[]
+
+    
+    line_max = 10 if not line_values else max(line_values)
+    bar_max = 10 if not p_values else max(p_values)
 
     return render_template('inventory_charts.html', 
-                    line_max=max(line_values), line_labels=line_labels, line_values=line_values,
+                    line_max=line_max, line_labels=line_labels, line_values=line_values,
                     chart_max = min(12,len(keys)), chart_set=zip(values[:min(12,len(keys))], keys[:min(12,len(keys))], colors[:min(12,len(keys))]),
-                    bar_max = max(p_values), bar_labels = p_keys, bar_values = p_values)
+                    bar_max = bar_max, bar_labels = p_keys, bar_values = p_values)

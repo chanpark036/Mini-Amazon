@@ -8,6 +8,7 @@
   </head>
   
   <body>
+        {% if bar_labels %}
         <div style="overflow:auto; margin-top: 30px">
         <div style="float:left; margin-left: 50px">
             <h3 style="text-align:center">Popularity of Seller By Month</h3>
@@ -93,7 +94,7 @@
         </div>
         </div>
         <br></br>
-        <center>
+    <center>
         <div style="">
             <h3 style="text-align:center">Total Sales of Each Product</h3>
             <canvas id="bar_chart" width="600" height="400"></canvas>
@@ -141,6 +142,15 @@
                 </script>
         </div>
     </center>
+    {% else %} 
+    <br></br>
+    <br></br>
+    <br></br>
+    <h1 style="text-align:center">No buyers have purchased your products yet!</h1>
+    <br></br>
+    <h1 style="text-align:center; font-size: 80px;">&#9785;</h1>
+    {% endif %}
+
 </body>
 </html>
 
