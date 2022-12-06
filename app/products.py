@@ -153,4 +153,27 @@ def addToCart(sid,pid, price):
                            avail_products=products, form1 = form1, form2 = form2,)
 
 
+@bp.route('/products/under50', methods = ['GET','POST'])
+def displayProductsUnder50():
+    
+    products = Product.get_valid_products_under50(True)
+    
+    return render_template('products_price_filter.html',
+                           avail_products=products)
+
+@bp.route('/products/between50and100', methods = ['GET','POST'])
+def displayProductsBetween50and100():
+    
+    products = Product.get_valid_products_from50to100(True)
+    
+    return render_template('product_price_50and100.html',
+                           avail_products=products)
+
+@bp.route('/products/over100', methods = ['GET','POST'])
+def displayProductsOver100():
+    
+    products = Product.get_valid_products_over100(True)
+    
+    return render_template('product_price_over100.html',
+                           avail_products=products)
 
