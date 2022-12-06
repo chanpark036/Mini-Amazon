@@ -51,8 +51,9 @@ def carts():
     
 @bp.route('/carts/<uid>,<pid>,<newValue>', methods = ['GET', 'POST'])
 def changeCart(uid, pid, newValue):
+    if int(newValue)<1:
+        newValue = str(1)
     products = Cart.updateCount(uid, pid, newValue)
-    
     submitForm = submitOrderForm()
     x = datetime.datetime.now()
     savedProducts = Cart.getSaved(uid)
