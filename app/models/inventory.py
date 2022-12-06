@@ -105,7 +105,8 @@ class Inventory:
     @staticmethod
     def add_new_product(seller_id, name,description,price,quantity,image,category):
         available = True
-        product_in_db = app.db.execute('SELECT * FROM Products WHERE name=:name AND description=:description',name=name,description=description)
+        # product_in_db = app.db.execute('SELECT * FROM Products WHERE name=:name AND description=:description',name=name,description=description)
+        product_in_db = app.db.execute('SELECT * FROM Products WHERE name=:name',name=name)
         if not product_in_db:
             max_pid = app.db.execute(' SELECT MAX(id) FROM Products')
             new_pid = int(max_pid[0][0])+1

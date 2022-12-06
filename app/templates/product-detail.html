@@ -4,12 +4,42 @@
 
 <!-- <h3>% product_details.name %</h3> -->
 
+<style>
+  .column {
+    float: left;
+    padding: 10px;
+  }
 
-<h1>{{ product_details.name }}</h1>
-<h4>Category: {{ product_details.category }}</h4>
-<h4>Description: {{ product_details.description }}</h4>
-<div>
-  <img src="{{product_details.image}}" />
+  .left {
+    width: 50%;
+  }
+
+  .right {
+    width: 50%;
+  }
+</style>
+
+<!-- <div class="row">
+  <div class="column left" style="background-color:#aaa;">
+    <h2>Column 1</h2>
+    <p>Some text..</p>
+  </div>
+  <div class="column right" style="background-color:#bbb;">
+    <h2>Column 2</h2>
+    <p>Some text..</p>
+  </div>
+</div> -->
+
+<div class="row">
+  <div class="column left">
+    <h1>{{ product_details.name }}</h1>
+    <h4>Category: {{ product_details.category }}</h4>
+    <h4>Description: {{ product_details.description }}</h4>
+  </div>
+
+  <div class="column left">
+    <img src="{{product_details.image}}" height="500" width = "500"/>
+  </div>
 </div>
 
 <br><br>
@@ -90,8 +120,8 @@
 
 {% endif %}
 
-<br> 
-{%if stats.count == 0  %}
+<br>
+{%if stats.count == 0 %}
 
 {% else %}
 <table class='styled-table table-hover container'>
@@ -106,23 +136,25 @@
   </thead>
   <tbody>
     {% for feedback in reviews%}
-      <tr>
-        <td>{{feedback.firstname}} {{feedback.lastname}}</td>
-        <td>{{feedback.review}}</td>
-        <td>{{feedback.rating}} </td>  
-        <td> 
-          {%if feedback.image == 'NA'  %}
-          No image
-          {% else %}
-          <img src="{{feedback.image}}" width="100" height = "100"/>
-        {% endif %}  
-         </td>   
-        <td> {{feedback.upvotes}} people found this helpful!
-          <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}" type="button" class="btn btn-light">Helpful</a></td>
-      </tr>
+    <tr>
+      <td>{{feedback.firstname}} {{feedback.lastname}}</td>
+      <td>{{feedback.review}}</td>
+      <td>{{feedback.rating}} </td>
+      <td>
+        {%if feedback.image == 'NA' %}
+        No image
+        {% else %}
+        <img src="{{feedback.image}}" width="100" height="100" />
+        {% endif %}
+      </td>
+      <td> {{feedback.upvotes}} people found this helpful!
+        <a href="{{ url_for('feedback.update_votes', product_id = feedback.pid, review_id = feedback.id, upvotes = (feedback.upvotes + 1)) }}"
+          type="button" class="btn btn-light">Helpful</a>
+      </td>
+    </tr>
     {% endfor %}
   </tbody>
 </table>
-{% endif %} 
+{% endif %}
 
 {% endblock %}
