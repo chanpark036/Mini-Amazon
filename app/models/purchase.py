@@ -141,14 +141,16 @@ ORDER BY time_purchased DESC
                               Purchases.sid as sid,
                               Purchases.pid as pid,
                               Purchases.quantity as quantity,
+                              Users.firstname as firstname,
+                              Users.lastname as lastname,
                               Purchases.time_purchased as time_purchased,
                               Purchases.fulfillment_status as fulfillment_status
-                              FROM Purchases
-                              WHERE sid = :sid
+                              FROM Purchases, Users
+                              WHERE sid = :sid AND Users.id = uid
                               ORDER BY time_purchased DESC
                               """,
                               sid = sid)
-        return [Purchase(id,uid,sid,pid,quantity,"",time_purchased,fulfillment_status, "") for id,uid,sid,pid,quantity,time_purchased,fulfillment_status in rows]
+        return [Purchase(id,uid,sid,pid,quantity,firstname+" "+lastname,time_purchased,fulfillment_status, "") for id,uid,sid,pid,quantity,firstname,lastname, time_purchased,fulfillment_status in rows]
 
     @staticmethod
     def change_fulfillment(sid, uid, pid, id, new_status):
