@@ -246,7 +246,7 @@ def charts():
     p_names = Inventory.product_popularity(seller_id)
     p_freqs={}
     for name in p_names:
-        p_freqs[name[0]] = p_freqs.get(name[0],0)+1
+        p_freqs[name[0]] = p_freqs.get(name[0],0)+name[1]
     if p_freqs:
         p_keys, p_values = zip(*p_freqs.items())
     else:

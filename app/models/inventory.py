@@ -138,5 +138,5 @@ class Inventory:
 
     @staticmethod
     def product_popularity(sid):
-        name = app.db.execute('SELECT P.name FROM Purchases Pu, Products P WHERE Pu.pid=P.id AND Pu.sid = :sid',sid=sid)
+        name = app.db.execute('SELECT P.name,Pu.quantity FROM Purchases Pu, Products P WHERE Pu.pid=P.id AND Pu.sid = :sid',sid=sid)
         return name
