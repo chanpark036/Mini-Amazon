@@ -60,7 +60,7 @@ class Cart:
     product in the cart.
     @param: uid = unique user ID, pid = product ID, newValue = the new quantity to be purchased
     @return: UID, PID, Quantity, unit price, product name, seller ID, and 
-    saved status for every item in an active cart after the change is made to the database
+    saved status for every item in a cart after the change is made to the database
     '''
     @staticmethod
     def updateCount(uid, pid, newValue):
@@ -77,11 +77,10 @@ class Cart:
         return Cart.get(id)
     
     '''
-    *** delete_product(uid, pid) takes a user ID, product ID, and new value to update the quantity of a
-    product in the cart.
-    @param: uid = unique user ID, pid = product ID, newValue = the new quantity to be purchased
+    *** delete_product(uid, pid) takes a user ID and product ID to remove that product from a user's cart.
+    @param: uid = unique user ID, pid = product ID
     @return: UID, PID, Quantity, unit price, product name, seller ID, and 
-    saved status for every item in an active cart after the change is made to the database
+    saved status for every item in a cart after the change is made to the database
     '''
     @staticmethod
     def delete_product(uid, pid):
@@ -94,6 +93,14 @@ class Cart:
                               pid=pid)
        id = rows[0][0]
        return Cart.get(id) 
+   
+    '''
+    *** emptyCart(uid) takes a user ID and deletes all entries in an active cart for that user.
+    @param: uid = unique user ID
+    @return: UID, PID, Quantity, unit price, product name, seller ID, and 
+    saved status for every item in a cart after the change is made to the database (rows are empty for 
+    all unsaved cart objects).
+    '''
     def emptyCart(uid):
        rows = app.db.execute('''
             DELETE FROM Carts
@@ -105,6 +112,11 @@ class Cart:
        id = rows[0][0]
        return Cart.get(id) 
    
+   '''
+    *** addProduct(uid, pid, price, sid) adds product with pid, price, and corresponding seller ID to an active cart.
+    @param: uid = unique user ID, pid = product id, price = product price, sid = seller ID of product added
+    @return: none
+    '''
     def addProduct(uid, pid, price, sid):
         rows = app.db.execute('''
             INSERT INTO Carts(uid, pid, quantity, u_price, sid, saved)
@@ -117,6 +129,12 @@ class Cart:
                             sid = sid,
                             saved = False)
         
+    '''
+    *** saveForLater(uid, pid, saved) takes a product for a given user's cart and changes saved status to True
+    @param: uid = unique user ID, pid = product ID, saved = saved status
+    @return: UID, PID, Quantity, unit price, product name, seller ID, and 
+    saved status for every item in a "saved for later" cart after the change is made to the database.
+    '''
     def saveForLater(uid, pid, saved):
         rows = app.db.execute('''
             UPDATE Carts
@@ -130,6 +148,14 @@ class Cart:
         id = rows[0][0]
         return Cart.getSaved(id)
     
+    
+    '''
+    *** moveItem(uid, pid, saved) changes saved status to false for a given product in a given user's cart.
+    In effect, unsaves a product to move it to an active cart.
+    @param: uid = unique user ID, pid = product ID, saved = saved status
+    @return: UID, PID, Quantity, unit price, product name, seller ID, and 
+    saved status for every item in a "saved for later" cart after the change is made to the database.
+    '''
     def moveItem(uid, pid, saved):
         rows = app.db.execute('''
             UPDATE Carts
