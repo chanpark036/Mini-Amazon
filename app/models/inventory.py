@@ -61,7 +61,9 @@ class Inventory:
         return Inventory.get(sid)
 
     '''
-    @TODO
+    *** decreaseInventory(pid, change, sid) reduces a product's quantity by a value "change" for a given seller's inventory
+    @param: pid = product ID, change = the amount to change in quantity, sid = the seller ID whose inventory must be changed
+    @return: none
     '''
     @staticmethod
     def decreaseInventory(pid, change, sid):

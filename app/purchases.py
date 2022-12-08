@@ -48,7 +48,10 @@ def purchase_history_seller():
                            purchase_history=purchases, 
                            seller_id=seller_id)
 '''
-@TODO
+*** change_fulfillment(sid, uid, pid, id) updates fulfillment status in the database to the time of fulfillment upon 
+    click by a seller.
+    @param: sid = seller ID, uid = unique user ID who bought the object, pid = product ID to be fulfilled, id = purchase ID
+    @return: render of purchase history page after database is updated.
 '''
 @bp.route('/purchase_history_seller/<sid>,<uid>,<pid>,<id>', methods = ['GET','POST'])
 def change_fulfillment(sid,uid,pid,id):

@@ -142,7 +142,9 @@ def detail_product(product_id):
                              product_details = product_details, sellers_of_product = sellers_of_product, hasReview = hasReview, loggedIn=loggedIn)
 
 '''
-@TODO
+*** addToCart(sid, pid, price) adds product to cart for the current user with pid, price, for a given seller 
+    @param: sid = seller ID of selected product, pid = product ID, price = price of selected product
+    @return: products page render
 '''
 @bp.route('/products/<sid>,<pid>,<price>', methods = ['GET','POST'])
 def addToCart(sid,pid, price):
