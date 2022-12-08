@@ -83,7 +83,9 @@ class Inventory:
         return [Inventory(*row) for row in rows]
 
     '''
-    @TODO
+    @*** get_from_pid_specific(pid, sid) gets a certain product's information from a given seller
+    @param: pid = product ID, sid = seller ID
+    @return: all fields in the inventory database that match the seller ID and product ID
     '''
     def get_from_pid_specific(pid, sid):
         rows = app.db.execute('''
