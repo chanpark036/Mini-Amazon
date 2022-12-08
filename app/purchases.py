@@ -47,7 +47,9 @@ def purchase_history_seller():
     return render_template('purchase_history_seller.html', 
                            purchase_history=purchases, 
                            seller_id=seller_id)
-
+'''
+@TODO
+'''
 @bp.route('/purchase_history_seller/<sid>,<uid>,<pid>,<id>', methods = ['GET','POST'])
 def change_fulfillment(sid,uid,pid,id):
     x = datetime.datetime.now()

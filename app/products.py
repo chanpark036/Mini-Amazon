@@ -141,7 +141,9 @@ def detail_product(product_id):
                              form1 = form1, form2 = form2, product_id=product_id, reviews=reviews, stats=stats, ratings=ratings, 
                              product_details = product_details, sellers_of_product = sellers_of_product, hasReview = hasReview, loggedIn=loggedIn)
 
-
+'''
+@TODO
+'''
 @bp.route('/products/<sid>,<pid>,<price>', methods = ['GET','POST'])
 def addToCart(sid,pid, price):
     if not current_user.is_authenticated:

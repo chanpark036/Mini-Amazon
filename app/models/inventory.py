@@ -60,7 +60,9 @@ class Inventory:
         ''', quantity = quantity, sid = sid, pid=pid)
         return Inventory.get(sid)
 
-    #change later to include seller_id
+    '''
+    @TODO
+    '''
     @staticmethod
     def decreaseInventory(pid, change, sid):
         app.db.execute('''
@@ -80,6 +82,9 @@ class Inventory:
                               pid=pid)
         return [Inventory(*row) for row in rows]
 
+    '''
+    @TODO
+    '''
     def get_from_pid_specific(pid, sid):
         rows = app.db.execute('''
             SELECT I.sid, I.pid, I.quantity, I.u_price, U.firstname, U.lastname
