@@ -144,6 +144,8 @@ def detail_product(product_id):
 
 @bp.route('/products/<sid>,<pid>,<price>', methods = ['GET','POST'])
 def addToCart(sid,pid, price):
+    if not current_user.is_authenticated:
+        return redirect(url_for('users.login'))
     form1 = ProductsKInput()
     form2 = FilterProductCategory()
     products = Product.get_all(True)
