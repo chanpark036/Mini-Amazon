@@ -2,6 +2,11 @@ from flask import current_app as app
 
 
 class Cart:
+    '''
+    Cart class represents a cart object. A new cart object is made for every product in a cart.
+    Cart objects store the following information: user ID, product ID, quantity of product, unit price,
+    product name, and whether or not a product is saved for later.
+    '''
     def __init__(self, uid, pid, quantity, u_price, name, sid, saved):
         self.uid = uid
         self.pid = pid
@@ -11,6 +16,12 @@ class Cart:
         self.sid = sid
         self.saved = saved
 
+    '''
+    *** get(uid) takes a user ID and returns all fields of all active cart objects associated with the user.
+    @param: uid = unique user ID
+    @return: UID, PID, Quantity, unit price, product name, seller ID, and 
+    saved status for every item in an active cart
+    '''
     @staticmethod
     def get(uid):
         rows = app.db.execute('''
@@ -24,7 +35,13 @@ class Cart:
                               false = False)
         return [Cart(*row) for row in rows]
     
-    
+    '''
+    *** getSaved(uid) takes a user ID and returns all fields of all saved cart objects associated with the user.
+    @param: uid = unique user ID
+    @return: UID, PID, Quantity, unit price, product name, seller ID, and 
+    saved status for every saved item
+    '''
+    @staticmethod
     def getSaved(uid):
         rows = app.db.execute('''
             SELECT DISTINCT Carts.uid as uid, Carts.pid as pid, Carts.quantity as quantity, Carts.u_price as u_price,
@@ -38,39 +55,51 @@ class Cart:
         return [Cart(*row) for row in rows]
     
     
-    
+    '''
+    *** updateCount(uid, pid, newValue) takes a user ID, product ID, and new value to update the quantity of a
+    product in the cart.
+    @param: uid = unique user ID, pid = product ID, newValue = the new quantity to be purchased
+    @return: UID, PID, Quantity, unit price, product name, seller ID, and 
+    saved status for every item in an active cart after the change is made to the database
+    '''
     @staticmethod
     def updateCount(uid, pid, newValue):
         rows = app.db.execute('''
-UPDATE Carts
-SET quantity = :newValue
-WHERE pid = :pid and uid = :uid
-RETURNING uid
-''',
+            UPDATE Carts
+            SET quantity = :newValue
+            WHERE pid = :pid and uid = :uid
+            RETURNING uid
+            ''',
                               uid = uid,
                               pid = pid, 
                               newValue=newValue)
         id = rows[0][0]
         return Cart.get(id)
     
-    
+    '''
+    *** delete_product(uid, pid) takes a user ID, product ID, and new value to update the quantity of a
+    product in the cart.
+    @param: uid = unique user ID, pid = product ID, newValue = the new quantity to be purchased
+    @return: UID, PID, Quantity, unit price, product name, seller ID, and 
+    saved status for every item in an active cart after the change is made to the database
+    '''
     @staticmethod
     def delete_product(uid, pid):
        rows = app.db.execute('''
-DELETE FROM Carts
-WHERE pid= :pid and uid = :uid
-RETURNING uid
-''',
+            DELETE FROM Carts
+            WHERE pid= :pid and uid = :uid
+            RETURNING uid
+            ''',
                               uid=uid,
                               pid=pid)
        id = rows[0][0]
        return Cart.get(id) 
     def emptyCart(uid):
        rows = app.db.execute('''
-DELETE FROM Carts
-WHERE uid = :uid and saved = :false
-RETURNING uid
-''',
+            DELETE FROM Carts
+            WHERE uid = :uid and saved = :false
+            RETURNING uid
+            ''',
                               uid=uid,
                               false = False)
        id = rows[0][0]
@@ -78,9 +107,9 @@ RETURNING uid
    
     def addProduct(uid, pid, price, sid):
         rows = app.db.execute('''
-INSERT INTO Carts(uid, pid, quantity, u_price, sid, saved)
-VALUES(:uid, :pid, :quantity, :price, :sid, :saved)
-''',
+            INSERT INTO Carts(uid, pid, quantity, u_price, sid, saved)
+            VALUES(:uid, :pid, :quantity, :price, :sid, :saved)
+            ''',
                             uid=uid,
                             pid=pid,
                             quantity = 1,
@@ -90,11 +119,11 @@ VALUES(:uid, :pid, :quantity, :price, :sid, :saved)
         
     def saveForLater(uid, pid, saved):
         rows = app.db.execute('''
-UPDATE Carts
-SET saved = :saved
-WHERE pid = :pid and uid = :uid
-RETURNING uid
-''',
+            UPDATE Carts
+            SET saved = :saved
+            WHERE pid = :pid and uid = :uid
+            RETURNING uid
+            ''',
                               uid = uid,
                               pid = pid,
                               saved = True)
@@ -103,11 +132,11 @@ RETURNING uid
     
     def moveItem(uid, pid, saved):
         rows = app.db.execute('''
-UPDATE Carts
-SET saved = :saved
-WHERE pid = :pid and uid = :uid
-RETURNING uid
-''',
+            UPDATE Carts
+            SET saved = :saved
+            WHERE pid = :pid and uid = :uid
+            RETURNING uid
+            ''',
                               uid = uid,
                               pid = pid,
                               saved = False)
