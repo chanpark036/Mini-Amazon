@@ -112,7 +112,7 @@ class Cart:
        id = rows[0][0]
        return Cart.get(id) 
    
-   '''
+    '''
     *** addProduct(uid, pid, price, sid) adds product with pid, price, and corresponding seller ID to an active cart.
     @param: uid = unique user ID, pid = product id, price = product price, sid = seller ID of product added
     @return: none
