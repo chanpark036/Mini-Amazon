@@ -152,6 +152,12 @@ ORDER BY time_purchased DESC
                               sid = sid)
         return [Purchase(id,uid,sid,pid,quantity,firstname+" "+lastname,time_purchased,fulfillment_status, "") for id,uid,sid,pid,quantity,firstname,lastname, time_purchased,fulfillment_status in rows]
 
+
+    '''
+    *** change_fulfillment(sid, uid, pid, id, new_status) updates the fulfillment status for a product for a given seller and given buyer.
+    @param: sid = seller ID, uid = unique user ID, pid = product ID, id = purchase ID, new_status = new fulfillment status
+    @return: all fields of a purchase object for the seller
+    '''
     @staticmethod
     def change_fulfillment(sid, uid, pid, id, new_status):
         app.db.execute('''

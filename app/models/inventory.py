@@ -60,7 +60,11 @@ class Inventory:
         ''', quantity = quantity, sid = sid, pid=pid)
         return Inventory.get(sid)
 
-    #change later to include seller_id
+    '''
+    *** decreaseInventory(pid, change, sid) reduces a product's quantity by a value "change" for a given seller's inventory
+    @param: pid = product ID, change = the amount to change in quantity, sid = the seller ID whose inventory must be changed
+    @return: none
+    '''
     @staticmethod
     def decreaseInventory(pid, change, sid):
         app.db.execute('''
@@ -80,6 +84,11 @@ class Inventory:
                               pid=pid)
         return [Inventory(*row) for row in rows]
 
+    '''
+    @*** get_from_pid_specific(pid, sid) gets a certain product's information from a given seller
+    @param: pid = product ID, sid = seller ID
+    @return: all fields in the inventory database that match the seller ID and product ID
+    '''
     def get_from_pid_specific(pid, sid):
         rows = app.db.execute('''
             SELECT I.sid, I.pid, I.quantity, I.u_price, U.firstname, U.lastname

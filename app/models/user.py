@@ -140,7 +140,12 @@ WHERE id= :id
 """,
                               balance=balance,
                               id=id)
-        
+
+
+    '''
+    *** change_balance(id, changeVal) takes a user's balance and updates their balance by a given amount.
+    @param: id = unique user ID, changeVal = the amount to add or take away from a balance
+    @return: none'''
     def change_balance(id, changeVal):
         rows = app.db.execute("""
             UPDATE Users
