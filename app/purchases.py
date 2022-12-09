@@ -12,6 +12,11 @@ from .models.purchase import Purchase
 from flask import Blueprint
 bp = Blueprint('purchases', __name__)
     
+'''
+*** purchase_history() displays the items in the current user's cart and saved list if the current user is logged in
+    @param: none
+    @return: rendering of product page
+'''  
 @bp.route('/purchasehistory', methods=['GET', 'POST'])
 def purchase_history():
     if current_user.is_authenticated:
@@ -20,13 +25,22 @@ def purchase_history():
                                 purchase_history=purchase_history)
     return redirect(url_for('users.login'))
     
-# get total cost of a list of products
+'''
+*** getTotalPrice(productList) sums the price for all products in a product list.
+    @param: productList = list of products of interest
+    @return: price
+''' 
 def get_total_price(productList):
     price = 0
     for prod in productList:
         price += (prod.total_price*prod.total_quantity)
     return price
 
+'''
+*** detailed_order_page(user_id, time_purchased) displays a the detailed order page of a specific order within the user's purchase history. 
+    @param: user_id = current user ID, time_purchased = time the order was placed
+    @return: rendering of detailed order page.
+'''  
 @bp.route('/detailedOrderPage/<user_id>/<time_purchased>', methods = ['GET','POST','DELETE'])
 def detailed_order_page(user_id, time_purchased):
     if current_user.is_authenticated:

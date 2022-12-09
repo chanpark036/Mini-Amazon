@@ -56,6 +56,12 @@ def create_stats(lst):
         avg = round(lst[0][1],1)
         return Stats(avg,lst[0][2])
 
+
+'''
+*** login() logs in a user.
+    @param: None
+    @return: rendering of home index page
+'''   
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -91,6 +97,12 @@ class RegistrationForm(FlaskForm):
         if User.email_exists(email.data):
             raise ValidationError('Already a user with this email.')
 
+
+'''
+*** register() registers a user.
+    @param: None
+    @return: rendering of login page
+'''  
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -110,11 +122,21 @@ def register():
                            title='Register', 
                            form=form)
 
+'''
+*** logout() logs out a user.
+    @param: None
+    @return: rendering of home index page
+'''  
 @bp.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index.index'))
 
+'''
+*** get_account_info() displays the account information of a user.
+    @param: None
+    @return: rendering of user account information page
+'''  
 @bp.route('/account')
 def get_account_info():
     if current_user.is_authenticated:
@@ -127,7 +149,12 @@ def get_account_info():
         return render_template('user/user_info.html', 
                                user_id=user_id, product_feedback=product_feedback, seller_feedback=seller_feedback, uid = uid, p_reviews=p_rev, s_reviews=s_rev)
     return redirect(url_for('users.login'))
- 
+
+'''
+*** get_user_public_view(uid) displays the account information of the given user.
+    @param: uid = user ID
+    @return: rendering of user's public view information page
+'''  
 @bp.route('/userpublicview/<uid>', methods=['GET', 'POST'])
 def get_user_public_view(uid):
     user = User.get(uid)
@@ -149,6 +176,12 @@ class UpdateEmail(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Submit')
 
+'''
+*** update_email() updates a user's email.
+    @param: None
+    @return: rendering of user account information page if successful or
+    rendering of error message if desired new email already has account associated with it
+'''  
 @bp.route('/update-email', methods=['GET', 'POST'])
 def update_email():
     form = UpdateEmail()
@@ -175,6 +208,12 @@ class UpdatePassword(FlaskForm):
     password2 = PasswordField('Repeat Password', validators=[DataRequired(),EqualTo('password')])
     submit = SubmitField('Submit')
 
+'''
+*** update_password() updates a user's password.
+    @param: None
+    @return: rendering of user account information page if successful or
+    rendering of error message if two password fields do not match
+'''  
 @bp.route('/update-password', methods=['GET', 'POST'])
 def update_password():
     form = UpdatePassword()
@@ -194,6 +233,11 @@ class UpdateName(FlaskForm):
     lastname = StringField('Last Name', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+'''
+*** update_name() updates a user's full name.
+    @param: None
+    @return: rendering of user account information page
+''' 
 @bp.route('/update-name', methods=['GET', 'POST'])
 def update_name():
     form = UpdateName()
@@ -214,6 +258,11 @@ class UpdateAddress(FlaskForm):
     address = StringField('Address', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+'''
+*** update_address() updates a user's address.
+    @param: None
+    @return: rendering of user account information page
+'''
 @bp.route('/update-address', methods=['GET', 'POST'])
 def update_address():
     form = UpdateAddress()
@@ -232,6 +281,12 @@ class UpdateBalance(FlaskForm):
     balance = FloatField('Balance')
     submit = SubmitField('Submit')
 
+'''
+*** update_balance() updates a user's balance.
+    @param: None
+    @return: rendering of user account information page if successful or
+    rendering of error message if user attempts to overdraw from account
+'''  
 @bp.route('/update-balance', methods=['GET', 'POST'])
 def update_balance():
     form = UpdateBalance()
