@@ -43,20 +43,11 @@ class orderBy(FlaskForm):
     submit = SubmitField('Submit')
 
 
-@bp.route('/feedback', methods=['GET', 'POST'])
-def feedback():
-    if current_user.is_authenticated:
-        form = FeedbackSearch()
-        form1 = orderBy()
-        user_id = current_user.id
-        product_feedback = Feedback.get_all_by_uid_pid_recent(user_id)
-        seller_feedback = Feedback.get_all_by_uid_sid_recent(user_id)
-        p_rev = len(product_feedback) > 0
-        s_rev = len(seller_feedback) > 0
-        return render_template('feedback/feedback.html', 
-                           product_feedback=product_feedback, seller_feedback=seller_feedback, form = form, uid = user_id, form1 = form1, p_reviews=p_rev, s_reviews=s_rev)
-    return redirect(url_for('users.login'))
-
+'''
+*** review_product(product_id) displays the form to submit a product review
+    @param: product_id: the unique id of the product
+    @return: rendering of submit review page
+''' 
 @bp.route('/review-product/<product_id>', methods=['GET', 'POST'])
 def review_product(product_id):
     form = PostFeedback()
@@ -75,6 +66,11 @@ def review_product(product_id):
         return redirect(url_for('products.detail_product', product_id=product_id))
     return render_template('feedback/review-product.html', title='Review Product', form=form)
 
+'''
+*** review_seller(seller_id) displays the form to submit a seller review
+    @param: seller_id: the unique user id of the seller
+    @return: rendering of submit review page
+''' 
 @bp.route('/review-seller/<seller_id>', methods=['GET', 'POST'])
 def review_seller(seller_id):
     form = PostFeedback()
@@ -93,6 +89,11 @@ def review_seller(seller_id):
         return redirect(url_for('users.get_user_public_view', uid=seller_id))
     return render_template('feedback/review-seller.html', title='Review Seller', form=form)
 
+'''
+*** update_review(review_id) displays the current review text and form to submit new text
+    @param: review_id: the unique id of the review
+    @return: rendering of edit review page
+''' 
 @bp.route('/update-review/<review_id>', methods=['GET', 'POST'])
 def update_review(review_id):
     form = UpdateFeedback()
@@ -103,6 +104,11 @@ def update_review(review_id):
     review = Feedback.get(review_id)
     return render_template('feedback/update-review.html', title='Update Review', form=form, review_id=review_id, review=review)
 
+'''
+*** update_rating(review_id) displays the current rating and form to submit a new rating
+    @param: review_id: the unique id of the review
+    @return: rendering of edit review page
+''' 
 @bp.route('/update-rating/<review_id>', methods=['GET', 'POST'])
 def update_rating(review_id):
     form = UpdateFeedback()
@@ -113,6 +119,11 @@ def update_rating(review_id):
     rating = Feedback.get(review_id)
     return render_template('feedback/update-rating.html', title='Update Rating', form=form, review_id=review_id, rating=rating)
 
+'''
+*** update_image(review_id) displays the current image and form to submit a new image url
+    @param: review_id: the unique id of the review
+    @return: rendering of edit review page
+''' 
 @bp.route('/update-image/<review_id>', methods=['GET', 'POST'])
 def update_image(review_id):
     form = UpdateFeedback()
@@ -123,16 +134,31 @@ def update_image(review_id):
     image = Feedback.get(review_id)
     return render_template('feedback/update-image.html', title='Update Image', form=form, review_id=review_id, image=image)
 
+'''
+*** delete_review(review_id) deletes a review and re-renders the account page
+    @param: review_id: the unique id of the review
+    @return: rendering of account page
+''' 
 @bp.route('/feedback/<review_id>', methods=['GET','DELETE'])
 def delete_review(review_id):
     Feedback.delete_review(review_id)
     return redirect(url_for('users.get_account_info'))
 
+'''
+*** update_votes(review_id, upvotes, product_id) updates the upvotes of a review on the product page and re-renders the page
+    @param: review_id, upvotes, product_id: the unique id of the review, number of upvotes, the unique id of the product
+    @return: rendering of product detail page
+''' 
 @bp.route('/product-detail/<product_id>/<review_id>/<upvotes>', methods=['GET', 'POST'])
 def update_votes(review_id, upvotes, product_id):
     Feedback.update_votes(review_id, upvotes)
     return redirect(url_for('products.detail_product', product_id=product_id))
 
+'''
+*** update_s_votes(seller_id, review_id, upvotes) updates the upvotes of a review on the seller page and re-renders the page
+    @param: seller_id, review_id, upvotes: the unique user id of the seller, the unique id of the review, number of upvotes
+    @return: rendering of seller detail page
+''' 
 @bp.route('/userpublicview/<seller_id>/<review_id>/<upvotes>', methods=['GET', 'POST'])
 def update_s_votes(review_id, upvotes, seller_id):
     Feedback.update_votes(review_id, upvotes)

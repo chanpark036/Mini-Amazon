@@ -32,6 +32,11 @@ class FilterProductCategory(FlaskForm):
 
 # Reviews
 
+'''
+*** create_rating(lst) takes in a list of tuples containing the ratings 1-5 and the count of reviews with that rating and returns a ratings object
+    @param: lst = list of tuples of (rating, count)
+    @return: Ratings object
+''' 
 def create_rating(lst):
     one,two,three,four,five = 0, 0, 0, 0, 0
     for row in lst:
@@ -61,6 +66,11 @@ class Stats:
         self.avg = avg
         self.count = count
 
+'''
+*** create_stats(lst) takes in a list containing the average rating and count of reviews and returns a Stats object
+    @param: lst = list of format of [[average, count]]
+    @return: Stats object
+''' 
 def create_stats(lst):
     if len(lst) == 0:
         return Stats("N/A", 0)
