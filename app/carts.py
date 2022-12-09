@@ -192,7 +192,8 @@ def submitOrder(user_id, time):
     #decrease inventory and increase user balance
     for prod in orderProducts:
         Inventory.decreaseInventory(prod.pid, prod.quantity, prod.sid)
-        User.change_balance(prod.sid, prod.quantity*prod.u_price)
+        new_balance = User.get(prod.sid).balance+float(prod.quantity*prod.u_price)
+        User.update_balance(prod.sid, new_balance)
         
     #decrease buyer balance
     curr_balance = current_user.balance
