@@ -68,62 +68,36 @@ def create_stats(lst):
         avg = round(lst[0][1],1)
         return Stats(avg,lst[0][2])
 
-
+'''
+*** index() displays all available products regardless of price
+    @return: products page displaying all products
+'''
 @bp.route('/products', methods = ['GET', 'POST'])
 def index():    
 
-    # form corresponds with top K
     form1 = ProductsKInput()
     form2 = FilterProductCategory()
-    # k = form1.value.data
-    
-    # if k is None:
-    #     products = []
-    # else:
-    #     products = Product.get_top_K_expensive(True, k)
 
     products = Product.get_valid_products(True)    
     return render_template('products.html',
                            avail_products=products, form1 = form1, form2 = form2)
 
 
-# @bp.route('/products', methods = ['GET', 'POST'])
-# def index():    
-
-#     # form corresponds with top K
-#     form1 = ProductsKInput()
-#     form2 = FilterProductCategory()
-#     # k = form1.value.data
-    
-#     # if k is None:
-#     #     products = []
-#     # else:
-#     #     products = Product.get_top_K_expensive(True, k)
-
-#     products = Product.get_all(True)    
-#     return render_template('products.html',
-#                            avail_products=products, form1 = form1, form2 = form2)
-
+'''
+*** detail_product(product_id) displays the detail view of the product with product_id
+    @param: product_id = product ID
+    @return: detail view of products page
+'''
 @bp.route('/product-detail/<product_id>', methods=['GET', 'POST'])
 def detail_product(product_id):
     form1 = ProductsKInput()
     form2 = FilterProductCategory()
-    
-    # Feedback.update_review(review_id,
-    #                      form.review.data)
-    # if request.method == "POST":
-    #     return redirect(url_for('feedback.feedback'))
 
     #Product Details
     product_details = Product.get(product_id)
 
     sellers_of_product = Inventory.get_from_pid(product_id)
     
-    # product_name = product_details[1]
-    # product_category = product_details[2]
-    # product_description = product_details[3]
-    # product_price = product_details[4]
-
     # Reviews
     loggedIn = current_user.is_authenticated
     if loggedIn:
@@ -159,6 +133,10 @@ def addToCart(sid,pid, price):
                            avail_products=products, form1 = form1, form2 = form2,)
 
 
+'''
+*** displayProductsUnder50() displays all available products with price under $50
+    @return: products page under 50 render
+'''
 @bp.route('/products/under50', methods = ['GET','POST'])
 def displayProductsUnder50():
     
@@ -167,6 +145,11 @@ def displayProductsUnder50():
     return render_template('products_price_filter.html',
                            avail_products=products)
 
+
+'''
+*** displayProductsBetween50and100() displays all available products with price between (and including) $50 and $100
+    @return: products page between 50 and 100 render
+'''
 @bp.route('/products/between50and100', methods = ['GET','POST'])
 def displayProductsBetween50and100():
     
@@ -175,6 +158,10 @@ def displayProductsBetween50and100():
     return render_template('product_price_50and100.html',
                            avail_products=products)
 
+'''
+*** displayProductsOver100() displays all available products with price over $100
+    @return: products page over 100
+'''
 @bp.route('/products/over100', methods = ['GET','POST'])
 def displayProductsOver100():
     
