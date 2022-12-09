@@ -152,7 +152,11 @@ ORDER BY time_purchased DESC
                               time_purchased = time_purchased)
         return rows
 
-
+    '''
+        get_address() gets the address of a user given their id
+        @param: uid = user ID
+        @return: address
+    '''
     @staticmethod
     def get_address(uid):
         address = app.db.execute("""
@@ -164,7 +168,11 @@ ORDER BY time_purchased DESC
         return address[0][0]
 
 
-    #given a seller find all purchases from that seller
+    '''
+        get_all_seller_purchases(sid) gets all the purchases from a seller given the seller's id
+        @param: sid = seller ID
+        @return: Purchases with id,uid,sid,pid,quantity,full name,time_purchased,fulfillment_status
+    '''
     @staticmethod
     def get_all_seller_purchases(sid):
         rows = app.db.execute("""

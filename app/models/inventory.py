@@ -9,7 +9,12 @@ class Inventory:
         self.firstname = firstname
         self.lastname = lastname
         self.p_name = ""
-    
+        
+    '''
+    *** verify_seller(sid) checks if the given seller is registered to be a seller
+    @param sid = seller_id
+    @return val = True if sid is seller else False
+    '''
     @staticmethod
     def verify_seller(sid):
         val = app.db.execute('''
@@ -17,6 +22,11 @@ class Inventory:
         ''',sid=sid)[0][0]
         return val
 
+    '''
+    *** get(sid) gets sid,pid,price,and quantity data from database for a given seller and returns Inventory objects with this data
+    @param sid = seller_id
+    @return Inventory objects with sid,pid,price,and quantity information from database
+    '''
     @staticmethod
     def get(sid):
         rows = app.db.execute('''
@@ -28,6 +38,11 @@ class Inventory:
                               sid=sid)
         return [Inventory(*row) for row in rows]
 
+    '''
+    *** add(sid, pid, quantity, u_price) adds a new product into the given user's inventory
+    @param sid = seller_id, pid = product_id, quantity = product quantity, u_price = product price
+    @return Inventory objects with sid, pid, quantity, price information
+    '''
     @staticmethod
     def add(sid, pid, quantity, u_price):
         app.db.execute('''
@@ -43,6 +58,11 @@ class Inventory:
         ''', sid = sid, pid = pid, quantity = quantity, u_price = u_price)
         return Inventory.get(sid)
 
+    '''
+    *** remove(sid,pid) removes a product from a user's inventory
+    @param sid = seller_id, pid = product_id
+    @return Inventory objects with sid, pid, quantity, price information
+    '''
     @staticmethod
     def remove(sid, pid):
         app.db.execute('''
@@ -51,6 +71,11 @@ class Inventory:
             ''', sid=sid, pid=pid)
         return Inventory.get(sid)
     
+    '''
+    *** change_q(sid,pid,quantity) changes the quantity of a product in a user's inventory
+    @param sid = seller_id, pid = product_id, quantity = new quantity to change quantity to
+    @return Inventory objects with sid, pid, quantity, price information
+    '''  
     @staticmethod
     def change_q(sid, pid, quantity):
         app.db.execute('''
@@ -73,6 +98,11 @@ class Inventory:
             WHERE pid = :pid AND sid = :sid
         ''', change = change, pid=pid, sid = sid)
 
+    '''
+    *** get_from_pid(pid) gets all users who have products with id pid in their inventory
+    @param: pid = product ID
+    @return: Inventory objects with sid, pid, quantity, price information
+    '''
     @staticmethod
     def get_from_pid(pid):
         rows = app.db.execute('''
@@ -85,7 +115,7 @@ class Inventory:
         return [Inventory(*row) for row in rows]
 
     '''
-    @*** get_from_pid_specific(pid, sid) gets a certain product's information from a given seller
+    *** get_from_pid_specific(pid, sid) gets a certain product's information from a given seller
     @param: pid = product ID, sid = seller ID
     @return: all fields in the inventory database that match the seller ID and product ID
     '''
@@ -100,6 +130,11 @@ class Inventory:
                               sid = sid)
         return rows[0]
 
+    '''
+    ***get_name_from_pid(pid) gets the name of a product given the product's id
+    @param: pid = product ID
+    @return: the product's name
+    '''
     @staticmethod
     def get_name_from_pid(pid):
         val = app.db.execute('''
@@ -110,7 +145,10 @@ class Inventory:
                               pid=pid)
         return val[0][0]
 
-
+    '''
+    *** add_new_product(seller_id, name,description,price,quantity,image,category) adds a new product into the given user's inventory and also adds it to the products on sale
+    @param seller_id = seller_id, name = product name, description = product description, price = product price, quantity = quantity of product, image = product image, category = product category
+    '''
     @staticmethod
     def add_new_product(seller_id, name,description,price,quantity,image,category):
         available = True
@@ -134,17 +172,31 @@ class Inventory:
             new_pid = product_in_db[0][0]
         Inventory.add(seller_id, new_pid, quantity, price)
         
-        
+    '''
+    *** given sid find times that people bought from seller
+    @param: sid = seller id
+    @return times that people bought from seller
+    '''  
     @staticmethod
     def times_bought_from_seller(sid):
         times = app.db.execute('SELECT time_purchased FROM Purchases where sid=:sid',sid=sid)
         return times
-
+        
+    '''
+    *** given sid find names of people bought from seller
+    @param: sid = seller id
+    @return names of people that bought from seller
+    '''  
     @staticmethod
     def users_buying_from_seller(sid):
         users = app.db.execute('SELECT U.firstname,U.lastname FROM Purchases P,Users U where P.sid=:sid AND U.id=P.uid',sid=sid)
         return users
 
+    '''
+    *** given sid find quantites and names of products that people bought from seller
+    @param: sid = seller id
+    @return quantities and names of people that bought from seller
+    '''  
     @staticmethod
     def product_popularity(sid):
         name = app.db.execute('SELECT P.name,Pu.quantity FROM Purchases Pu, Products P WHERE Pu.pid=P.id AND Pu.sid = :sid',sid=sid)

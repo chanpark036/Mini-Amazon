@@ -49,7 +49,10 @@ class UpdateProductImage(FlaskForm):
     submit = SubmitField('UPDATE IMAGE')
 
 
-
+'''
+renders default inventory page with list of products in inventory
+@return renders default inventory page template if current user is authenticated and verified seller else redirects to login page
+'''
 @bp.route('/inventory', methods=['GET', 'POST'])
 def inventory():
     if not current_user.is_authenticated:
@@ -69,6 +72,11 @@ def inventory():
                            inventory_products=inv, form=form, available = available) 
                            #if available not true then how to become a seller?
 
+'''
+modifies the quantity of a product in the current seller's inventory
+@param uid = user id, pid = product id, new_q = new quantity to replace old quantity
+@return redirects to default inventory page
+'''
 @bp.route('/inventory/<uid>,<pid>,<new_q>', methods = ['GET', 'POST'])
 def modifyQuantity(uid, pid, new_q):
     products = Inventory.change_q(uid, pid, new_q)
@@ -79,7 +87,12 @@ def modifyQuantity(uid, pid, new_q):
     # return render_template('inventory.html',
     #                         sid = uid,
     #                        inventory_products = products, form=form, available = True)
-    
+
+'''
+removes product in the current seller's inventory
+@param uid = user id, pid = product id
+@return redirects to default inventory page
+'''    
 @bp.route('/inventory/<uid>,<pid>', methods=['GET','DELETE'])
 def removeProduct(uid, pid):
     products = Inventory.remove(uid, pid)
@@ -89,6 +102,11 @@ def removeProduct(uid, pid):
     #                         sid = uid,
     #                        inventory_products = products, form=form, available = True)
 
+'''
+adds product in the current seller's inventory
+@param uid = user id, pid = product id
+@return redirects to default inventory page
+'''  
 @bp.route('/inventory/add', methods=['GET','POST'])
 def addProduct(): #ensure that pid is not already in database and if is then give error
     #pid could be in database already but under a different seller
@@ -102,13 +120,20 @@ def addProduct(): #ensure that pid is not already in database and if is then giv
     return redirect(url_for('inventories.inventory'))
     
  
-
+'''
+renders new page for adding a product
+@return renders new page for adding a product
+'''   
 @bp.route('/inventory/addNewProductPage', methods=['GET', 'POST'])
 def addNewProductPage():
     form = AddNewProductForm()
     return render_template('add_product_page.html',
                             form = form) 
 
+'''
+adds products to database given information provided by a user in the add product form
+@return redirects to default inventory page
+'''   
 @bp.route('/inventory/addNewProduct', methods=['GET', 'POST'])
 def addNewProduct():
     seller_id = current_user.id
@@ -125,7 +150,10 @@ def addNewProduct():
     return redirect(url_for('inventories.inventory'))
                            #if available not true then how to become a seller?
 
-
+'''
+renders new page for editing a product
+@return render for new page for editing a product
+'''  
 @bp.route('/inventory/editProduct/<pid>', methods=['GET', 'POST'])
 def editProduct(pid):
     product_details = Product.get(pid)
@@ -139,6 +167,12 @@ def editProduct(pid):
 
 
 # @bp.route('/inventory/editProduct/<sid>,<pid>/update-name', methods=['GET', 'POST'])
+
+'''
+updates a product name of given product to name in form
+@param pid = product ID
+@return render for new page for changing a product name
+''' 
 @bp.route('/inventory/editProduct/updateName/<pid>', methods=['GET', 'POST'])
 def update_name(pid):
     
@@ -157,6 +191,11 @@ def update_name(pid):
     return render_template('update-product-name.html', pid = pid, 
                                 form=form)
 
+'''
+updates a product description of given product to description in form
+@param pid = product ID
+@return render for new page for changing a product description
+''' 
 @bp.route('/inventory/editProduct/updateDescription/<pid>', methods=['GET', 'POST'])
 def update_description(pid):
     
@@ -175,6 +214,11 @@ def update_description(pid):
     return render_template('update-product-name.html', pid = pid, 
                                 form=form)
 
+'''
+updates a product category of given product to category in form
+@param pid = product ID
+@return render for new page for changing a product category
+''' 
 @bp.route('/inventory/editProduct/updateCategory/<pid>', methods=['GET', 'POST'])
 def update_category(pid):
     
@@ -193,6 +237,11 @@ def update_category(pid):
     return render_template('update-product-name.html', pid = pid, 
                                 form=form)
 
+'''
+updates a product image of given product to image in form
+@param pid = product ID
+@return render for new page for changing a product image
+''' 
 @bp.route('/inventory/editProduct/updateImage/<pid>', methods=['GET', 'POST'])
 def update_image(pid):
     
@@ -211,6 +260,11 @@ def update_image(pid):
     return render_template('update-product-name.html', pid = pid, 
                                 form=form)
 
+
+'''
+creates charts based on the purchases people have been making from a seller
+@return render for new page for charts
+''' 
 @bp.route('/inventory/line',methods=['GET'])
 def charts():
     seller_id = current_user.id

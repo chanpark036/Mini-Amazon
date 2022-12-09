@@ -52,6 +52,12 @@ def detailed_order_page(user_id, time_purchased):
                             total=total_cost)
     return redirect(url_for('users.login'))
 
+
+'''
+*** purchase_history_seller() displays the page with the history of orders in reverse chronological order that were bought from current seller
+@param: 
+@return: rendering of history of orders page
+'''
 @bp.route('/purchase_history_seller', methods = ['GET','POST'])
 def purchase_history_seller():
     seller_id = current_user.id
